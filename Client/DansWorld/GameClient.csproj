@@ -63,7 +63,8 @@
     <Compile Include="GameClient.cs" />
     <Compile Include="GameExecution\GameState.cs" />
     <Compile Include="Math\Utils.cs" />
-    <Compile Include="UI\MenuScene.cs" />
+    <Compile Include="UI\Scenes\CharacterSelectScene.cs" />
+    <Compile Include="UI\Scenes\MenuScene.cs" />
     <Compile Include="Net\Client.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -81,7 +82,7 @@
     <Compile Include="UI\Image.cs" />
     <Compile Include="UI\Label.cs" />
     <Compile Include="UI\Rect.cs" />
-    <Compile Include="UI\Scene.cs" />
+    <Compile Include="UI\Scenes\BaseScene.cs" />
     <Compile Include="UI\TextBox.cs" />
   </ItemGroup>
   <ItemGroup>

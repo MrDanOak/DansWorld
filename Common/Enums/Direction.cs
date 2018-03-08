@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DansWorld.Common.Enums
 {
-    enum Direction
+    public enum Direction : byte
     {
         LEFT = 0, 
         DOWN = 1, 

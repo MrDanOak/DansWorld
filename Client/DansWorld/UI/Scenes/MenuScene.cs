@@ -6,37 +6,31 @@ using System.Threading.Tasks;
 using DansWorld.Common.Net;
 using DansWorld.GameClient.UI.CustomEventArgs;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace DansWorld.GameClient.UI
+namespace DansWorld.GameClient.UI.Scenes
 {
-    public class MenuScene : Scene
+    public class MenuScene : BaseScene
     {
-        TextBox txtUser;
-        TextBox txtPassword;
-        Button btnCreate;
-        Button btnPlay;
-        Label lblDansWorld;
-        Label lblVersion;
-        Label lblMessage;
+        TextBox _txtUser;
+        TextBox _txtPassword;
+        Button _btnCreate;
+        Button _btnPlay;
+        Label _lblDansWorld;
+        Label _lblVersion;
+        Label _lblMessage;
+
         public MenuScene()
         {
 
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-        {
-            foreach (Control control in Controls)
-            {
-                control.Draw(gameTime, spriteBatch);
-            }
-        }
-
-        public override void Initialise()
+        public override void Initialise(ContentManager content)
         {
             Controls = new List<Control>();
-            txtUser = new TextBox()
+            _txtUser = new TextBox()
             {
                 Name = "txtUser",
                 BackColor = Color.White,
@@ -49,11 +43,11 @@ namespace DansWorld.GameClient.UI
                 SpacesAllowed = false,
                 CharacterLimit = 5
             };
-            txtUser.KeyPressed += TextBox_KeyPressed;
-            txtUser.OnClick += Control_OnClick;
-            Controls.Add(txtUser);
+            _txtUser.KeyPressed += TextBox_KeyPressed;
+            _txtUser.OnClick += Control_OnClick;
+            Controls.Add(_txtUser);
 
-            lblDansWorld = new Label()
+            _lblDansWorld = new Label()
             {
                 Name = "lblDansWorld",
                 BackColor = Color.White,
@@ -61,29 +55,29 @@ namespace DansWorld.GameClient.UI
                 Font = GameClient.GW2_FONT_LARGE,
                 Text = "Dan's World",
                 Size = new Point((int)GameClient.GW2_FONT_LARGE.MeasureString("Dan's World").X + 10, (int)GameClient.GW2_FONT_LARGE.MeasureString("Dan's World").Y + 10),
-                Location = new Point(GameClient.WIDTH / 2 - (((int)GameClient.GW2_FONT_LARGE.MeasureString("Dan's World").X + 10) / 2), txtUser.Destination.Top - ((int)GameClient.GW2_FONT_LARGE.MeasureString("Dan's World").Y + 20))
+                Location = new Point(GameClient.WIDTH / 2 - (((int)GameClient.GW2_FONT_LARGE.MeasureString("Dan's World").X + 10) / 2), _txtUser.Destination.Top - ((int)GameClient.GW2_FONT_LARGE.MeasureString("Dan's World").Y + 20))
             };
-            Controls.Add(lblDansWorld);
+            Controls.Add(_lblDansWorld);
 
-            txtPassword = new TextBox()
+            _txtPassword = new TextBox()
             {
                 Name = "txtPassword",
                 BackColor = Color.White,
                 FrontColor = Color.Black,
                 Font = GameClient.DEFAULT_FONT,
                 Size = new Point(300, (int)GameClient.DEFAULT_FONT.MeasureString(" ").Y + 10),
-                Location = new Point(GameClient.WIDTH / 2 - 150, txtUser.Destination.Bottom + 10),
+                Location = new Point(GameClient.WIDTH / 2 - 150, _txtUser.Destination.Bottom + 10),
                 NumbersAllowed = true,
                 SpecialCharactersAllowed = false,
                 SpacesAllowed = false,
                 IsPasswordField = true
             };
-            txtPassword.OnClick += Control_OnClick;
-            txtPassword.KeyPressed += TextBox_KeyPressed;
-            txtPassword.KeyPressed += TxtPassword_KeyPressed;
-            Controls.Add(txtPassword);
+            _txtPassword.OnClick += Control_OnClick;
+            _txtPassword.KeyPressed += TextBox_KeyPressed;
+            _txtPassword.KeyPressed += TxtPassword_KeyPressed;
+            Controls.Add(_txtPassword);
 
-            btnPlay = new Button()
+            _btnPlay = new Button()
             {
                 Name = "btnPlay",
                 BackColor = Color.Red,
@@ -91,13 +85,13 @@ namespace DansWorld.GameClient.UI
                 Font = GameClient.GW2_FONT,
                 Text = "Play",
                 Size = new Point((int)GameClient.GW2_FONT.MeasureString("Play").X + 10, (int)GameClient.GW2_FONT.MeasureString("Play").Y + 10),
-                Location = new Point(txtPassword.Destination.Right - ((int)GameClient.GW2_FONT.MeasureString("Play").X + 10), txtPassword.Destination.Bottom + 10)
+                Location = new Point(_txtPassword.Destination.Right - ((int)GameClient.GW2_FONT.MeasureString("Play").X + 10), _txtPassword.Destination.Bottom + 10)
             };
-            btnPlay.OnClick += PlayButton_OnClick;
-            btnPlay.OnClick += Control_OnClick;
-            Controls.Add(btnPlay);
+            _btnPlay.OnClick += PlayButton_OnClick;
+            _btnPlay.OnClick += Control_OnClick;
+            Controls.Add(_btnPlay);
 
-            btnCreate = new Button()
+            _btnCreate = new Button()
             {
                 Name = "btnCreate",
                 BackColor = Color.Red,
@@ -105,13 +99,13 @@ namespace DansWorld.GameClient.UI
                 Font = GameClient.GW2_FONT,
                 Text = "Create",
                 Size = new Point((int)GameClient.GW2_FONT.MeasureString("Create").X + 10, (int)GameClient.GW2_FONT.MeasureString("Create").Y + 10),
-                Location = new Point(btnPlay.Destination.Left - ((int)GameClient.GW2_FONT.MeasureString("Create").X + 20), btnPlay.Destination.Top)
+                Location = new Point(_btnPlay.Destination.Left - ((int)GameClient.GW2_FONT.MeasureString("Create").X + 20), _btnPlay.Destination.Top)
             };
-            btnCreate.OnClick += BtnCreate_OnClick;
-            btnCreate.OnClick += Control_OnClick;
-            Controls.Add(btnCreate);
+            _btnCreate.OnClick += BtnCreate_OnClick;
+            _btnCreate.OnClick += Control_OnClick;
+            Controls.Add(_btnCreate);
 
-            lblMessage = new Label()
+            _lblMessage = new Label()
             {
                 Name = "lblMessage",
                 BackColor = Color.White,
@@ -119,10 +113,10 @@ namespace DansWorld.GameClient.UI
                 Font = GameClient.DEFAULT_FONT_BOLD,
                 Text = "",
                 Size = new Point((int)GameClient.DEFAULT_FONT_BOLD.MeasureString(String.Format("Version: {0}", GameClient.VERSION)).X + 4, (int)GameClient.DEFAULT_FONT_BOLD.MeasureString(String.Format("Version: {0}", GameClient.VERSION)).Y + 4),
-                Location = new Point(GameClient.WIDTH / 2, btnCreate.Destination.Bottom + 4),
+                Location = new Point(GameClient.WIDTH / 2, _btnCreate.Destination.Bottom + 4),
                 IsVisible = false
             };
-            Controls.Add(lblMessage);
+            Controls.Add(_lblMessage);
         }
 
         private void TextBox_KeyPressed(object sender, KeyPressedEventArgs e)
@@ -157,8 +151,15 @@ namespace DansWorld.GameClient.UI
         {
             if (e.KeyPressed == Keys.Enter)
             {
-                Login(txtUser.Text, txtPassword.Text);
+                Login(_txtUser.Text, _txtPassword.Text);
             }
+        }
+
+        public void DisplayLoginMessage(string message)
+        {
+            _lblMessage.IsVisible = true;
+            _lblMessage.Text = message;
+            _lblMessage.Location = new Point(GameClient.WIDTH / 2 - ((int)_lblMessage.Font.MeasureString(message).X / 2), _lblMessage.Location.Y);
         }
 
         private void BtnCreate_OnClick(object sender, ClickedEventArgs e)
@@ -187,12 +188,23 @@ namespace DansWorld.GameClient.UI
             {
                 control.Update(gameTime);
             }
+            base.Update(gameTime);
+           
+        }
+
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            foreach (Control control in Controls)
+            {
+                control.Draw(gameTime, spriteBatch);
+            }
+            base.Update(gameTime);
         }
 
         private void PlayButton_OnClick(object sender, ClickedEventArgs e)
         {
             Console.WriteLine("Play button clicked");
-            Login(txtUser.Text, txtPassword.Text);
+            Login(_txtUser.Text, _txtPassword.Text);
         }
 
         private void Login(string user, string pass)
@@ -202,10 +214,10 @@ namespace DansWorld.GameClient.UI
                 GameClient.NetClient.Connect();
             }
             PacketBuilder pb = new PacketBuilder(PacketFamily.Login, PacketAction.Request);
-            pb = pb.AddString("u:" + txtUser.Text)
-                   .AddString("p:" + txtPassword.Text);
+            pb = pb.AddString("u:" + _txtUser.Text)
+                   .AddString("p:" + _txtPassword.Text);
             GameClient.NetClient.Send(pb.Build());
-            Console.WriteLine("Attempting to login using user: {0} pass: {1}", txtUser.Text, txtPassword.Text);
+            Console.WriteLine("Attempting to login using user: {0} pass: {1}", _txtUser.Text, _txtPassword.Text);
         }
     }
 }
