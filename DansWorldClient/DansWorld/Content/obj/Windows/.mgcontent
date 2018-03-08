@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>Windows</Platform>
+  <Config />
+  <SourceFiles>
+    <File>C:/Users/dansc/source/repos/DansWorld/DansWorld/Content/Fonts/GW2Font.spritefont</File>
+    <File>C:/Users/dansc/source/repos/DansWorld/DansWorld/Content/Fonts/arial.spritefont</File>
+    <File>C:/Users/dansc/source/repos/DansWorld/DansWorld/Content/Fonts/GW2FontLarge.spritefont</File>
+    <File>C:/Users/dansc/source/repos/DansWorld/DansWorld/Content/Fonts/arialBold.spritefont</File>
+  </SourceFiles>
+</SourceFileCollection>
