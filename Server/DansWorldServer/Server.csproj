@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>DansWorld.Server</AssemblyName>
+    <RootNamespace>DansWorld.Server</RootNamespace>
+    <FileVersion>0.1.0.2</FileVersion>
+    <AssemblyVersion>0.1.0.2</AssemblyVersion>
+  </PropertyGroup>
+
+</Project>
