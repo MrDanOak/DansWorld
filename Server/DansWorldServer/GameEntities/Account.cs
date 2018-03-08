@@ -4,13 +4,22 @@ using System.Text;
 
 namespace DansWorld.Server.GameEntities
 {
+
+    public enum AccountState
+    {
+        LoggedOut,
+        LoggedIn, 
+        Playing
+    }
     public class Account
     {
         public string Username = "";
         public string Password = "";
+        public string Email = "";
         public List<Character> Characters;
+        public AccountState State = AccountState.LoggedOut;
 
-        public Account(string username, string password)
+        public Account(string username, string password, string email)
         {
             Username = username;
             Password = password;

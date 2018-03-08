@@ -17,6 +17,8 @@ namespace DansWorld.Server
         public NetworkStream Stream { get { return Socket.GetStream(); } }
         public Thread Thread { get; private set; }
         public bool ShouldReceive { get; private set; }
+        private Account _accountHandling;
+        private Character _characterHandling;
         #endregion
 
         #region private accessors
@@ -71,22 +73,64 @@ namespace DansWorld.Server
                     PacketBuilder pb = new PacketBuilder().AddBytes(data);
                     Packet pkt = pb.Build();
 
-                    if (pkt.Family == PacketFamily.Login)
+                    try
                     {
-                        if (pkt.Action == PacketAction.Request)
+                        if (pkt.Family == PacketFamily.LOGIN)
                         {
-                            Logger.Log("Login Requested from accepted packet");
-                            string s = pkt.ReadString(pkt.Length - 2);
-                            string user = s.Split("p:")[0];
-                            user = user.Substring(2, user.Length - 2);
-                            string pass = s.Split("p:")[1];
-                            CheckLogin(user, pass);
+                            if (pkt.Action == PacketAction.REQUEST)
+                            {
+                                Logger.Log("Login Requested from accepted packet");
+                                string s = pkt.ReadString(pkt.Length - 2);
+                                string user = s.Split("p:")[0];
+                                user = user.Substring(2, user.Length - 2);
+                                string pass = s.Split("p:")[1];
+                                CheckLogin(user, pass);
+                            }
                         }
+                        else if (pkt.Family == PacketFamily.REGISTER)
+                        {
+                            if (pkt.Action == PacketAction.REQUEST)
+                            {
+                                Logger.Log("Registration request from accepted packet");
+                                string username = pkt.ReadString(pkt.ReadByte());
+                                string password = pkt.ReadString(pkt.ReadByte());
+                                string email = pkt.ReadString(pkt.ReadByte());
+                                Logger.Log(String.Format("Requested username {0} password {1} email {2}", username, password, email));
+                                bool userExists = false;
+                                foreach (Account account in _server.Accounts)
+                                {
+                                    if (account.Username == username)
+                                    {
+                                        pb = new PacketBuilder(PacketFamily.REGISTER, PacketAction.REJECT);
+                                        string errMsg = "User already exists";
+                                        pb = pb.AddByte((byte)errMsg.Length).AddString(errMsg);
+                                        Send(pb.Build());
+                                        userExists = true;
+                                        break;
+                                    }
+                                }
+
+                                if (!userExists)
+                                {
+                                    pb = new PacketBuilder(PacketFamily.REGISTER, PacketAction.ACCEPT);
+                                    pb = pb.AddByte((byte)username.Length).AddString(username);
+                                    Send(pb.Build());
+                                    Account account = new Account(username, password, email);
+                                    _server.Accounts.Add(account);
+                                    Logger.Log("Account Created. Username: " + username);
+                                }
+                            }
+                        }
+                    } 
+                    catch (Exception e)
+                    {
+                        Logger.Warn("Packet was not in a recognised format and therefore will not be handled. Remote endpoint: " + Socket.Client.RemoteEndPoint);
                     }
 
                 }
                 catch (Exception e)
                 {
+                    if (_accountHandling != null) _accountHandling.State = AccountState.LoggedOut;
                     Logger.Error("Fatal Exception: " + e.Message);
                     break;
                 }
@@ -98,31 +142,44 @@ namespace DansWorld.Server
             PacketBuilder pb = new PacketBuilder();
             Logger.Log(String.Format("Username: {0} Password: {1}", user, pass));
             bool foundUser = false;
-            foreach (Account account in _server._accounts)
+            foreach (Account account in _server.Accounts)
             {
                 if (account.Username == user)
                 {
                     foundUser = true;
                     if (account.Password == pass)
                     {
-                        Logger.Log("Login accepted from " + Socket.Client.RemoteEndPoint + " for account " + user);
-                        pb = new PacketBuilder()
-                            .AddByte((byte)PacketFamily.Login)
-                            .AddByte((byte)PacketAction.Accept);
-                        foreach (Character character in account.Characters)
+                        if (account.State == AccountState.LoggedOut)
                         {
-                            pb = pb.AddByte((byte)character.Name.Length)
-                                .AddString(character.Name)
-                                .AddByte((byte)character.Level)
-                                .AddByte((byte)character.Gender);
-                            Logger.Log("Building serialised packet of character: " + character.Name);
+                            Logger.Log("Login accepted from " + Socket.Client.RemoteEndPoint + " for account " + user);
+                            pb = new PacketBuilder()
+                                .AddByte((byte)PacketFamily.LOGIN)
+                                .AddByte((byte)PacketAction.ACCEPT);
+                            foreach (Character character in account.Characters)
+                            {
+                                pb = pb.AddByte((byte)character.Name.Length)
+                                    .AddString(character.Name)
+                                    .AddByte((byte)character.Level)
+                                    .AddByte((byte)character.Gender);
+                                Logger.Log("Building serialised packet of character: " + character.Name);
+                            }
+                            account.State = AccountState.LoggedIn;
+                            _accountHandling = account;
+                        }
+                        else
+                        {
+                            Logger.Log("Login accepted from " + Socket.Client.RemoteEndPoint + " for account " + user + " However the client is logged in somewhere else");
+                            pb = new PacketBuilder()
+                                .AddByte((byte)PacketFamily.LOGIN)
+                                .AddByte((byte)PacketAction.REJECT)
+                                .AddString("Account Logged in somewhere else");
                         }
                     }
                     else
                     {
                         pb = new PacketBuilder()
-                            .AddByte((byte)PacketFamily.Login)
-                            .AddByte((byte)PacketAction.Reject)
+                            .AddByte((byte)PacketFamily.LOGIN)
+                            .AddByte((byte)PacketAction.REJECT)
                             .AddString("Invalid Password");
                     }
                 }
@@ -131,8 +188,8 @@ namespace DansWorld.Server
             if (!foundUser)
             {
                 pb = new PacketBuilder()
-                    .AddByte((byte)PacketFamily.Login)
-                    .AddByte((byte)PacketAction.Reject)
+                    .AddByte((byte)PacketFamily.LOGIN)
+                    .AddByte((byte)PacketAction.REJECT)
                     .AddString("Invalid Username");
             }
             Send(pb.Build());
@@ -154,6 +211,7 @@ namespace DansWorld.Server
             }
             catch (Exception e)
             {
+                if (_accountHandling != null) _accountHandling.State = AccountState.LoggedOut;
                 Logger.Error("Fatal Exception: " + e.Message);
                 Stop();
             }
@@ -177,6 +235,7 @@ namespace DansWorld.Server
 
         public void Stop()
         {
+            if (_accountHandling != null) _accountHandling.State = AccountState.LoggedOut;
             try
             {
                 Logger.Log("Client iniating shutdown");
@@ -199,6 +258,7 @@ namespace DansWorld.Server
             }
             catch (Exception e)
             {
+                if (_accountHandling != null) _accountHandling.State = AccountState.LoggedOut;
                 Logger.Error("Caught exception on close: " + e.Message);
             }
         }

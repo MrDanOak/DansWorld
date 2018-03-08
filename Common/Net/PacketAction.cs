@@ -6,8 +6,8 @@ namespace DansWorld.Common.Net
 {
     public enum PacketAction : byte
     {
-        Request = 1, 
-        Accept = 2, 
-        Reject = 3
+        REQUEST = 1, 
+        ACCEPT = 2, 
+        REJECT = 3
     }
 }

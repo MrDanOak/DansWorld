@@ -21,7 +21,7 @@ namespace DansWorld.GameClient.Net
         public bool Connected { get { return Socket.Connected; } }
         public bool ShouldReceive { get; private set; }
         public Thread Thread { get; private set; }
-        private DansWorld.GameClient.GameClient _gameClient;
+        private GameClient _gameClient;
 
         public Client(string host, int port, GameClient gameClient)
         {
@@ -37,6 +37,7 @@ namespace DansWorld.GameClient.Net
         {
             try
             {
+                Socket = new TcpClient();
                 Socket.Connect(Dns.GetHostAddresses(Host)[0], Port);
                 Thread.Start();
             }
@@ -86,11 +87,11 @@ namespace DansWorld.GameClient.Net
                     PacketBuilder pb = new PacketBuilder().AddBytes(data);
                     Packet pkt = pb.Build();
 
-                    if (pkt.Family == PacketFamily.Login)
+                    if (pkt.Family == PacketFamily.LOGIN)
                     {
-                        if (pkt.Action == PacketAction.Accept)
+                        if (pkt.Action == PacketAction.ACCEPT)
                         {
-                            _gameClient.DisplayLoginMessage("Login accepted");
+                            _gameClient.DisplayMessage("Login accepted");
                             _gameClient.SetState(GameExecution.GameState.LoggedIn);
                             while (pkt.ReadPosition < pkt.RawData.Length)
                             {
@@ -109,10 +110,30 @@ namespace DansWorld.GameClient.Net
                         }
                         else
                         {
-                            _gameClient.DisplayLoginMessage(pkt.ReadString(pkt.Length - 2));
+                            _gameClient.DisplayMessage(pkt.ReadString(pkt.Length - 2));
                         }
                     }
-
+                    else if (pkt.Family == PacketFamily.REGISTER)
+                    {
+                        if (pkt.Action == PacketAction.ACCEPT)
+                        {
+                            _gameClient.SetState(GameExecution.GameState.MainMenu);
+                            _gameClient.DisplayMessage("Account created! Username: " + pkt.ReadString(pkt.ReadByte()));
+                        }
+                        else
+                        {
+                            _gameClient.DisplayMessage(pkt.ReadString(pkt.ReadByte()));
+                        }
+                    }
+                    else if (pkt.Family == PacketFamily.PLAY)
+                    {
+                        if (pkt.Action == PacketAction.ACCEPT)
+                        {
+                            string charName = pkt.ReadString(pkt.ReadByte());
+                            int level = pkt.ReadByte();
+                            _gameClient.SetState(GameExecution.GameState.Playing);
+                        }
+                    }
                 }
                 catch (Exception e)
                 {
@@ -124,9 +145,24 @@ namespace DansWorld.GameClient.Net
 
         public void Send(byte[] data)
         {
-            byte length = (byte)data.Length;
-            Stream.Write(new byte[] { length, 0 }, 0, 2);
-            Stream.Write(data, 0, length);
+            int tries = 0;
+            bool success = false;
+
+            while (!success && tries < 10)
+            {
+                try
+                {
+                    byte length = (byte)data.Length;
+                    Stream.Write(new byte[] { length, 0 }, 0, 2);
+                    Stream.Write(data, 0, length);
+                    success = true;
+                }
+                catch (Exception e)
+                {
+                    tries++;
+                    Connect();
+                }
+            }
         }
 
         public void Send(string data)

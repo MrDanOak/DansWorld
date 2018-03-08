@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DansWorld.Common.Enums;
 using DansWorld.Common.GameEntities;
+using DansWorld.Common.Net;
 using DansWorld.GameClient.UI.Game;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -23,6 +24,11 @@ namespace DansWorld.GameClient.UI.Scenes
         CharacterSprite[] _characterSprite = new CharacterSprite[3];
         public List<Character> Characters;
         private int _elapsedms = 0;
+        private GameClient _gameClient;
+        public CharacterSelectScene(GameClient gameClient)
+        {
+            _gameClient = gameClient;
+        }
 
         public override void Initialise(ContentManager Content)
         {
@@ -77,6 +83,7 @@ namespace DansWorld.GameClient.UI.Scenes
                     Size = new Point((int)GameClient.GW2_FONT.MeasureString("Create").X + 10, (int)GameClient.GW2_FONT.MeasureString("Create").Y + 10),
                     Location = new Point(_charBox[i].Destination.Left + (_charBox[i].Size.X / 2) - ((int)GameClient.GW2_FONT.MeasureString("Create").X / 2), _charBox[i].Destination.Bottom + 10)
                 };
+                _btnPlayChar[i].OnClick += btnPlayChar_OnClick;
                 Controls.Add(_btnPlayChar[i]);
 
                 _btnDeleteChar[i] = new Button()
@@ -120,6 +127,14 @@ namespace DansWorld.GameClient.UI.Scenes
             }
         }
 
+        private void btnPlayChar_OnClick(object sender, CustomEventArgs.ClickedEventArgs e)
+        {
+            int id = Convert.ToInt32(((Control)sender).Name[((Control)sender).Name.Length - 1]);
+            PacketBuilder pb = new PacketBuilder(PacketFamily.PLAY, PacketAction.REQUEST);
+            pb = pb.AddByte((byte)id);
+            GameClient.NetClient.Send(pb.Build());
+        }
+
         internal void ClearCharacters()
         {
             Characters.Clear();
@@ -161,9 +176,12 @@ namespace DansWorld.GameClient.UI.Scenes
             _elapsedms += gameTime.ElapsedGameTime.Milliseconds;
             if (_elapsedms >= 1000)
             {
-                foreach (Character character in Characters)
+                if (Characters != null)
                 {
-                    character.SetFacing((Direction)character.Facing + 1);
+                    foreach (Character character in Characters)
+                    {
+                        character.SetFacing(character.Facing + 1);
+                    }
                 }
                 _elapsedms = 0;
             }

@@ -26,6 +26,7 @@ namespace DansWorld.GameClient.UI
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             base.Draw(gameTime, spriteBatch);
+            if (!IsVisible) return;
             if (BackgroundImage != null)
             {
 

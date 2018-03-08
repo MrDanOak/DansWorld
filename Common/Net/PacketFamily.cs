@@ -6,6 +6,8 @@ namespace DansWorld.Common.Net
 {
     public enum PacketFamily : byte
     {
-        Login = 1
+        LOGIN = 1, 
+        REGISTER = 2, 
+        PLAY = 3
     }
 }

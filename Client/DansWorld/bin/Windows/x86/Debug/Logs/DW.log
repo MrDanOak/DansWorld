@@ -69,3 +69,35 @@
 [16:19:18][INFO] Received packet of length: 18
 [16:19:22][INFO] Received packet of length: 28
 [16:22:35][INFO] Received packet of length: 28
+[18:19:16][INFO] Received packet of length: 28
+[18:22:51][INFO] Received packet of length: 28
+[18:53:05][INFO] Received packet of length: 18
+[19:56:45][INFO] Client iniating shutdown
+[19:56:45][ERROR] Fatal Exception: Thread was being aborted.
+[19:59:51][INFO] Client iniating shutdown
+[19:59:51][ERROR] Fatal Exception: Thread was being aborted.
+[20:21:24][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[20:21:45][INFO] Received packet of length: 22
+[20:25:51][INFO] Received packet of length: 22
+[20:26:24][INFO] Received packet of length: 22
+[20:27:17][INFO] Received packet of length: 22
+[20:36:05][INFO] Received packet of length: 22
+[20:36:39][INFO] Received packet of length: 12
+[20:36:47][INFO] Received packet of length: 2
+[20:41:53][INFO] Received packet of length: 28
+[20:43:43][INFO] Received packet of length: 28
+[20:50:52][INFO] Received packet of length: 11
+[20:51:01][INFO] Received packet of length: 2
+[21:55:05][INFO] Received packet of length: 2
+[21:58:50][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[22:16:20][INFO] Received packet of length: 27
+[22:35:59][INFO] Received packet of length: 27
+[22:36:23][INFO] Received packet of length: 34
+[22:36:48][INFO] Received packet of length: 34
+[22:37:04][INFO] Received packet of length: 34
+[22:38:48][INFO] Received packet of length: 27
+[22:38:57][INFO] Received packet of length: 27
+[22:48:14][INFO] Received packet of length: 27
+[22:55:46][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[22:56:27][INFO] Received packet of length: 18
+[22:56:28][INFO] Received packet of length: 27

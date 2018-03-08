@@ -33,8 +33,9 @@ namespace DansWorld.GameClient
         public static string VERSION = System.Reflection.Assembly.GetExecutingAssembly().
             GetName().Version.ToString();
 
-        CharacterSelectScene characterSelect = new CharacterSelectScene();
-        MenuScene menu = new MenuScene();
+        CharacterSelectScene characterSelect;
+        MenuScene menu;
+        RegisterAccountScene registerAccount;
 
         string version = System.Reflection.Assembly.GetExecutingAssembly().
             GetName().Version.ToString();
@@ -52,7 +53,9 @@ namespace DansWorld.GameClient
         }
         protected override void Initialize()
         {
-
+            menu = new MenuScene(this);
+            characterSelect = new CharacterSelectScene(this);
+            registerAccount = new RegisterAccountScene(this);
             base.Initialize();
         }
         protected override void LoadContent()
@@ -68,7 +71,7 @@ namespace DansWorld.GameClient
 
             menu.Initialise(Content);
             characterSelect.Initialise(Content);
-            
+            registerAccount.Initialise(Content);
         }
 
         public void ClearCharacters()
@@ -87,9 +90,12 @@ namespace DansWorld.GameClient
             characterSelect.AddCharacter(character);
         }
 
-        public void DisplayLoginMessage(string message)
+        public void DisplayMessage(string message)
         {
-            menu.DisplayLoginMessage(message);
+            if (_gameState == GameState.MainMenu)
+                menu.DisplayMessage(message);
+            else if (_gameState == GameState.RegisterAccount)
+                registerAccount.DisplayMessage(message);
         }
 
         public void Focus(Control toFocus, List<Control> controlSet)
@@ -124,6 +130,9 @@ namespace DansWorld.GameClient
                 case GameState.LoggedIn:
                     characterSelect.Update(gameTime);
                     break;
+                case GameState.RegisterAccount:
+                    registerAccount.Update(gameTime);
+                    break;
                 case GameState.Playing:
                     break;
             }
@@ -142,6 +151,9 @@ namespace DansWorld.GameClient
                     break;
                 case GameState.LoggedIn:
                     characterSelect.Draw(gameTime, _spriteBatch);
+                    break;
+                case GameState.RegisterAccount:
+                    registerAccount.Draw(gameTime, _spriteBatch);
                     break;
                 case GameState.Playing:
                     break;

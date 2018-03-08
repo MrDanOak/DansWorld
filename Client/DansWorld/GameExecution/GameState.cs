@@ -10,6 +10,7 @@ namespace DansWorld.GameClient.GameExecution
     {
         MainMenu,
         LoggedIn,
+        RegisterAccount,
         Playing
     }
 }

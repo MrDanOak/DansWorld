@@ -12,7 +12,19 @@ namespace DansWorld.GameClient.UI
 {
     class TextBox : Control
     {
-        public string Text = "";
+        private string _text = "";
+        public string Text
+        {
+            get
+            {
+                return _text;
+            }
+            set
+            {
+                Changed(new TextChangedEventArgs(value, _text));
+                _text = value;
+            }
+        }
         public SpriteFont Font;
         public Texture2D BackgroundImage;
         public Color BorderColor = Color.Black;
@@ -22,6 +34,7 @@ namespace DansWorld.GameClient.UI
         public bool NumbersAllowed = false;
         public bool SpacesAllowed = false;
         public event EventHandler<KeyPressedEventArgs> KeyPressed;
+        public event EventHandler<TextChangedEventArgs> TextChanged;
         public int CharacterLimit = 0;
 
         private Keys[] _previousKeys = null;
@@ -68,7 +81,9 @@ namespace DansWorld.GameClient.UI
         private bool _spaceDown = false;
         private bool _deleteDown = false;
         private bool _tabDown = false;
-
+        private bool _quoteDown = false;
+        private bool _periodDown = false;
+        private bool _minusDown = false;
 
         private bool _capitalModifier
         {
@@ -103,6 +118,10 @@ namespace DansWorld.GameClient.UI
                 {
                     if (CharacterLimit == 0 || Text.Length < CharacterLimit)
                     {
+                        foreach (Keys key in kbState.GetPressedKeys())
+                        {
+                            Console.WriteLine(key);
+                        }
                         if (kbState.IsKeyDown(Keys.A) && (!_aKeyDown)) { Text += (_capitalModifier ? 'A' : 'a'); }
                         else if (kbState.IsKeyDown(Keys.B) && (!_bKeyDown)) { Text += (_capitalModifier ? 'B' : 'b'); }
                         else if (kbState.IsKeyDown(Keys.C) && (!_cKeyDown)) { Text += (_capitalModifier ? 'C' : 'c'); }
@@ -139,9 +158,11 @@ namespace DansWorld.GameClient.UI
                         else if (kbState.IsKeyDown(Keys.D8) && (!_8KeyDown)) { Text += (_shiftDown ? SpecialCharactersAllowed ? "*" : "" : NumbersAllowed ? "8" : ""); }
                         else if (kbState.IsKeyDown(Keys.D9) && (!_9KeyDown)) { Text += (_shiftDown ? SpecialCharactersAllowed ? "(" : "" : NumbersAllowed ? "9" : ""); }
                         else if (kbState.IsKeyDown(Keys.D0) && (!_0KeyDown)) { Text += (_shiftDown ? SpecialCharactersAllowed ? ")" : "" : NumbersAllowed ? "0" : ""); }
+                        else if (kbState.IsKeyDown(Keys.OemTilde) && (!_quoteDown)) Text += (_shiftDown ? SpecialCharactersAllowed ? "@" : "" : SpecialCharactersAllowed ? "'" : "");
+                        else if (kbState.IsKeyDown(Keys.OemMinus) && (!_minusDown)) Text += (_shiftDown ? SpecialCharactersAllowed ? "_" : "" : SpecialCharactersAllowed ? "-" : "");
                         //else if (kbState.IsKeyDown(Keys.Subtract)) { Text += (SpecialCharactersAllowed ? "-" : ""); Space }
                         //else if (kbState.IsKeyDown(Keys.Add)) { Text += (SpecialCharactersAllowed ? "+" : ""); Space }
-                        //else if (kbState.IsKeyDown(Keys.OemPeriod)) { Text += (SpecialCharactersAllowed ? "." : ""); Space }
+                        else if (kbState.IsKeyDown(Keys.OemPeriod) && !_periodDown) { Text += (SpecialCharactersAllowed ? "." : ""); }
                         else if (kbState.IsKeyDown(Keys.Space) && !_spaceDown) { Text += (SpacesAllowed ? " " : ""); }
                     }
 
@@ -207,6 +228,10 @@ namespace DansWorld.GameClient.UI
             _spaceDown = kbState.IsKeyDown(Keys.Space);
             _deleteDown = kbState.IsKeyDown(Keys.Back) || kbState.IsKeyDown(Keys.Delete);
             _tabDown = kbState.IsKeyDown(Keys.Tab);
+            _quoteDown = kbState.IsKeyDown(Keys.OemTilde);
+            _periodDown = kbState.IsKeyDown(Keys.OemPeriod);
+            _minusDown = kbState.IsKeyDown(Keys.OemMinus);
+
         }
 
         public string HideText(string text)
@@ -265,6 +290,11 @@ namespace DansWorld.GameClient.UI
         protected virtual void Pressed(KeyPressedEventArgs e)
         {
             KeyPressed?.Invoke(this, e);
+        }
+
+        protected virtual void Changed(TextChangedEventArgs e)
+        {
+            TextChanged?.Invoke(this, e);
         }
     }
 }

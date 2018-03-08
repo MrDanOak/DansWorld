@@ -7,6 +7,9 @@ using System.Threading;
 using System.Collections.Generic;
 using DansWorld.Common.IO;
 using DansWorld.Server.GameEntities;
+using DansWorld.Server.Data;
+using System.Data;
+using DansWorld.Common.Enums;
 
 namespace DansWorld.Server
 {
@@ -17,7 +20,9 @@ namespace DansWorld.Server
         private Thread _thread { get; set; }
         public List<Client> Clients { get; private set; }
         private bool _shouldListen { get; set; }
-        internal List<Account> _accounts { get; set; }
+        internal List<Account> Accounts { get; set; }
+        internal List<Character> LoggedInCharacters { get; set; }
+        internal Database Database;
 
         public Server(int port)
         {
@@ -26,10 +31,38 @@ namespace DansWorld.Server
             Clients = new List<Client>();
             _shouldListen = true;
             _port = port;
-            _accounts = new List<Account>() { new Account("test", "test") };
-            _accounts[0].Characters.Add(new Character() { Name = "Male Test", Gender = Common.Enums.Gender.MALE });
-            _accounts[0].Characters.Add(new Character() { Name = "Female Test", Gender = Common.Enums.Gender.FEMALE });
+            Accounts = new List<Account>();
+            //{ new Account("test", "test", "test@test.com") };
+            //Accounts[0].Characters.Add(new Character() { Name = "Male Test", Gender = Common.Enums.Gender.MALE });
+            //Accounts[0].Characters.Add(new Character() { Name = "Female Test", Gender = Common.Enums.Gender.FEMALE });
             Logger.Log(String.Format("Server object created {0}:{1}", "127.0.0.1", port));
+            LoggedInCharacters = new List<Character>();
+            Database = new Database();
+            DataTable accountsTable = Database.Select("*", "Accounts");
+            foreach (DataRow row in accountsTable.Rows)
+            {
+                Account account = new Account(row["Username"].ToString(), row["Password"].ToString(), row["Email"].ToString());
+                Accounts.Add(account);
+            }
+
+            int characters = 0;
+            foreach (Account account in Accounts)
+            {
+                DataTable characterTable = Database.Select("*", "Characters", "AccountUsername", account.Username);
+                foreach (DataRow row in characterTable.Rows)
+                {
+                    Character character = new Character()
+                    {
+                        Name = row["CharacterName"].ToString(),
+                        Gender = (Gender)Convert.ToInt32(row["Gender"].ToString()),
+                        Level = Convert.ToInt32(row["Level"].ToString())
+                    };
+                    account.Characters.Add(character);
+                    characters++;
+                }
+            }
+            Logger.Log("Loaded " + Accounts.Count + " account(s)");
+            Logger.Log("Loaded " + characters + " character(s)");
         }
 
         public void Add(Client client)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DansWorld.Common.Net;
+using DansWorld.GameClient.GameExecution;
 using DansWorld.GameClient.UI.CustomEventArgs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -16,15 +17,16 @@ namespace DansWorld.GameClient.UI.Scenes
     {
         TextBox _txtUser;
         TextBox _txtPassword;
-        Button _btnCreate;
+        Button _btnRegister;
         Button _btnPlay;
         Label _lblDansWorld;
         Label _lblVersion;
         Label _lblMessage;
+        GameClient _gameClient;
 
-        public MenuScene()
+        public MenuScene(GameClient gameClient)
         {
-
+            _gameClient = gameClient;
         }
 
         public override void Initialise(ContentManager content)
@@ -41,7 +43,7 @@ namespace DansWorld.GameClient.UI.Scenes
                 NumbersAllowed = true,
                 SpecialCharactersAllowed = false,
                 SpacesAllowed = false,
-                CharacterLimit = 5
+                CharacterLimit = 20
             };
             _txtUser.KeyPressed += TextBox_KeyPressed;
             _txtUser.OnClick += Control_OnClick;
@@ -91,19 +93,19 @@ namespace DansWorld.GameClient.UI.Scenes
             _btnPlay.OnClick += Control_OnClick;
             Controls.Add(_btnPlay);
 
-            _btnCreate = new Button()
+            _btnRegister = new Button()
             {
-                Name = "btnCreate",
+                Name = "btnRegister",
                 BackColor = Color.Red,
                 FrontColor = Color.White,
                 Font = GameClient.GW2_FONT,
-                Text = "Create",
-                Size = new Point((int)GameClient.GW2_FONT.MeasureString("Create").X + 10, (int)GameClient.GW2_FONT.MeasureString("Create").Y + 10),
-                Location = new Point(_btnPlay.Destination.Left - ((int)GameClient.GW2_FONT.MeasureString("Create").X + 20), _btnPlay.Destination.Top)
+                Text = "Register",
+                Size = new Point((int)GameClient.GW2_FONT.MeasureString("Register").X + 10, (int)GameClient.GW2_FONT.MeasureString("Register").Y + 10),
+                Location = new Point(_btnPlay.Destination.Left - ((int)GameClient.GW2_FONT.MeasureString("Register").X + 20), _btnPlay.Destination.Top)
             };
-            _btnCreate.OnClick += BtnCreate_OnClick;
-            _btnCreate.OnClick += Control_OnClick;
-            Controls.Add(_btnCreate);
+            _btnRegister.OnClick += BtnRegister_OnClick;
+            _btnRegister.OnClick += Control_OnClick;
+            Controls.Add(_btnRegister);
 
             _lblMessage = new Label()
             {
@@ -113,7 +115,7 @@ namespace DansWorld.GameClient.UI.Scenes
                 Font = GameClient.DEFAULT_FONT_BOLD,
                 Text = "",
                 Size = new Point((int)GameClient.DEFAULT_FONT_BOLD.MeasureString(String.Format("Version: {0}", GameClient.VERSION)).X + 4, (int)GameClient.DEFAULT_FONT_BOLD.MeasureString(String.Format("Version: {0}", GameClient.VERSION)).Y + 4),
-                Location = new Point(GameClient.WIDTH / 2, _btnCreate.Destination.Bottom + 4),
+                Location = new Point(GameClient.WIDTH / 2, _btnRegister.Destination.Bottom + 4),
                 IsVisible = false
             };
             Controls.Add(_lblMessage);
@@ -155,16 +157,16 @@ namespace DansWorld.GameClient.UI.Scenes
             }
         }
 
-        public void DisplayLoginMessage(string message)
+        public void DisplayMessage(string message)
         {
             _lblMessage.IsVisible = true;
             _lblMessage.Text = message;
             _lblMessage.Location = new Point(GameClient.WIDTH / 2 - ((int)_lblMessage.Font.MeasureString(message).X / 2), _lblMessage.Location.Y);
         }
 
-        private void BtnCreate_OnClick(object sender, ClickedEventArgs e)
+        private void BtnRegister_OnClick(object sender, ClickedEventArgs e)
         {
-            throw new NotImplementedException();
+            _gameClient.SetState(GameState.RegisterAccount);
         }
 
         private void Control_OnClick(object sender, ClickedEventArgs e)
@@ -213,7 +215,7 @@ namespace DansWorld.GameClient.UI.Scenes
             {
                 GameClient.NetClient.Connect();
             }
-            PacketBuilder pb = new PacketBuilder(PacketFamily.Login, PacketAction.Request);
+            PacketBuilder pb = new PacketBuilder(PacketFamily.LOGIN, PacketAction.REQUEST);
             pb = pb.AddString("u:" + _txtUser.Text)
                    .AddString("p:" + _txtPassword.Text);
             GameClient.NetClient.Send(pb.Build());
