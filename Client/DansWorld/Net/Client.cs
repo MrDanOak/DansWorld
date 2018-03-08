@@ -6,26 +6,31 @@ using System.Threading;
 using System.Net;
 using System.Net.Sockets;
 using DansWorld.Common.IO;
+using DansWorld.Common.Net;
+using DansWorld.Common.GameEntities;
+using DansWorld.Common.Enums;
 
 namespace DansWorld.GameClient.Net
 {
-    class Client
+    public class Client
     {
         public string Host { get; private set; }
         public int Port { get; private set; }
         public TcpClient Socket { get; private set; }
-        public NetworkStream Stream { get { return Socket.GetStream(); } }
+        public NetworkStream Stream { get { if (Socket.Connected) return Socket.GetStream(); else return null; } }
         public bool Connected { get { return Socket.Connected; } }
         public bool ShouldReceive { get; private set; }
         public Thread Thread { get; private set; }
+        private DansWorld.GameClient.GameClient _gameClient;
 
-        public Client(string host, int port)
+        public Client(string host, int port, GameClient gameClient)
         {
-            this.Host = host;
-            this.Port = port;
-            this.ShouldReceive = true;
-            this.Socket = new TcpClient();
-            this.Thread = new Thread(new ThreadStart(Main));
+            Host = host;
+            Port = port;
+            ShouldReceive = true;
+            Socket = new TcpClient();
+            Thread = new Thread(new ThreadStart(Main));
+            _gameClient = gameClient;
         }
 
         public void Connect()
@@ -56,11 +61,11 @@ namespace DansWorld.GameClient.Net
                     byte length = buffer[0];
                     if (length < 2)
                     {
-                        Console.WriteLine("Packet of length less than 2 received");
+                        Logger.Warn("Packet of length less than 2 received");
                         return;
                     }
 
-                    Console.WriteLine("Received packet of length: {0}", length);
+                    Logger.Log(String.Format("Received packet of length: {0}", length));
                     byte[] data = new byte[length];
 
                     while (readTotal != length)
@@ -68,7 +73,7 @@ namespace DansWorld.GameClient.Net
                         int read = Stream.Read(data, 0, length);
                         if (read == 0)
                         {
-                            Console.WriteLine("Packet seems empty..");
+                            Logger.Warn("Packet seems empty..");
                             return;
                         }
                         readTotal += read;
@@ -77,6 +82,37 @@ namespace DansWorld.GameClient.Net
                     Console.Write("Packet data: ");
                     for (int i = 0; i < data.Length; i++) { Console.Write("{" + data[i] + "} "); }
                     Console.WriteLine();
+
+                    PacketBuilder pb = new PacketBuilder().AddBytes(data);
+                    Packet pkt = pb.Build();
+
+                    if (pkt.Family == PacketFamily.Login)
+                    {
+                        if (pkt.Action == PacketAction.Accept)
+                        {
+                            _gameClient.DisplayLoginMessage("Login accepted");
+                            _gameClient.SetState(GameExecution.GameState.LoggedIn);
+                            while (pkt.ReadPosition < pkt.RawData.Length)
+                            {
+                                int nameLength = pkt.ReadByte();
+                                if (nameLength > 0)
+                                {
+                                    Character c = new Character()
+                                    {
+                                        Name = pkt.ReadString(nameLength),
+                                        Level = pkt.ReadByte(),
+                                        Gender = (Gender)pkt.ReadByte()
+                                    };
+                                    _gameClient.AddCharacter(c);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            _gameClient.DisplayLoginMessage(pkt.ReadString(pkt.Length - 2));
+                        }
+                    }
+
                 }
                 catch (Exception e)
                 {
@@ -89,7 +125,7 @@ namespace DansWorld.GameClient.Net
         public void Send(byte[] data)
         {
             byte length = (byte)data.Length;
-            Stream.Write(new byte[] { length, 0 }, 0, length);
+            Stream.Write(new byte[] { length, 0 }, 0, 2);
             Stream.Write(data, 0, length);
         }
 
@@ -98,16 +134,21 @@ namespace DansWorld.GameClient.Net
             Send(Encoding.ASCII.GetBytes(data));
         }
 
+        public void Send(Packet p)
+        {
+            Send(p.RawData);
+        }
+
         public void Stop()
         {
             try
             {
                 Logger.Log("Client iniating shutdown");
-                this.Socket.Client.Shutdown(SocketShutdown.Both);
-                this.Socket.Close();
-                this.ShouldReceive = false;
-                this.Thread.Abort();
-                this.Join();
+                Socket.Client.Shutdown(SocketShutdown.Both);
+                Socket.Close();
+                ShouldReceive = false;
+                Thread.Abort();
+                Join();
             }
             catch (Exception e)
             {

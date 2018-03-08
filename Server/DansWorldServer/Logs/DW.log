@@ -1,0 +1,427 @@
+[12:17:21][INFO] Server object created 127.0.0.1:8081
+[12:17:21][INFO] Listening 127.0.0.1:8081
+[12:17:21][INFO] Server listener thread spawned id:3
+[12:17:29][INFO] Client connection accepted from 127.0.0.1:16790
+[12:17:29][INFO] Client handler thread spawned id:4
+[12:17:29][INFO] Packet length: 18 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {116} {112} {58} {116} {101} {115} {116} {49} {50} {51} 
+[12:17:29][INFO] Login Requested from accepted packet
+[12:17:30][ERROR] Fatal Exception: startIndex cannot be larger than length of string.
+Parameter name: startIndex
+[12:24:12][INFO] Client connection accepted from 127.0.0.1:17180
+[12:24:13][INFO] Client handler thread spawned id:5
+[12:24:13][INFO] Packet length: 18 Packet data: {1} {1} {117} {58} {114} {101} {115} {116} {112} {58} {116} {101} {115} {116} {49} {50} {51} {52} 
+[12:24:15][INFO] Login Requested from accepted packet
+[12:26:32][INFO] Server object created 127.0.0.1:8081
+[12:26:32][INFO] Listening 127.0.0.1:8081
+[12:26:32][INFO] Server listener thread spawned id:3
+[12:26:42][INFO] Client connection accepted from 127.0.0.1:17330
+[12:26:42][INFO] Client handler thread spawned id:4
+[12:26:42][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[12:26:42][ERROR] Fatal Exception: Index was outside the bounds of the array.
+[12:27:19][INFO] Server object created 127.0.0.1:8081
+[12:27:19][INFO] Listening 127.0.0.1:8081
+[12:27:19][INFO] Server listener thread spawned id:3
+[12:27:28][INFO] Client connection accepted from 127.0.0.1:17377
+[12:27:28][INFO] Client handler thread spawned id:4
+[12:27:28][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[12:27:39][ERROR] Fatal Exception: Index was outside the bounds of the array.
+[12:27:47][INFO] Server object created 127.0.0.1:8081
+[12:27:47][INFO] Listening 127.0.0.1:8081
+[12:27:47][INFO] Server listener thread spawned id:3
+[12:27:53][INFO] Client connection accepted from 127.0.0.1:17406
+[12:27:53][INFO] Client handler thread spawned id:4
+[12:27:53][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[12:28:34][INFO] Server object created 127.0.0.1:8081
+[12:28:34][INFO] Listening 127.0.0.1:8081
+[12:28:34][INFO] Server listener thread spawned id:3
+[12:28:41][INFO] Client connection accepted from 127.0.0.1:17453
+[12:28:41][INFO] Client handler thread spawned id:4
+[12:28:41][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[12:29:46][INFO] Server object created 127.0.0.1:8081
+[12:29:46][INFO] Listening 127.0.0.1:8081
+[12:29:46][INFO] Server listener thread spawned id:3
+[12:29:52][INFO] Client connection accepted from 127.0.0.1:17540
+[12:29:52][INFO] Client handler thread spawned id:4
+[12:29:52][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[12:29:56][INFO] Login Requested from accepted packet
+[12:29:56][INFO] Username:test Passwordtest
+[12:30:17][INFO] Server object created 127.0.0.1:8081
+[12:30:17][INFO] Listening 127.0.0.1:8081
+[12:30:17][INFO] Server listener thread spawned id:3
+[12:30:21][INFO] Client connection accepted from 127.0.0.1:17569
+[12:30:21][INFO] Client handler thread spawned id:4
+[12:30:21][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[12:30:21][INFO] Login Requested from accepted packet
+[12:30:21][INFO] Username: test Password: test
+[12:55:50][INFO] Server object created 127.0.0.1:8081
+[12:55:50][INFO] Listening 127.0.0.1:8081
+[12:55:50][INFO] Server listener thread spawned id:3
+[12:56:04][INFO] Client connection accepted from 127.0.0.1:19075
+[12:56:04][INFO] Client handler thread spawned id:4
+[12:56:04][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[12:56:04][INFO] Login Requested from accepted packet
+[12:56:04][INFO] Username: test Password: test
+[12:56:41][INFO] Client connection accepted from 127.0.0.1:19113
+[12:56:41][INFO] Client handler thread spawned id:5
+[12:56:41][INFO] Packet length: 23 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {119} {114} {111} {110} {103} {112} {97} {115} {115} {119} {111} {114} {100} 
+[12:56:41][INFO] Login Requested from accepted packet
+[12:56:41][INFO] Username: test Password: wrongpassword
+[12:57:42][INFO] Client connection accepted from 127.0.0.1:19175
+[12:57:42][INFO] Client handler thread spawned id:6
+[12:57:42][INFO] Packet length: 16 Packet data: {1} {1} {117} {58} {119} {114} {111} {110} {103} {112} {58} {119} {114} {111} {110} {103} 
+[12:57:42][INFO] Login Requested from accepted packet
+[12:57:42][INFO] Username: wrong Password: wrong
+[12:57:52][INFO] Packet length: 15 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {119} {114} {111} {110} {103} 
+[12:57:52][INFO] Login Requested from accepted packet
+[12:57:52][INFO] Username: test Password: wrong
+[12:57:56][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[12:58:45][INFO] Server object created 127.0.0.1:8081
+[12:58:45][INFO] Listening 127.0.0.1:8081
+[12:58:45][INFO] Server listener thread spawned id:3
+[12:59:36][INFO] Client connection accepted from 127.0.0.1:19287
+[12:59:36][INFO] Client handler thread spawned id:4
+[12:59:36][INFO] Packet length: 19 Packet data: {1} {1} {117} {58} {104} {101} {108} {108} {111} {112} {58} {104} {101} {108} {108} {111} {49} {50} {51} 
+[12:59:36][INFO] Login Requested from accepted packet
+[12:59:36][INFO] Username: hello Password: hello123
+[13:01:07][INFO] Packet length: 13 Packet data: {1} {1} {117} {58} {100} {97} {110} {112} {58} {116} {101} {115} {116} 
+[13:01:07][INFO] Login Requested from accepted packet
+[13:01:07][INFO] Username: dan Password: test
+[13:01:20][INFO] Packet length: 15 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {119} {114} {111} {110} {103} 
+[13:01:20][INFO] Login Requested from accepted packet
+[13:01:20][INFO] Username: test Password: wrong
+[13:01:32][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[13:01:32][INFO] Login Requested from accepted packet
+[13:01:32][INFO] Username: test Password: test
+[13:02:09][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[13:08:22][INFO] Server object created 127.0.0.1:8081
+[13:08:22][INFO] Listening 127.0.0.1:8081
+[13:08:22][INFO] Server listener thread spawned id:3
+[13:08:29][INFO] Client connection accepted from 127.0.0.1:19882
+[13:08:29][INFO] Client handler thread spawned id:4
+[13:08:29][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[13:08:29][INFO] Login Requested from accepted packet
+[13:08:29][INFO] Username: test Password: test
+[13:08:29][INFO] Login accepted from 127.0.0.1:19882 for account test
+[13:08:50][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[13:09:24][INFO] Client connection accepted from 127.0.0.1:19932
+[13:09:24][INFO] Client handler thread spawned id:5
+[13:09:24][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[13:09:24][INFO] Login Requested from accepted packet
+[13:09:24][INFO] Username: test Password: test
+[13:09:24][INFO] Login accepted from 127.0.0.1:19932 for account test
+[13:09:29][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[13:09:37][INFO] Client connection accepted from 127.0.0.1:19945
+[13:09:37][INFO] Client handler thread spawned id:6
+[13:09:37][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[13:09:37][INFO] Login Requested from accepted packet
+[13:09:37][INFO] Username: test Password: test
+[13:09:37][INFO] Login accepted from 127.0.0.1:19945 for account test
+[13:09:45][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[13:29:46][INFO] Client connection accepted from 127.0.0.1:21134
+[13:29:46][INFO] Client handler thread spawned id:7
+[13:29:46][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[13:29:46][INFO] Login Requested from accepted packet
+[13:29:46][INFO] Username: test Password: test
+[13:29:46][INFO] Login accepted from 127.0.0.1:21134 for account test
+[13:30:36][INFO] Client connection accepted from 127.0.0.1:21184
+[13:30:36][INFO] Client handler thread spawned id:8
+[13:30:36][INFO] Packet length: 13 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {116} 
+[13:30:36][INFO] Login Requested from accepted packet
+[13:30:36][INFO] Username: test Password: tet
+[13:30:41][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[13:30:41][INFO] Login Requested from accepted packet
+[13:30:41][INFO] Username: test Password: test
+[13:30:41][INFO] Login accepted from 127.0.0.1:21184 for account test
+[13:31:51][INFO] Client connection accepted from 127.0.0.1:21255
+[13:31:51][INFO] Client handler thread spawned id:9
+[13:31:51][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[13:31:51][INFO] Login Requested from accepted packet
+[13:31:51][INFO] Username: test Password: test
+[13:31:51][INFO] Login accepted from 127.0.0.1:21255 for account test
+[13:32:00][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[13:35:23][INFO] Client connection accepted from 127.0.0.1:21459
+[13:35:23][INFO] Client handler thread spawned id:10
+[13:35:23][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[13:35:23][INFO] Login Requested from accepted packet
+[13:35:23][INFO] Username: test Password: test
+[13:35:23][INFO] Login accepted from 127.0.0.1:21459 for account test
+[13:35:26][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[13:36:23][INFO] Client connection accepted from 127.0.0.1:21518
+[13:36:23][INFO] Client handler thread spawned id:11
+[13:36:23][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[13:36:23][INFO] Login Requested from accepted packet
+[13:36:23][INFO] Username: test Password: test
+[13:36:23][INFO] Login accepted from 127.0.0.1:21518 for account test
+[13:36:26][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[13:36:38][INFO] Client connection accepted from 127.0.0.1:21534
+[13:36:38][INFO] Client handler thread spawned id:12
+[13:36:38][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[13:36:38][INFO] Login Requested from accepted packet
+[13:36:38][INFO] Username: test Password: test
+[13:36:38][INFO] Login accepted from 127.0.0.1:21534 for account test
+[13:36:47][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[13:37:02][INFO] Client connection accepted from 127.0.0.1:21561
+[13:37:02][INFO] Client handler thread spawned id:13
+[13:37:02][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[13:37:02][INFO] Login Requested from accepted packet
+[13:37:02][INFO] Username: test Password: test
+[13:37:02][INFO] Login accepted from 127.0.0.1:21561 for account test
+[13:37:12][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[13:50:46][INFO] Server object created 127.0.0.1:8081
+[13:50:46][INFO] Listening 127.0.0.1:8081
+[13:50:46][INFO] Server listener thread spawned id:3
+[13:50:54][INFO] Client connection accepted from 127.0.0.1:22361
+[13:50:54][INFO] Client handler thread spawned id:4
+[13:50:54][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[13:50:54][INFO] Login Requested from accepted packet
+[13:50:54][INFO] Username: test Password: test
+[13:50:54][INFO] Login accepted from 127.0.0.1:22361 for account test
+[13:51:39][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[14:07:34][INFO] Server object created 127.0.0.1:8081
+[14:07:34][INFO] Listening 127.0.0.1:8081
+[14:07:34][INFO] Server listener thread spawned id:3
+[14:07:42][INFO] Client connection accepted from 127.0.0.1:23343
+[14:07:42][INFO] Client handler thread spawned id:4
+[14:07:42][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[14:07:42][INFO] Login Requested from accepted packet
+[14:07:42][INFO] Username: test Password: test
+[14:07:42][INFO] Login accepted from 127.0.0.1:23343 for account test
+[14:08:26][INFO] Client connection accepted from 127.0.0.1:23383
+[14:08:26][INFO] Client handler thread spawned id:5
+[14:08:26][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[14:08:26][INFO] Login Requested from accepted packet
+[14:08:26][INFO] Username: test Password: test
+[14:08:26][INFO] Login accepted from 127.0.0.1:23383 for account test
+[14:09:19][INFO] Client connection accepted from 127.0.0.1:23432
+[14:09:19][INFO] Client handler thread spawned id:6
+[14:09:19][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[14:09:19][INFO] Login Requested from accepted packet
+[14:09:19][INFO] Username: test Password: test
+[14:09:19][INFO] Login accepted from 127.0.0.1:23432 for account test
+[14:10:36][INFO] Client connection accepted from 127.0.0.1:23507
+[14:10:36][INFO] Client handler thread spawned id:7
+[14:10:36][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[14:10:36][INFO] Login Requested from accepted packet
+[14:10:36][INFO] Username: test Password: test
+[14:10:36][INFO] Login accepted from 127.0.0.1:23507 for account test
+[14:10:58][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[14:16:58][INFO] Client connection accepted from 127.0.0.1:23872
+[14:16:58][INFO] Client handler thread spawned id:8
+[14:16:58][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[14:16:58][INFO] Login Requested from accepted packet
+[14:16:58][INFO] Username: test Password: test
+[14:16:58][INFO] Login accepted from 127.0.0.1:23872 for account test
+[14:17:05][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[14:18:08][INFO] Client connection accepted from 127.0.0.1:23944
+[14:18:08][INFO] Client handler thread spawned id:9
+[14:18:08][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[14:18:08][INFO] Login Requested from accepted packet
+[14:18:08][INFO] Username: test Password: test
+[14:18:08][INFO] Login accepted from 127.0.0.1:23944 for account test
+[14:18:14][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[14:18:23][INFO] Client connection accepted from 127.0.0.1:23958
+[14:18:23][INFO] Client handler thread spawned id:10
+[14:18:23][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[14:18:23][INFO] Login Requested from accepted packet
+[14:18:23][INFO] Username: test Password: test
+[14:18:23][INFO] Login accepted from 127.0.0.1:23958 for account test
+[14:18:40][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[14:22:22][INFO] Server object created 127.0.0.1:8081
+[14:22:22][INFO] Listening 127.0.0.1:8081
+[14:22:22][INFO] Server listener thread spawned id:3
+[14:22:31][INFO] Client connection accepted from 127.0.0.1:24199
+[14:22:31][INFO] Client handler thread spawned id:4
+[14:22:31][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[14:22:31][INFO] Login Requested from accepted packet
+[14:22:31][INFO] Username: test Password: test
+[14:22:31][INFO] Login accepted from 127.0.0.1:24199 for account test
+[14:22:31][INFO] Building serialised packet of character: Male Test
+[14:22:31][INFO] Building serialised packet of character: Female Test
+[14:22:42][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[14:30:08][INFO] Client connection accepted from 127.0.0.1:24635
+[14:30:08][INFO] Client handler thread spawned id:5
+[14:30:08][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[14:30:08][INFO] Login Requested from accepted packet
+[14:30:08][INFO] Username: test Password: test
+[14:30:08][INFO] Login accepted from 127.0.0.1:24635 for account test
+[14:30:08][INFO] Building serialised packet of character: Male Test
+[14:30:08][INFO] Building serialised packet of character: Female Test
+[14:30:13][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[14:33:23][INFO] Client connection accepted from 127.0.0.1:24815
+[14:33:23][INFO] Client handler thread spawned id:6
+[14:33:23][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[14:33:23][INFO] Login Requested from accepted packet
+[14:33:23][INFO] Username: test Password: test
+[14:33:23][INFO] Login accepted from 127.0.0.1:24815 for account test
+[14:33:23][INFO] Building serialised packet of character: Male Test
+[14:33:23][INFO] Building serialised packet of character: Female Test
+[14:33:35][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[14:33:53][INFO] Client connection accepted from 127.0.0.1:24847
+[14:33:53][INFO] Client handler thread spawned id:7
+[14:33:53][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[14:33:53][INFO] Login Requested from accepted packet
+[14:33:53][INFO] Username: test Password: test
+[14:33:53][INFO] Login accepted from 127.0.0.1:24847 for account test
+[14:33:53][INFO] Building serialised packet of character: Male Test
+[14:33:53][INFO] Building serialised packet of character: Female Test
+[14:33:56][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[14:34:46][INFO] Client connection accepted from 127.0.0.1:24896
+[14:34:46][INFO] Client handler thread spawned id:8
+[14:34:46][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[14:34:46][INFO] Login Requested from accepted packet
+[14:34:46][INFO] Username: test Password: test
+[14:34:46][INFO] Login accepted from 127.0.0.1:24896 for account test
+[14:34:46][INFO] Building serialised packet of character: Male Test
+[14:34:46][INFO] Building serialised packet of character: Female Test
+[14:34:48][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[14:35:02][INFO] Client connection accepted from 127.0.0.1:24912
+[14:35:02][INFO] Client handler thread spawned id:9
+[14:35:02][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[14:35:02][INFO] Login Requested from accepted packet
+[14:35:02][INFO] Username: test Password: test
+[14:35:02][INFO] Login accepted from 127.0.0.1:24912 for account test
+[14:35:02][INFO] Building serialised packet of character: Male Test
+[14:35:02][INFO] Building serialised packet of character: Female Test
+[14:35:18][INFO] Client connection accepted from 127.0.0.1:24930
+[14:35:18][INFO] Client handler thread spawned id:10
+[14:35:18][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[14:35:19][INFO] Login Requested from accepted packet
+[14:35:19][INFO] Username: test Password: test
+[14:35:19][INFO] Login accepted from 127.0.0.1:24930 for account test
+[14:35:19][INFO] Building serialised packet of character: Male Test
+[14:35:19][INFO] Building serialised packet of character: Female Test
+[14:35:25][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[14:35:30][INFO] Client connection accepted from 127.0.0.1:24942
+[14:35:30][INFO] Client handler thread spawned id:11
+[14:35:30][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[14:35:30][INFO] Login Requested from accepted packet
+[14:35:30][INFO] Username: test Password: test
+[14:35:30][INFO] Login accepted from 127.0.0.1:24942 for account test
+[14:35:30][INFO] Building serialised packet of character: Male Test
+[14:35:30][INFO] Building serialised packet of character: Female Test
+[14:35:33][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[14:35:42][INFO] Client connection accepted from 127.0.0.1:24956
+[14:35:42][INFO] Client handler thread spawned id:12
+[14:35:42][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[14:35:42][INFO] Login Requested from accepted packet
+[14:35:42][INFO] Username: test Password: test
+[14:35:42][INFO] Login accepted from 127.0.0.1:24956 for account test
+[14:35:42][INFO] Building serialised packet of character: Male Test
+[14:35:42][INFO] Building serialised packet of character: Female Test
+[14:37:04][INFO] Client connection accepted from 127.0.0.1:25034
+[14:37:04][INFO] Client handler thread spawned id:13
+[14:37:04][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[14:37:04][INFO] Login Requested from accepted packet
+[14:37:04][INFO] Username: test Password: test
+[14:37:04][INFO] Login accepted from 127.0.0.1:25034 for account test
+[14:37:04][INFO] Building serialised packet of character: Male Test
+[14:37:04][INFO] Building serialised packet of character: Female Test
+[14:38:03][INFO] Client connection accepted from 127.0.0.1:25092
+[14:38:03][INFO] Client handler thread spawned id:14
+[14:38:03][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[14:38:03][INFO] Login Requested from accepted packet
+[14:38:03][INFO] Username: test Password: test
+[14:38:03][INFO] Login accepted from 127.0.0.1:25092 for account test
+[14:38:03][INFO] Building serialised packet of character: Male Test
+[14:38:03][INFO] Building serialised packet of character: Female Test
+[14:38:08][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[15:02:21][INFO] Client connection accepted from 127.0.0.1:26522
+[15:02:21][INFO] Client handler thread spawned id:15
+[15:02:21][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[15:02:21][INFO] Login Requested from accepted packet
+[15:02:21][INFO] Username: test Password: test
+[15:02:21][INFO] Login accepted from 127.0.0.1:26522 for account test
+[15:02:21][INFO] Building serialised packet of character: Male Test
+[15:02:21][INFO] Building serialised packet of character: Female Test
+[15:03:24][INFO] Client connection accepted from 127.0.0.1:26583
+[15:03:24][INFO] Client handler thread spawned id:16
+[15:03:24][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[15:03:24][INFO] Login Requested from accepted packet
+[15:03:24][INFO] Username: test Password: test
+[15:03:24][INFO] Login accepted from 127.0.0.1:26583 for account test
+[15:03:24][INFO] Building serialised packet of character: Male Test
+[15:03:24][INFO] Building serialised packet of character: Female Test
+[15:04:31][INFO] Client connection accepted from 127.0.0.1:26647
+[15:04:31][INFO] Client handler thread spawned id:17
+[15:04:31][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[15:04:31][INFO] Login Requested from accepted packet
+[15:04:31][INFO] Username: test Password: test
+[15:04:31][INFO] Login accepted from 127.0.0.1:26647 for account test
+[15:04:31][INFO] Building serialised packet of character: Male Test
+[15:04:31][INFO] Building serialised packet of character: Female Test
+[15:04:50][INFO] Client connection accepted from 127.0.0.1:26668
+[15:04:50][INFO] Client handler thread spawned id:18
+[15:04:50][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[15:04:50][INFO] Login Requested from accepted packet
+[15:04:50][INFO] Username: test Password: test
+[15:04:50][INFO] Login accepted from 127.0.0.1:26668 for account test
+[15:04:50][INFO] Building serialised packet of character: Male Test
+[15:04:50][INFO] Building serialised packet of character: Female Test
+[15:04:54][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[15:05:35][INFO] Client connection accepted from 127.0.0.1:26711
+[15:05:35][INFO] Client handler thread spawned id:19
+[15:05:35][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[15:05:35][INFO] Login Requested from accepted packet
+[15:05:35][INFO] Username: test Password: test
+[15:05:35][INFO] Login accepted from 127.0.0.1:26711 for account test
+[15:05:35][INFO] Building serialised packet of character: Male Test
+[15:05:35][INFO] Building serialised packet of character: Female Test
+[15:07:16][INFO] Client connection accepted from 127.0.0.1:26810
+[15:07:16][INFO] Client handler thread spawned id:20
+[15:07:16][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[15:07:16][INFO] Login Requested from accepted packet
+[15:07:16][INFO] Username: test Password: test
+[15:07:16][INFO] Login accepted from 127.0.0.1:26810 for account test
+[15:07:16][INFO] Building serialised packet of character: Male Test
+[15:07:16][INFO] Building serialised packet of character: Female Test
+[15:07:24][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[15:08:17][INFO] Server object created 127.0.0.1:8081
+[15:08:17][INFO] Listening 127.0.0.1:8081
+[15:08:17][INFO] Server listener thread spawned id:3
+[15:08:42][INFO] Client connection accepted from 127.0.0.1:26907
+[15:08:42][INFO] Client handler thread spawned id:4
+[15:08:42][INFO] Packet length: 17 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} {49} {50} {51} 
+[15:08:42][INFO] Login Requested from accepted packet
+[15:08:42][INFO] Username: test Password: test123
+[15:08:50][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[15:08:50][INFO] Login Requested from accepted packet
+[15:08:50][INFO] Username: test Password: test
+[15:08:50][INFO] Login accepted from 127.0.0.1:26907 for account test
+[15:08:50][INFO] Building serialised packet of character: Male Test
+[15:08:50][INFO] Building serialised packet of character: Female Test
+[15:09:43][INFO] Server object created 127.0.0.1:8081
+[15:09:43][INFO] Listening 127.0.0.1:8081
+[15:09:43][INFO] Server listener thread spawned id:3
+[15:10:15][INFO] Client connection accepted from 127.0.0.1:26994
+[15:10:15][INFO] Client handler thread spawned id:4
+[15:10:15][INFO] Packet length: 17 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} {49} {50} {51} 
+[15:10:15][INFO] Login Requested from accepted packet
+[15:10:16][INFO] Username: test Password: test123
+[15:10:22][INFO] Packet length: 18 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {49} {112} {58} {116} {101} {115} {116} {49} {50} {51} 
+[15:10:22][INFO] Login Requested from accepted packet
+[15:10:22][INFO] Username: test1 Password: test123
+[15:10:28][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[15:10:28][INFO] Login Requested from accepted packet
+[15:10:28][INFO] Username: test Password: test
+[15:10:28][INFO] Login accepted from 127.0.0.1:26994 for account test
+[15:10:28][INFO] Building serialised packet of character: Male Test
+[15:10:28][INFO] Building serialised packet of character: Female Test
+[15:20:05][INFO] Client connection accepted from 127.0.0.1:27637
+[15:20:05][INFO] Client handler thread spawned id:5
+[15:20:05][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[15:20:05][INFO] Login Requested from accepted packet
+[15:20:05][INFO] Username: test Password: test
+[15:20:05][INFO] Login accepted from 127.0.0.1:27637 for account test
+[15:20:05][INFO] Building serialised packet of character: Male Test
+[15:20:05][INFO] Building serialised packet of character: Female Test
+[15:45:17][INFO] Server object created 127.0.0.1:8081
+[15:45:17][INFO] Listening 127.0.0.1:8081
+[15:45:17][INFO] Server listener thread spawned id:3
+[15:45:25][INFO] Client connection accepted from 127.0.0.1:29128
+[15:45:25][INFO] Client handler thread spawned id:4
+[15:45:25][INFO] Packet length: 14 Packet data: {1} {1} {117} {58} {116} {101} {115} {116} {112} {58} {116} {101} {115} {116} 
+[15:45:25][INFO] Login Requested from accepted packet
+[15:45:25][INFO] Username: test Password: test
+[15:45:25][INFO] Login accepted from 127.0.0.1:29128 for account test
+[15:45:25][INFO] Building serialised packet of character: Male Test
+[15:45:25][INFO] Building serialised packet of character: Female Test

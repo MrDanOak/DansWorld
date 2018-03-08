@@ -196,6 +196,16 @@
         "build": {
           "build/netstandard2.0/NETStandard.Library.targets": {}
         }
+      },
+      "DansWorld.Common/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/DansWorld.Common.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/DansWorld.Common.dll": {}
+        }
       }
     }
   },
@@ -656,10 +666,16 @@
         "netstandard.library.2.0.0.nupkg.sha512",
         "netstandard.library.nuspec"
       ]
+    },
+    "DansWorld.Common/1.0.0": {
+      "type": "project",
+      "path": "../../Common/Common.csproj",
+      "msbuildProject": "../../Common/Common.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
+      "DansWorld.Common >= 1.0.0",
       "Microsoft.NETCore.App >= 2.0.0"
     ]
   },
@@ -698,7 +714,11 @@
       },
       "frameworks": {
         "netcoreapp2.0": {
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\dansc\\source\\repos\\DansWorld\\Common\\Common.csproj": {
+              "projectPath": "C:\\Users\\dansc\\source\\repos\\DansWorld\\Common\\Common.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

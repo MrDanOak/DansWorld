@@ -1,0 +1,65 @@
+[12:27:03][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[12:27:43][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[12:28:06][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[12:29:24][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[12:30:05][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+[12:56:04][INFO] Received packet of length: 2
+[12:56:04][INFO] Login accepted
+[12:56:41][INFO] Received packet of length: 18
+[12:57:42][INFO] Received packet of length: 18
+[12:57:52][INFO] Received packet of length: 18
+[12:59:36][INFO] Received packet of length: 18
+[13:01:07][INFO] Received packet of length: 18
+[13:01:20][INFO] Received packet of length: 18
+[13:01:32][INFO] Received packet of length: 2
+[13:08:29][INFO] Received packet of length: 2
+[13:09:24][INFO] Received packet of length: 2
+[13:09:37][INFO] Received packet of length: 2
+[13:29:46][INFO] Received packet of length: 2
+[13:30:36][INFO] Received packet of length: 18
+[13:30:41][INFO] Received packet of length: 2
+[13:31:51][INFO] Received packet of length: 2
+[13:35:23][INFO] Received packet of length: 2
+[13:36:23][INFO] Received packet of length: 2
+[13:36:38][INFO] Received packet of length: 2
+[13:37:02][INFO] Received packet of length: 2
+[13:50:54][INFO] Received packet of length: 28
+[14:07:42][INFO] Received packet of length: 28
+[14:07:42][ERROR] Fatal Exception: Object reference not set to an instance of an object.
+[14:08:26][INFO] Received packet of length: 28
+[14:08:26][ERROR] Fatal Exception: Object reference not set to an instance of an object.
+[14:09:19][INFO] Received packet of length: 28
+[14:10:36][INFO] Received packet of length: 28
+[14:16:58][INFO] Received packet of length: 28
+[14:18:08][INFO] Received packet of length: 28
+[14:18:23][INFO] Received packet of length: 28
+[14:22:31][INFO] Received packet of length: 28
+[14:30:08][INFO] Received packet of length: 28
+[14:30:08][ERROR] Fatal Exception: Object reference not set to an instance of an object.
+[14:33:23][INFO] Received packet of length: 28
+[14:33:23][ERROR] Fatal Exception: Object reference not set to an instance of an object.
+[14:33:53][INFO] Received packet of length: 28
+[14:33:53][ERROR] Fatal Exception: Object reference not set to an instance of an object.
+[14:34:46][INFO] Received packet of length: 28
+[14:34:46][ERROR] Fatal Exception: Object reference not set to an instance of an object.
+[14:35:02][INFO] Received packet of length: 28
+[14:35:19][INFO] Received packet of length: 28
+[14:35:21][ERROR] Fatal Exception: Index was outside the bounds of the array.
+[14:35:30][INFO] Received packet of length: 28
+[14:35:31][ERROR] Fatal Exception: Index was outside the bounds of the array.
+[14:35:42][INFO] Received packet of length: 28
+[14:37:04][INFO] Received packet of length: 28
+[14:38:03][INFO] Received packet of length: 28
+[15:02:21][INFO] Received packet of length: 28
+[15:03:24][INFO] Received packet of length: 28
+[15:04:31][INFO] Received packet of length: 28
+[15:04:50][INFO] Received packet of length: 28
+[15:05:35][INFO] Received packet of length: 28
+[15:07:16][INFO] Received packet of length: 28
+[15:08:42][INFO] Received packet of length: 18
+[15:08:50][INFO] Received packet of length: 28
+[15:10:16][INFO] Received packet of length: 18
+[15:10:22][INFO] Received packet of length: 18
+[15:10:28][INFO] Received packet of length: 28
+[15:20:05][INFO] Received packet of length: 28
+[15:45:25][INFO] Received packet of length: 28

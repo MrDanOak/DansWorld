@@ -1,3 +1,15 @@
 [11:18:03][INFO] Server object created 127.0.0.1:8081
 [11:18:03][INFO] Listening 127.0.0.1:8081
 [11:18:03][INFO] Server listener thread spawned id:3
+[11:59:27][INFO] Server object created 127.0.0.1:8081
+[11:59:27][INFO] Listening 127.0.0.1:8081
+[11:59:27][INFO] Server listener thread spawned id:3
+[11:59:44][INFO] Client connection accepted from 127.0.0.1:15732
+[11:59:44][INFO] Client handler thread spawned id:4
+[11:59:44][INFO] packet length: 2 packet data: {1} {1} 
+[12:00:36][INFO] Client connection accepted from 127.0.0.1:15783
+[12:00:36][INFO] Client handler thread spawned id:5
+[12:01:17][INFO] Client connection accepted from 127.0.0.1:15821
+[12:01:17][INFO] Client handler thread spawned id:6
+[12:01:17][INFO] packet length: 10 packet data: {1} {1} {116} {101} {115} {116} {116} {101} {115} {116} 
+[12:01:27][ERROR] Fatal Exception: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.

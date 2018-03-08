@@ -125,3 +125,11 @@ C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Dan
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\DansWorld.GameClient.pdb
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Debug\DansWorld.GameClient.exe
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Debug\DansWorld.GameClient.pdb
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Content\Images\Characters\ability-f.xnb
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Content\Images\Characters\ability-m.xnb
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Content\Images\Characters\base.xnb
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Content\Images\Characters\emotes-1.xnb
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Content\Images\Characters\emotes-2.xnb
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Content\Images\Characters\emotes-3.xnb
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Content\Images\Characters\sit-kneel.xnb
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Content\Images\Characters\sitting.xnb

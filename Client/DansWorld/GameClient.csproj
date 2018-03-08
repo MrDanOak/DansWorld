@@ -63,6 +63,7 @@
     <Compile Include="GameClient.cs" />
     <Compile Include="GameExecution\GameState.cs" />
     <Compile Include="Math\Utils.cs" />
+    <Compile Include="UI\MenuScene.cs" />
     <Compile Include="Net\Client.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -75,8 +76,12 @@
     <Compile Include="UI\Control.cs" />
     <Compile Include="UI\CustomEventArgs\ClickedEventArgs.cs" />
     <Compile Include="UI\CustomEventArgs\KeyPressedEventArgs.cs" />
+    <Compile Include="UI\Game\CharacterSprite.cs" />
+    <Compile Include="UI\IControl.cs" />
     <Compile Include="UI\Image.cs" />
     <Compile Include="UI\Label.cs" />
+    <Compile Include="UI\Rect.cs" />
+    <Compile Include="UI\Scene.cs" />
     <Compile Include="UI\TextBox.cs" />
   </ItemGroup>
   <ItemGroup>

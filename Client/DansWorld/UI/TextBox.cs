@@ -209,8 +209,20 @@ namespace DansWorld.GameClient.UI
             _tabDown = kbState.IsKeyDown(Keys.Tab);
         }
 
+        public string HideText(string text)
+        {
+            string hidden = "";
+            for (int i = 0; i < Text.Length; i++)
+            {
+                hidden += "*";
+            }
+            return hidden;
+        }
+
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            base.Draw(gameTime, spriteBatch);
+            Vector2 strDim = Font.MeasureString((IsPasswordField ? HideText(Text) : Text));
 
             if (BackgroundImage != null)
             {
@@ -224,18 +236,14 @@ namespace DansWorld.GameClient.UI
                                 BorderColor);
                 spriteBatch.Draw(GameClient.DEFAULT_TEXTURE, Destination, BackColor);
             }
+
             if (!IsPasswordField)
             {
                 spriteBatch.DrawString(Font, Text, new Vector2(Location.X + 5, Location.Y + Size.Y / 2 - Font.MeasureString(Text).Y / 2), FrontColor);
             }
             else
             {
-                string hidden = "";
-                for (int i = 0; i < Text.Length; i++)
-                {
-                    hidden += "*";
-                }
-                spriteBatch.DrawString(Font, hidden, new Vector2(Location.X + 5, Location.Y + Size.Y / 2 - Font.MeasureString(hidden).Y / 2), FrontColor);
+                spriteBatch.DrawString(Font, HideText(Text), new Vector2(Location.X + 5, Location.Y + Size.Y / 2 - strDim.Y / 4), FrontColor);
             }
 
             if (HasFocus)
@@ -250,7 +258,7 @@ namespace DansWorld.GameClient.UI
 
                 if (_showBlink)
                 {
-                    spriteBatch.DrawString(Font, "|", new Vector2(Location.X + Font.MeasureString(Text).X + 7, Location.Y + ((Size.Y / 2) - (Font.MeasureString(" | ").Y / 2))), FrontColor);
+                    spriteBatch.DrawString(Font, "|", new Vector2(Location.X + strDim.X + 7, Location.Y + ((Size.Y / 2) - (Font.MeasureString("|").Y / 2))), FrontColor);
                 }
             }
         }

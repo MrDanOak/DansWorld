@@ -22,6 +22,7 @@ namespace DansWorld.GameClient.UI
         }
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            base.Draw(gameTime, spriteBatch);
             spriteBatch.Draw(_texture, Destination, _source, BackColor, _rotation, _origin, _effects, 0.0f);
         }
         public override void Update(GameTime gameTime)

@@ -10,7 +10,7 @@ using DansWorld.GameClient.UI.CustomEventArgs;
 
 namespace DansWorld.GameClient.UI
 {
-    public abstract class Control
+    public abstract class Control : IControl
     {
         public string Name = "";
         public Point Location = new Point(0, 0);
@@ -19,6 +19,7 @@ namespace DansWorld.GameClient.UI
         public Color FrontColor;
         public bool HasFocus;
         public event EventHandler<ClickedEventArgs> OnClick;
+        public bool IsVisible = true;
 
         protected bool _mouseDownInside = false;
         protected bool _mouseUpInside = false;
@@ -52,11 +53,14 @@ namespace DansWorld.GameClient.UI
             
         }
 
-        protected virtual void Clicked(ClickedEventArgs e)
+        public virtual void Clicked(ClickedEventArgs e)
         {
             OnClick?.Invoke(this, e);
         }
-        public abstract void Draw(GameTime gameTime, SpriteBatch spriteBatch);
+        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            if (!IsVisible) return;
+        }
 
     }
 }

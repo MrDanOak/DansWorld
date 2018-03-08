@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace DansWorld.GameClient.GameExecution
 {
-    enum GameState
+    public enum GameState
     {
         MainMenu,
+        LoggedIn,
         Playing
     }
 }

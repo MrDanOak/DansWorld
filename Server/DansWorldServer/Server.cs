@@ -5,8 +5,10 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Collections.Generic;
+using DansWorld.Common.IO;
+using DansWorld.Server.GameEntities;
 
-namespace Server
+namespace DansWorld.Server
 {
     public class Server
     {
@@ -15,7 +17,7 @@ namespace Server
         private Thread _thread { get; set; }
         public List<Client> Clients { get; private set; }
         private bool _shouldListen { get; set; }
-
+        internal List<Account> _accounts { get; set; }
 
         public Server(int port)
         {
@@ -24,6 +26,9 @@ namespace Server
             Clients = new List<Client>();
             _shouldListen = true;
             _port = port;
+            _accounts = new List<Account>() { new Account("test", "test") };
+            _accounts[0].Characters.Add(new Character() { Name = "Male Test", Gender = Common.Enums.Gender.MALE });
+            _accounts[0].Characters.Add(new Character() { Name = "Female Test", Gender = Common.Enums.Gender.FEMALE });
             Logger.Log(String.Format("Server object created {0}:{1}", "127.0.0.1", port));
         }
 

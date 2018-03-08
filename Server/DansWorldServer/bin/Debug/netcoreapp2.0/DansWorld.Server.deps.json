@@ -7,14 +7,27 @@
   "targets": {
     ".NETCoreApp,Version=v2.0": {
       "DansWorld.Server/1.0.0": {
+        "dependencies": {
+          "DansWorld.Common": "1.0.0"
+        },
         "runtime": {
           "DansWorld.Server.dll": {}
+        }
+      },
+      "DansWorld.Common/1.0.0": {
+        "runtime": {
+          "DansWorld.Common.dll": {}
         }
       }
     }
   },
   "libraries": {
     "DansWorld.Server/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "DansWorld.Common/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

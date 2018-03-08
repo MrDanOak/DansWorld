@@ -9,3 +9,5 @@ C:\Users\dansc\source\repos\DansWorld\Server\DansWorldServer\obj\Debug\netcoreap
 C:\Users\dansc\source\repos\DansWorld\Server\DansWorldServer\obj\Debug\netcoreapp2.0\Server.AssemblyInfo.cs
 C:\Users\dansc\source\repos\DansWorld\Server\DansWorldServer\obj\Debug\netcoreapp2.0\DansWorld.Server.dll
 C:\Users\dansc\source\repos\DansWorld\Server\DansWorldServer\obj\Debug\netcoreapp2.0\DansWorld.Server.pdb
+C:\Users\dansc\source\repos\DansWorld\Server\DansWorldServer\bin\Debug\netcoreapp2.0\DansWorld.Common.dll
+C:\Users\dansc\source\repos\DansWorld\Server\DansWorldServer\bin\Debug\netcoreapp2.0\DansWorld.Common.pdb

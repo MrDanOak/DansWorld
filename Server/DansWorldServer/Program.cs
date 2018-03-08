@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Server
+namespace DansWorld.Server
 {
     class Program
     {

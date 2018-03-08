@@ -3,8 +3,12 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Linq;
+using DansWorld.Common.Net;
+using DansWorld.Common.IO;
+using System.Collections.Generic;
+using DansWorld.Server.GameEntities;
 
-namespace Server
+namespace DansWorld.Server
 {
     public class Client
     {
@@ -21,10 +25,10 @@ namespace Server
 
         public Client(Server server, TcpClient socket, int id)
         {
-            this._server = server;
-            this.Socket = socket;
-            this.Thread = new Thread(new ThreadStart(Main));
-            this.ShouldReceive = true;
+            _server = server;
+            Socket = socket;
+            Thread = new Thread(new ThreadStart(Main));
+            ShouldReceive = true;
         }
 
         public void Main() 
@@ -62,7 +66,23 @@ namespace Server
 
                     StringBuilder sb = new StringBuilder();
                     for (int i = 0; i < data.Length; i++) { sb.Append("{" + data[i] + "} "); }
-                    Logger.Log("packet length: " + length + " packet data: " + sb.ToString());
+                    Logger.Log("Packet length: " + length + " Packet data: " + sb.ToString());
+
+                    PacketBuilder pb = new PacketBuilder().AddBytes(data);
+                    Packet pkt = pb.Build();
+
+                    if (pkt.Family == PacketFamily.Login)
+                    {
+                        if (pkt.Action == PacketAction.Request)
+                        {
+                            Logger.Log("Login Requested from accepted packet");
+                            string s = pkt.ReadString(pkt.Length - 2);
+                            string user = s.Split("p:")[0];
+                            user = user.Substring(2, user.Length - 2);
+                            string pass = s.Split("p:")[1];
+                            CheckLogin(user, pass);
+                        }
+                    }
 
                 }
                 catch (Exception e)
@@ -71,6 +91,51 @@ namespace Server
                     break;
                 }
             }
+        }
+        
+        private void CheckLogin(string user, string pass)
+        {
+            PacketBuilder pb = new PacketBuilder();
+            Logger.Log(String.Format("Username: {0} Password: {1}", user, pass));
+            bool foundUser = false;
+            foreach (Account account in _server._accounts)
+            {
+                if (account.Username == user)
+                {
+                    foundUser = true;
+                    if (account.Password == pass)
+                    {
+                        Logger.Log("Login accepted from " + Socket.Client.RemoteEndPoint + " for account " + user);
+                        pb = new PacketBuilder()
+                            .AddByte((byte)PacketFamily.Login)
+                            .AddByte((byte)PacketAction.Accept);
+                        foreach (Character character in account.Characters)
+                        {
+                            pb = pb.AddByte((byte)character.Name.Length)
+                                .AddString(character.Name)
+                                .AddByte((byte)character.Level)
+                                .AddByte((byte)character.Gender);
+                            Logger.Log("Building serialised packet of character: " + character.Name);
+                        }
+                    }
+                    else
+                    {
+                        pb = new PacketBuilder()
+                            .AddByte((byte)PacketFamily.Login)
+                            .AddByte((byte)PacketAction.Reject)
+                            .AddString("Invalid Password");
+                    }
+                }
+            }
+
+            if (!foundUser)
+            {
+                pb = new PacketBuilder()
+                    .AddByte((byte)PacketFamily.Login)
+                    .AddByte((byte)PacketAction.Reject)
+                    .AddString("Invalid Username");
+            }
+            Send(pb.Build());
         }
 
         public void Start() 
@@ -97,6 +162,11 @@ namespace Server
         public void Send(string data)
         {
             Send(Encoding.ASCII.GetBytes(data));
+        }
+
+        public void Send(Packet packet)
+        {
+            Send(packet.RawData);
         }
 
         public void Join()
