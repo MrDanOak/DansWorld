@@ -18,6 +18,7 @@ namespace DansWorld.GameClient.UI.Game
         public int SpriteHeight;
         public int frameID;
         public Character Character;
+        public bool InGame = false;
         private int _facingModifier
         {
             get
@@ -45,8 +46,8 @@ namespace DansWorld.GameClient.UI.Game
             {
                 switch (Character.Gender)
                 {
-                    case Gender.MALE: spriteBatch.Draw(BaseTexture, Destination, GetRectangleForFrameID(1 + _facingModifier), Color.White); break;
-                    case Gender.FEMALE: spriteBatch.Draw(BaseTexture, Destination, GetRectangleForFrameID(4 + _facingModifier), Color.White);  break;
+                    case Gender.MALE: spriteBatch.Draw(BaseTexture, (InGame ? new Rectangle(Character.X, Character.Y, SpriteWidth, SpriteHeight) : Destination), GetRectangleForFrameID(1 + _facingModifier), Color.White); break;
+                    case Gender.FEMALE: spriteBatch.Draw(BaseTexture, (InGame ? new Rectangle(Character.X, Character.Y, SpriteWidth, SpriteHeight) : Destination), GetRectangleForFrameID(4 + _facingModifier), Color.White);  break;
                 }
             }
         }

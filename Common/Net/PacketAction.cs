@@ -8,6 +8,9 @@ namespace DansWorld.Common.Net
     {
         REQUEST = 1, 
         ACCEPT = 2, 
-        REJECT = 3
+        REJECT = 3, 
+        MOVE = 4, 
+        STOP = 5, 
+        WELCOME = 6
     }
 }

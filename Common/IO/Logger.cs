@@ -39,6 +39,10 @@ namespace DansWorld.Common.IO
                     sw.WriteLine(String.Format("[{0:T}][{1}] {2}", dt, level, log));
                     sw.Close();
                 }
+                catch (Exception)
+                {
+
+                }
                 finally
                 {
                     writeLock.ExitWriteLock();

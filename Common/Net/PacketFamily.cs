@@ -8,6 +8,7 @@ namespace DansWorld.Common.Net
     {
         LOGIN = 1, 
         REGISTER = 2, 
-        PLAY = 3
+        PLAY = 3, 
+        PLAYER = 4
     }
 }

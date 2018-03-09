@@ -43,6 +43,11 @@ namespace DansWorld.Common.Net
             return AddBytes(Encoding.ASCII.GetBytes(s));
         }
 
+        public PacketBuilder AddInt(int i)
+        {
+            return AddBytes(BitConverter.GetBytes(i));
+        }
+
         public Packet Build()
         {
             return new Packet(_data);

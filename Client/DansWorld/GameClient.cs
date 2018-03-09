@@ -33,12 +33,16 @@ namespace DansWorld.GameClient
         public static string VERSION = System.Reflection.Assembly.GetExecutingAssembly().
             GetName().Version.ToString();
 
+
         CharacterSelectScene characterSelect;
         MenuScene menu;
         RegisterAccountScene registerAccount;
+        GameScene gameScene;
 
         string version = System.Reflection.Assembly.GetExecutingAssembly().
             GetName().Version.ToString();
+
+        public int CharacterID = 0;
 
         public GameClient()
         {
@@ -56,6 +60,7 @@ namespace DansWorld.GameClient
             menu = new MenuScene(this);
             characterSelect = new CharacterSelectScene(this);
             registerAccount = new RegisterAccountScene(this);
+            gameScene = new GameScene(this);
             base.Initialize();
         }
         protected override void LoadContent()
@@ -72,11 +77,15 @@ namespace DansWorld.GameClient
             menu.Initialise(Content);
             characterSelect.Initialise(Content);
             registerAccount.Initialise(Content);
+            gameScene.Initialise(Content);
         }
 
         public void ClearCharacters()
         {
-            characterSelect.ClearCharacters();
+            if (_gameState == GameState.LoggedIn)
+                characterSelect.ClearCharacters();
+            else if (_gameState == GameState.Playing)
+                gameScene.ClearCharacters();
         }
 
         public void AddCharacters(List<Character> characters)
@@ -87,7 +96,17 @@ namespace DansWorld.GameClient
 
         public void AddCharacter(Character character)
         {
-            characterSelect.AddCharacter(character);
+            if (_gameState == GameState.LoggedIn)
+                characterSelect.AddCharacter(character);
+            else if (_gameState == GameState.Playing)
+                gameScene.AddCharacter(character);
+        }
+
+        public List<Character> GetCharacters()
+        {
+            if (_gameState == GameState.LoggedIn) return characterSelect.Characters;
+            else if (_gameState == GameState.Playing) return gameScene.Characters;
+            else return null;
         }
 
         public void DisplayMessage(string message)
@@ -134,6 +153,7 @@ namespace DansWorld.GameClient
                     registerAccount.Update(gameTime);
                     break;
                 case GameState.Playing:
+                    gameScene.Update(gameTime);
                     break;
             }
 
@@ -156,6 +176,7 @@ namespace DansWorld.GameClient
                     registerAccount.Draw(gameTime, _spriteBatch);
                     break;
                 case GameState.Playing:
+                    gameScene.Draw(gameTime, _spriteBatch);
                     break;
             }
             _spriteBatch.End();

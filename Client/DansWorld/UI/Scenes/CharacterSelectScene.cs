@@ -129,7 +129,7 @@ namespace DansWorld.GameClient.UI.Scenes
 
         private void btnPlayChar_OnClick(object sender, CustomEventArgs.ClickedEventArgs e)
         {
-            int id = Convert.ToInt32(((Control)sender).Name[((Control)sender).Name.Length - 1]);
+            int id = Convert.ToInt32(((Control)sender).Name[((Control)sender).Name.Length - 1]) - 48;
             PacketBuilder pb = new PacketBuilder(PacketFamily.PLAY, PacketAction.REQUEST);
             pb = pb.AddByte((byte)id);
             GameClient.NetClient.Send(pb.Build());

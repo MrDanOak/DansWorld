@@ -19,6 +19,7 @@ namespace DansWorld.Server
         public bool ShouldReceive { get; private set; }
         private Account _accountHandling;
         private Character _characterHandling;
+        private int _id;
         #endregion
 
         #region private accessors
@@ -31,6 +32,7 @@ namespace DansWorld.Server
             Socket = socket;
             Thread = new Thread(new ThreadStart(Main));
             ShouldReceive = true;
+            _id = id;
         }
 
         public void Main() 
@@ -118,6 +120,72 @@ namespace DansWorld.Server
                                     Account account = new Account(username, password, email);
                                     _server.Accounts.Add(account);
                                     Logger.Log("Account Created. Username: " + username);
+                                }
+                            }
+                        }
+                        else if (pkt.Family == PacketFamily.PLAY)
+                        {
+                            if (pkt.Action == PacketAction.REQUEST)
+                            {
+                                int userid = pkt.ReadByte();
+                                if (_accountHandling.Characters.Count >= userid) {
+                                    pb = new PacketBuilder(PacketFamily.PLAY, PacketAction.ACCEPT);
+                                    Character c = _accountHandling.GetCharacter(userid);
+                                    _characterHandling = c;
+                                    c.ServerID = _id;
+                                    pb = pb.AddByte((byte)c.Name.Length).AddString(c.Name)
+                                           .AddByte((byte)c.Level)
+                                           .AddByte((byte)c.Gender)
+                                           .AddInt(c.X)
+                                           .AddInt(c.Y)
+                                           .AddByte((byte)c.Facing)
+                                           .AddInt(c.ServerID).AddInt(_server.LoggedInCharacters.Count);
+
+                                    foreach (Character character in _server.LoggedInCharacters)
+                                    {
+                                        pb = pb.AddByte((byte)character.Name.Length).AddString(character.Name)
+                                           .AddByte((byte)character.Level)
+                                           .AddByte((byte)character.Gender)
+                                           .AddInt(character.X)
+                                           .AddInt(character.Y)
+                                           .AddByte((byte)character.Facing)
+                                           .AddInt(character.ServerID);
+                                    }
+                                    Send(pb.Build());
+
+                                    _server.LoggedInCharacters.Add(c);
+
+                                    foreach (Client client in _server.Clients)
+                                    {
+                                        if (client != this)
+                                        {
+                                            pb = new PacketBuilder(PacketFamily.PLAYER, PacketAction.WELCOME);
+                                            pb = pb.AddByte((byte)c.Name.Length).AddString(c.Name)
+                                                   .AddByte((byte)c.Level)
+                                                   .AddByte((byte)c.Gender)
+                                                   .AddInt(c.X)
+                                                   .AddInt(c.Y)
+                                                   .AddByte((byte)c.Facing)
+                                                   .AddInt(c.ServerID);
+                                            client.Send(pb.Build());
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else if (pkt.Family == PacketFamily.PLAYER)
+                        {
+                            if (pkt.Action == PacketAction.MOVE)
+                            {
+                                _characterHandling.X = pkt.ReadInt();
+                                _characterHandling.Y = pkt.ReadInt();
+                                _characterHandling.Facing = (Common.Enums.Direction)pkt.ReadByte();
+                                foreach (Client client in _server.Clients)
+                                {
+                                    if (client != this)
+                                    {
+                                        client.Send(pkt);
+                                    }
                                 }
                             }
                         }

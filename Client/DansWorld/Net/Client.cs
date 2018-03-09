@@ -129,9 +129,68 @@ namespace DansWorld.GameClient.Net
                     {
                         if (pkt.Action == PacketAction.ACCEPT)
                         {
-                            string charName = pkt.ReadString(pkt.ReadByte());
-                            int level = pkt.ReadByte();
+                            Character character = new Character()
+                            {
+                                Name = pkt.ReadString(pkt.ReadByte()),
+                                Level = pkt.ReadByte(),
+                                Gender = (Gender)pkt.ReadByte(),
+                                X = pkt.ReadInt(), 
+                                Y = pkt.ReadInt(), 
+                                Facing = (Direction)pkt.ReadByte(), 
+                                ServerID = pkt.ReadInt()
+                            };
+                            _gameClient.ClearCharacters();
                             _gameClient.SetState(GameExecution.GameState.Playing);
+                            _gameClient.CharacterID = character.ServerID;
+                            _gameClient.AddCharacter(character);
+                            int loggedInCharacters = pkt.ReadInt();
+                            for (int i = 0; i < loggedInCharacters; i++)
+                            {
+                                Character c = new Character()
+                                {
+                                    Name = pkt.ReadString(pkt.ReadByte()),
+                                    Level = pkt.ReadByte(),
+                                    Gender = (Gender)pkt.ReadByte(),
+                                    X = pkt.ReadInt(),
+                                    Y = pkt.ReadInt(),
+                                    Facing = (Direction)pkt.ReadByte(),
+                                    ServerID = pkt.ReadInt()
+                                };
+                                _gameClient.AddCharacter(c);
+                            }
+                        }
+                    }
+                    else if (pkt.Family == PacketFamily.PLAYER)
+                    {
+                        if (pkt.Action == PacketAction.WELCOME)
+                        {
+                            Character character = new Character()
+                            {
+                                Name = pkt.ReadString(pkt.ReadByte()),
+                                Level = pkt.ReadByte(),
+                                Gender = (Gender)pkt.ReadByte(),
+                                X = pkt.ReadInt(), 
+                                Y = pkt.ReadInt(),
+                                Facing = (Direction)pkt.ReadByte(),
+                                ServerID = pkt.ReadInt()
+                            };
+                            _gameClient.AddCharacter(character);
+                        }
+                        else if (pkt.Action == PacketAction.MOVE)
+                        {
+                            int x = pkt.ReadInt();
+                            int y = pkt.ReadInt();
+                            Direction d = (Direction)pkt.ReadByte();
+                            int id = pkt.ReadInt();
+                            foreach (Character character in _gameClient.GetCharacters())
+                            {
+                                if (character.ServerID == id)
+                                {
+                                    character.X = x;
+                                    character.Y = y;
+                                    character.SetFacing(d);
+                                }
+                            }
                         }
                     }
                 }

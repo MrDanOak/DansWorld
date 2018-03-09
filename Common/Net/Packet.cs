@@ -33,6 +33,20 @@ namespace DansWorld.Common.Net
             ThrowIfOutOfBounds(0);
             return RawData[ReadPosition];
         }
+        
+        public int PeekInt()
+        {
+            ThrowIfOutOfBounds(3);
+
+            var bytes = new[]
+            {
+                RawData[ReadPosition],
+                RawData[ReadPosition + 1],
+                RawData[ReadPosition + 2],
+                RawData[ReadPosition + 3]
+            };
+            return BitConverter.ToInt32(bytes, 0);
+        }
         public IEnumerable<byte> PeekBytes(int length)
         {
             ThrowIfOutOfBounds(length);
@@ -51,6 +65,13 @@ namespace DansWorld.Common.Net
         {
             byte ret = PeekByte();
             ReadPosition += 1;
+            return ret;
+        }
+
+        public int ReadInt()
+        {
+            int ret = PeekInt();
+            ReadPosition += 4;
             return ret;
         }
 

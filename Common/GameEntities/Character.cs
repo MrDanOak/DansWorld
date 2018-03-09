@@ -11,7 +11,8 @@ namespace DansWorld.Common.GameEntities
         public int Level;
         public Gender Gender;
         public bool IsIdle { get; private set; }
-        public Direction Facing { get; private set; }
+        public Direction Facing { get; set; }
+        public int X, Y, ServerID;
         public Character()
         {
             Name = "";
@@ -19,13 +20,15 @@ namespace DansWorld.Common.GameEntities
             Gender = Gender.MALE;
             IsIdle = true;
             Facing = Direction.DOWN;
+            X = 0;
+            Y = 0;
         }
 
         public void SetFacing(Direction direction)
         {
             if ((int)direction < 4)
             {
-                if (direction > 0)
+                if (direction >= 0)
                     Facing = direction;
                 else
                     Facing = (Direction)3;

@@ -10,6 +10,9 @@ namespace DansWorld.Server.GameEntities
         public string Name;
         public int Level;
         public Gender Gender;
+        public int ServerID;
+        public int X, Y;
+        public Direction Facing;
         public Character()
         {
             Name = "";
