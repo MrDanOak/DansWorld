@@ -188,6 +188,10 @@ namespace DansWorld.Server
                                     }
                                 }
                             }
+                            else if (pkt.Action == PacketAction.LOGOUT && pkt.PeekInt() == _characterHandling.ServerID)
+                            {
+                                LogOut(_characterHandling);
+                            }
                         }
                     } 
                     catch (Exception e)
@@ -198,8 +202,8 @@ namespace DansWorld.Server
                 }
                 catch (Exception e)
                 {
-                    if (_accountHandling != null) _accountHandling.State = AccountState.LoggedOut;
                     Logger.Error("Fatal Exception: " + e.Message);
+                    Stop();
                     break;
                 }
             }
@@ -279,7 +283,6 @@ namespace DansWorld.Server
             }
             catch (Exception e)
             {
-                if (_accountHandling != null) _accountHandling.State = AccountState.LoggedOut;
                 Logger.Error("Fatal Exception: " + e.Message);
                 Stop();
             }
@@ -301,9 +304,25 @@ namespace DansWorld.Server
                 Thread.Join();
         }
 
+        public void LogOut(Character character)
+        {
+            character.ServerID = 0;
+            PacketBuilder pb = new PacketBuilder(PacketFamily.PLAYER, PacketAction.LOGOUT);
+            pb = pb.AddInt(character.ServerID);
+            foreach (Client client in _server.Clients)
+            {
+                if (client != this)
+                    client.Send(pb.Build());
+            }
+        }
+
         public void Stop()
         {
+            LogOut(_characterHandling);
             if (_accountHandling != null) _accountHandling.State = AccountState.LoggedOut;
+            if (_server.LoggedInCharacters.Contains(_characterHandling)) _server.LoggedInCharacters.Remove(_characterHandling);
+            if (_characterHandling != null) _characterHandling.ServerID = 0;
+
             try
             {
                 Logger.Log("Client iniating shutdown");
@@ -321,12 +340,12 @@ namespace DansWorld.Server
                 if (Thread != null && Thread.IsAlive)
                 {
                     ShouldReceive = false;
+                    Thread.Abort();
                     Thread.Join();
                 }
             }
             catch (Exception e)
             {
-                if (_accountHandling != null) _accountHandling.State = AccountState.LoggedOut;
                 Logger.Error("Caught exception on close: " + e.Message);
             }
         }

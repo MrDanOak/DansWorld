@@ -11,6 +11,7 @@ namespace DansWorld.Common.Net
         REJECT = 3, 
         MOVE = 4, 
         STOP = 5, 
-        WELCOME = 6
+        WELCOME = 6,
+        LOGOUT = 7
     }
 }

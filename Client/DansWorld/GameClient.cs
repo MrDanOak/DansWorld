@@ -188,5 +188,11 @@ namespace DansWorld.GameClient
         {
             _gameState = state;
         }
+
+        internal void RemoveCharacter(Character toRemove)
+        {
+            if (_gameState == GameState.Playing)
+                gameScene.RemoveCharacter(toRemove);
+        }
     }
 }

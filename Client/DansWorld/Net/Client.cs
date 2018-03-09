@@ -192,6 +192,17 @@ namespace DansWorld.GameClient.Net
                                 }
                             }
                         }
+                        else if (pkt.Action == PacketAction.LOGOUT)
+                        {
+                            Character toRemove = null;
+                            foreach (Character character in _gameClient.GetCharacters())
+                            {
+                                if (character.ServerID == pkt.PeekInt())
+                                    toRemove = character;
+                            }
+                            if (toRemove != null)
+                                _gameClient.RemoveCharacter(toRemove);
+                        }
                     }
                 }
                 catch (Exception e)
@@ -242,7 +253,6 @@ namespace DansWorld.GameClient.Net
                 Socket.Client.Shutdown(SocketShutdown.Both);
                 Socket.Close();
                 ShouldReceive = false;
-                Thread.Abort();
                 Join();
             }
             catch (Exception e)

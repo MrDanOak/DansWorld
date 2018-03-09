@@ -65,13 +65,15 @@ namespace DansWorld.GameClient.UI.Scenes
 
         public void RemoveCharacter(Character character)
         {
+            CharacterSprite toRemove = new CharacterSprite();
             foreach (CharacterSprite sprite in characterSprites)
             {
                 if (character == sprite.Character)
                 {
-                    //remove
+                    toRemove = sprite;
                 }
             }
+            characterSprites.Remove(toRemove);
         }
 
         public void ClearCharacters()
