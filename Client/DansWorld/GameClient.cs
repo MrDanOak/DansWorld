@@ -48,7 +48,7 @@ namespace DansWorld.GameClient
         {
             Window.Title = String.Format("DansWorld - Version {0}", version);
             IsMouseVisible = true; 
-            NetClient = new Net.Client("127.0.0.1", 8081, this);
+            NetClient = new Net.Client("idanscott.co.uk", 8081, this);
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             _graphics.PreferredBackBufferHeight = HEIGHT;
