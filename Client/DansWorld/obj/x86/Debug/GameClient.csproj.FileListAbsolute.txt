@@ -133,3 +133,7 @@ C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Con
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Content\Images\Characters\emotes-3.xnb
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Content\Images\Characters\sit-kneel.xnb
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Content\Images\Characters\sitting.xnb
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\DansWorld.GameClient.exe.manifest
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\DansWorld.GameClient.application
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Debug\DansWorld.GameClient.exe.manifest
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Debug\DansWorld.GameClient.application

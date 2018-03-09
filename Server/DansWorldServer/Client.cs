@@ -182,10 +182,7 @@ namespace DansWorld.Server
                                 _characterHandling.Facing = (Common.Enums.Direction)pkt.ReadByte();
                                 foreach (Client client in _server.Clients)
                                 {
-                                    if (client != this)
-                                    {
-                                        client.Send(pkt);
-                                    }
+                                    client.Send(pkt);
                                 }
                             }
                             else if (pkt.Action == PacketAction.LOGOUT && pkt.PeekInt() == _characterHandling.ServerID)
@@ -311,8 +308,11 @@ namespace DansWorld.Server
             pb = pb.AddInt(character.ServerID);
             foreach (Client client in _server.Clients)
             {
-                if (client != this)
-                    client.Send(pb.Build());
+                if (client.Socket.Connected)
+                {
+                    if (client != this)
+                        client.Send(pb.Build());
+                }
             }
         }
 
