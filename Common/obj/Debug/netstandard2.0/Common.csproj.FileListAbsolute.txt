@@ -1,9 +1,8 @@
-C:\Users\dansc\source\repos\DansWorld\Common\obj\Debug\netstandard2.0\Common.csprojResolveAssemblyReference.cache
-C:\Users\dansc\source\repos\DansWorld\Common\obj\Debug\netstandard2.0\Common.csproj.CoreCompileInputs.cache
-C:\Users\dansc\source\repos\DansWorld\Common\obj\Debug\netstandard2.0\Common.AssemblyInfoInputs.cache
-C:\Users\dansc\source\repos\DansWorld\Common\obj\Debug\netstandard2.0\Common.AssemblyInfo.cs
 C:\Users\dansc\source\repos\DansWorld\Common\bin\Debug\netstandard2.0\DansWorld.Common.deps.json
 C:\Users\dansc\source\repos\DansWorld\Common\bin\Debug\netstandard2.0\DansWorld.Common.dll
 C:\Users\dansc\source\repos\DansWorld\Common\bin\Debug\netstandard2.0\DansWorld.Common.pdb
+C:\Users\dansc\source\repos\DansWorld\Common\obj\Debug\netstandard2.0\Common.csproj.CoreCompileInputs.cache
+C:\Users\dansc\source\repos\DansWorld\Common\obj\Debug\netstandard2.0\Common.AssemblyInfoInputs.cache
+C:\Users\dansc\source\repos\DansWorld\Common\obj\Debug\netstandard2.0\Common.AssemblyInfo.cs
 C:\Users\dansc\source\repos\DansWorld\Common\obj\Debug\netstandard2.0\DansWorld.Common.dll
 C:\Users\dansc\source\repos\DansWorld\Common\obj\Debug\netstandard2.0\DansWorld.Common.pdb
