@@ -184,7 +184,7 @@ namespace DansWorld.GameClient.Net
                             int id = pkt.ReadInt();
                             foreach (Character character in _gameClient.GetCharacters())
                             {
-                                if (character.ServerID == id)
+                                if (character.ServerID == id && _gameClient.CharacterID != id)
                                 {
                                     character.X = x;
                                     character.Y = y;

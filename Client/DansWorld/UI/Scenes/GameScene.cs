@@ -81,8 +81,15 @@ namespace DansWorld.GameClient.UI.Scenes
             characterSprites = new List<CharacterSprite>();
         }
 
+        private int IsOnTop(CharacterSprite a, CharacterSprite b)
+        {
+            return a.Character.Y.CompareTo(b.Character.Y);
+        }
+
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            // TODO: 
+            // Sort character sprites by what is in front first
             foreach (CharacterSprite characterSprite in characterSprites)
             {
                 characterSprite.Draw(gameTime, spriteBatch);
@@ -93,16 +100,17 @@ namespace DansWorld.GameClient.UI.Scenes
         public override void Update(GameTime gameTime)
         {
             bool moved = false;
+            PacketBuilder pb = new PacketBuilder(PacketFamily.PLAYER, PacketAction.MOVE);
             if (Keyboard.GetState().IsKeyDown(Keys.A)) { characterSprites[0].Character.X -= 1; characterSprites[0].Character.SetFacing(Common.Enums.Direction.LEFT); moved = true; }
-            if (Keyboard.GetState().IsKeyDown(Keys.S)) { characterSprites[0].Character.Y += 1; characterSprites[0].Character.SetFacing(Common.Enums.Direction.DOWN); moved = true; }
-            if (Keyboard.GetState().IsKeyDown(Keys.D)) { characterSprites[0].Character.X += 1; characterSprites[0].Character.SetFacing(Common.Enums.Direction.RIGHT); moved = true; }
-            if (Keyboard.GetState().IsKeyDown(Keys.W)) { characterSprites[0].Character.Y -= 1; characterSprites[0].Character.SetFacing(Common.Enums.Direction.UP); moved = true; }
+            else if (Keyboard.GetState().IsKeyDown(Keys.S)) { characterSprites[0].Character.Y += 1; characterSprites[0].Character.SetFacing(Common.Enums.Direction.DOWN); moved = true; }
+            else if (Keyboard.GetState().IsKeyDown(Keys.D)) { characterSprites[0].Character.X += 1; characterSprites[0].Character.SetFacing(Common.Enums.Direction.RIGHT); moved = true; }
+            else if (Keyboard.GetState().IsKeyDown(Keys.W)) { characterSprites[0].Character.Y -= 1; characterSprites[0].Character.SetFacing(Common.Enums.Direction.UP); moved = true; }
+
+            // This is in place to stop server spam, otherwise every time the sprite is updated
+            // it will send the server the characters x and y (Many times a second)
             if (moved)
             {
-                PacketBuilder pb = new PacketBuilder(PacketFamily.PLAYER, PacketAction.MOVE);
-                pb = pb.AddInt(characterSprites[0].Character.X)
-                    .AddInt(characterSprites[0].Character.Y)
-                    .AddByte((byte)characterSprites[0].Character.Facing)
+                pb = pb.AddInt(characterSprites[0].Character.X).AddInt(characterSprites[0].Character.Y).AddByte((byte)characterSprites[0].Character.Facing)
                     .AddInt(_gameClient.CharacterID);
                 GameClient.NetClient.Send(pb.Build());
             }

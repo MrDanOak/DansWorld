@@ -120,11 +120,6 @@ C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Sha
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Debug\GameClient.csprojResolveAssemblyReference.cache
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Debug\GameClient.csproj.CoreCompileInputs.cache
-C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\DansWorld.GameClient.exe.config
-C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\DansWorld.GameClient.exe
-C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\DansWorld.GameClient.pdb
-C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Debug\DansWorld.GameClient.exe
-C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Debug\DansWorld.GameClient.pdb
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Content\Images\Characters\ability-f.xnb
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Content\Images\Characters\ability-m.xnb
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Content\Images\Characters\base.xnb
@@ -133,7 +128,12 @@ C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Con
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Content\Images\Characters\emotes-3.xnb
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Content\Images\Characters\sit-kneel.xnb
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Content\Images\Characters\sitting.xnb
-C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\DansWorld.GameClient.exe.manifest
-C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\DansWorld.GameClient.application
-C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Debug\DansWorld.GameClient.exe.manifest
-C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Debug\DansWorld.GameClient.application
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Dans World.exe.config
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Dans World.exe.manifest
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Dans World.application
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Dans World.exe
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Dans World.pdb
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Debug\Dans World.exe.manifest
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Debug\Dans World.application
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Debug\Dans World.exe
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Debug\Dans World.pdb

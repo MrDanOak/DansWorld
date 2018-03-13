@@ -7,6 +7,7 @@ using DansWorld.Common.Net;
 using DansWorld.Common.IO;
 using System.Collections.Generic;
 using DansWorld.Server.GameEntities;
+using DansWorld.Common.Enums;
 
 namespace DansWorld.Server
 {
@@ -177,12 +178,19 @@ namespace DansWorld.Server
                         {
                             if (pkt.Action == PacketAction.MOVE)
                             {
-                                _characterHandling.X = pkt.ReadInt();
-                                _characterHandling.Y = pkt.ReadInt();
-                                _characterHandling.Facing = (Common.Enums.Direction)pkt.ReadByte();
-                                foreach (Client client in _server.Clients)
+                                int x = pkt.ReadInt();
+                                int y = pkt.ReadInt();
+                                Direction facing = (Direction)pkt.ReadByte();
+                                int id = pkt.ReadInt();
+                                if (_characterHandling.ServerID == id && (_characterHandling.X != x || _characterHandling.Y != y))
                                 {
-                                    client.Send(pkt);
+                                    _characterHandling.X = x;
+                                    _characterHandling.Y = y;
+                                    _characterHandling.Facing = facing;
+                                    foreach (Client client in _server.Clients)
+                                    {
+                                        client.Send(pkt);
+                                    }
                                 }
                             }
                             else if (pkt.Action == PacketAction.LOGOUT && pkt.PeekInt() == _characterHandling.ServerID)
@@ -193,7 +201,8 @@ namespace DansWorld.Server
                     } 
                     catch (Exception e)
                     {
-                        Logger.Warn("Packet was not in a recognised format and therefore will not be handled. Remote endpoint: " + Socket.Client.RemoteEndPoint);
+                        Logger.Warn("Packet was not in a recognised format and therefore will not be handled. Remote endpoint: " 
+                            + Socket.Client.RemoteEndPoint + "\n\r StackTrace:" + e.StackTrace);
                     }
 
                 }

@@ -23,8 +23,8 @@ namespace DansWorld.GameClient
         GameState _gameState = GameState.MainMenu;
         List<Control> _characterSelectControls = new List<Control>();
         public static Net.Client NetClient;
-        public const int HEIGHT = 720;
-        public const int WIDTH = 1366;
+        public const int HEIGHT = 1080;
+        public const int WIDTH = 1920;
         public static Texture2D DEFAULT_TEXTURE;
         public static SpriteFont DEFAULT_FONT;
         public static SpriteFont DEFAULT_FONT_BOLD;
@@ -48,12 +48,13 @@ namespace DansWorld.GameClient
         {
             Window.Title = String.Format("DansWorld - Version {0}", version);
             IsMouseVisible = true; 
-            NetClient = new Net.Client("idanscott.co.uk", 8081, this);
+            NetClient = new Net.Client("127.0.0.1", 8081, this);
             _graphics = new GraphicsDeviceManager(this);
+            
             Content.RootDirectory = "Content";
             _graphics.PreferredBackBufferHeight = HEIGHT;
             _graphics.PreferredBackBufferWidth = WIDTH;
-
+            
         }
         protected override void Initialize()
         {
