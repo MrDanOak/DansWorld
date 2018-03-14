@@ -14,6 +14,7 @@ namespace DansWorld.Common.Net
         WELCOME = 6,
         LOGOUT = 7,
         PING = 8,
-        PONG = 9
+        PONG = 9,
+        TALK = 10
     }
 }

@@ -10,7 +10,6 @@ namespace DansWorld.Server.Data
 {
     public class Database
     {
-        private MySqlConnection Connection { get; set; }
         private string Server { get; set; }
         private string Password { get; set; }
         private string User { get; set; }
@@ -25,56 +24,21 @@ namespace DansWorld.Server.Data
             Password = "uL2qDxZcInz7PU72";
             ConnectionString = "Server=" + Server + "; Database=" + DatabaseName +
                 "; Uid=" + User + "; Pwd=" + Password + ";";
-            Connection = new MySqlConnection(ConnectionString);
-            OpenConnection();
-        }
-
-        public bool OpenConnection()
-        {
-            try
-            {
-                Connection.Open();
-                return true;
-            }
-            catch (MySqlException e)
-            {
-
-                switch (e.Number)
-                {
-                    case 0:
-                        Logger.Error("Cannot connect to database. Contact administrator.");
-                        break;
-                    case 1045:
-                        Logger.Error("Invalid username/password.");
-                        break;
-                }
-                Logger.Error(e.Message + " Stack " + e.StackTrace);
-                return false;
-            }
         }
 
         public DataTable Select(string what, string from, string col = "", string whereVal = "")
         {
-            MySqlCommand cmd = new MySqlCommand("SELECT " + what + " FROM " + from + (col != "" ? " WHERE " + col + " = '" + whereVal + "'" : ""), Connection);
-            DataTable dt = new DataTable();
-            MySqlDataReader reader = cmd.ExecuteReader();
-            dt.Load(reader);
-            reader.Close();
-            reader.Dispose();
-            return dt;
-        }
-
-        public bool CloseConnection()
-        {
-            try
+            using (MySqlConnection Connection = new MySqlConnection(ConnectionString))
             {
+                Connection.Open();
+                MySqlCommand cmd = new MySqlCommand("SELECT " + what + " FROM " + from + (col != "" ? " WHERE " + col + " = '" + whereVal + "'" : ""), Connection);
+                DataTable dt = new DataTable();
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    dt.Load(reader);
+                }
                 Connection.Close();
-                return true;
-            }
-            catch (MySqlException e)
-            {
-                Logger.Error(e.Message + " Stack " + e.StackTrace);
-                return false;
+                return dt;
             }
         }
 
@@ -85,9 +49,14 @@ namespace DansWorld.Server.Data
 
         public int Query(string query)
         {
-            MySqlCommand cmd = new MySqlCommand(query, Connection);
-            int returnRows = cmd.ExecuteNonQuery();
-            return returnRows;
+            using (MySqlConnection Connection = new MySqlConnection(ConnectionString))
+            {
+                Connection.Open();
+                MySqlCommand cmd = new MySqlCommand(query, Connection);
+                int returnRows = cmd.ExecuteNonQuery();
+                Connection.Close();
+                return returnRows;
+            }
         }
 
         public int Update(string query)
@@ -129,22 +98,5 @@ namespace DansWorld.Server.Data
         {
             return Query("DELETE FROM '" + table + "' WHERE " + column + " = " + val);
         }
-
-        public int Count(string query)
-        {
-            int count = -1;
-            if (OpenConnection() == true)
-            {
-                MySqlCommand cmd = new MySqlCommand(query, Connection);
-                count = int.Parse(cmd.ExecuteScalar() + "");
-                CloseConnection();
-                return count;
-            }
-            else
-            {
-                return count;
-            }
-        }
-
     }
 }

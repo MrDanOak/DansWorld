@@ -174,7 +174,6 @@ namespace DansWorld.GameClient
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.White);
-
             _spriteBatch.Begin();
             switch (_gameState)
             {
@@ -215,6 +214,12 @@ namespace DansWorld.GameClient
         {
             if (_gameState == GameState.Playing)
                 gameScene.RemoveCharacter(toRemove);
+        }
+
+        internal void ShowMessage(string message, string from)
+        {
+            if (_gameState == GameState.Playing)
+                gameScene.ShowMessage(message, from);
         }
     }
 }

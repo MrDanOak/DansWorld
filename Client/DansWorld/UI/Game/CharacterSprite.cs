@@ -57,12 +57,16 @@ namespace DansWorld.GameClient.UI.Game
                 {
                     _characterLabel.Draw(gameTime, spriteBatch);
                 }
+                float depth = 1 - ((float)Location.Y / GameClient.HEIGHT);
 
-                switch (Character.Gender)
-                {
-                    case Gender.MALE: spriteBatch.Draw(BaseTexture, (InGame ? new Rectangle(Character.X, Character.Y, SpriteWidth, SpriteHeight) : Destination), GetRectangleForFrameID(animationID + _facingModifier), Color.White); break;
-                    case Gender.FEMALE: spriteBatch.Draw(BaseTexture, (InGame ? new Rectangle(Character.X, Character.Y, SpriteWidth, SpriteHeight) : Destination), GetRectangleForFrameID(animationID + 3 + _facingModifier), Color.White); break;
-                }
+                spriteBatch.Draw(BaseTexture, 
+                    (InGame ? new Rectangle(Character.X, Character.Y, SpriteWidth, SpriteHeight) : Destination), 
+                    GetRectangleForFrameID(animationID + (Character.Gender == Gender.FEMALE ? 3 : 0) + _facingModifier), 
+                    Color.White, 
+                    0.0f, 
+                    Vector2.Zero, 
+                    SpriteEffects.None, 
+                    depth);
             }
         }
 
@@ -86,14 +90,14 @@ namespace DansWorld.GameClient.UI.Game
             base.Update(gameTime);
             if (Character == null) return;
 
-            walkTimerTick += gameTime.ElapsedGameTime.Milliseconds;
+            //walkTimerTick += gameTime.ElapsedGameTime.Milliseconds;
 
-            if (previousCharacterLoc != null && previousCharacterLoc.X == Character.X && previousCharacterLoc.Y == Character.Y 
-                && Character.IsWalking && walkTimerTick > 300)
-            {
-                Character.IsWalking = false;
-                walkTimerTick = 0;
-            }
+            //if (previousCharacterLoc != null && previousCharacterLoc.X == Character.X && previousCharacterLoc.Y == Character.Y 
+            //    && Character.IsWalking && walkTimerTick > 300)
+            //{
+            //    Character.IsWalking = false;
+            //    walkTimerTick = 0;
+            //}
 
             Location = new Point(Character.X, Character.Y);
 
@@ -124,7 +128,7 @@ namespace DansWorld.GameClient.UI.Game
                 _characterLabel.Location = new Point(Character.X + (SpriteWidth / 2) - ((int)dimCharName.X / 2), Character.Y - (int)dimCharName.Y);
                 _characterLabel.Update(gameTime);
             }
-            previousCharacterLoc = new Point(Character.X, Character.Y);
+            //previousCharacterLoc = new Point(Character.X, Character.Y);
         }
     }
 }

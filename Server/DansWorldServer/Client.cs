@@ -191,15 +191,23 @@ namespace DansWorld.Server
                                     _characterHandling.X = x;
                                     _characterHandling.Y = y;
                                     _characterHandling.Facing = facing;
-                                    foreach (Client client in _server.Clients)
-                                    {
-                                        client.Send(pkt);
-                                    }
+                                }
+
+                                foreach (Client client in _server.Clients)
+                                {
+                                    client.Send(pkt);
                                 }
                             }
                             else if (pkt.Action == PacketAction.LOGOUT && pkt.PeekInt() == _characterHandling.ServerID)
                             {
                                 LogOut(_characterHandling);
+                            }
+                            else if (pkt.Action == PacketAction.TALK)
+                            {
+                                foreach (Client client in _server.Clients)
+                                {
+                                    client.Send(pkt);
+                                }
                             }
                         }
                     } 
