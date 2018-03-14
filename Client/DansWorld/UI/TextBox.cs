@@ -39,7 +39,6 @@ namespace DansWorld.GameClient.UI
 
         private Keys[] _previousKeys = null;
         private int _inputTimer = 0;
-        private int _repeatTimer = 0;
         private int _blinkTimer = 0;
         private bool _showBlink = false;
         private bool _aKeyDown = false;

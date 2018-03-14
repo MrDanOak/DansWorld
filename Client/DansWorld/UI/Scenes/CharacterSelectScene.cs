@@ -22,7 +22,7 @@ namespace DansWorld.GameClient.UI.Scenes
         Button[] _btnDeleteChar = new Button[3];
         Button[] _btnCreateChar = new Button[3];
         CharacterSprite[] _characterSprite = new CharacterSprite[3];
-        public List<Character> Characters;
+        public List<PlayerCharacter> PlayerCharacters;
         private int _elapsedms = 0;
         private GameClient _gameClient;
         public CharacterSelectScene(GameClient gameClient)
@@ -137,29 +137,29 @@ namespace DansWorld.GameClient.UI.Scenes
 
         internal void ClearCharacters()
         {
-            Characters.Clear();
+            PlayerCharacters.Clear();
         }
 
-        public void AddCharacter(Character character)
+        public void AddCharacter(PlayerCharacter playerCharacter)
         {
-            if (Characters == null) Characters = new List<Character>();
-            if (Characters.Count >= 3) return;
-            Characters.Add(character);
-            _characterSprite[Characters.Count - 1].Character = character;
+            if (PlayerCharacters == null) PlayerCharacters = new List<PlayerCharacter>();
+            if (PlayerCharacters.Count >= 3) return;
+            PlayerCharacters.Add(playerCharacter);
+            _characterSprite[PlayerCharacters.Count - 1].PlayerCharacter = playerCharacter;
 
-            _btnPlayChar[Characters.Count - 1].IsVisible = true;
-            _btnDeleteChar[Characters.Count - 1].IsVisible = true;
-            _btnCreateChar[Characters.Count - 1].IsVisible = false;
+            _btnPlayChar[PlayerCharacters.Count - 1].IsVisible = true;
+            _btnDeleteChar[PlayerCharacters.Count - 1].IsVisible = true;
+            _btnCreateChar[PlayerCharacters.Count - 1].IsVisible = false;
 
-            _lblCharNames[Characters.Count - 1].Text = character.Name;
-            _lblCharLvls[Characters.Count - 1].Text = "Lvl " + character.Level;
+            _lblCharNames[PlayerCharacters.Count - 1].Text = playerCharacter.Name;
+            _lblCharLvls[PlayerCharacters.Count - 1].Text = "Lvl " + playerCharacter.Level;
 
-            Vector2 charNameDims = _lblCharNames[Characters.Count - 1].Font.MeasureString(character.Name);
-            Vector2 charLvlDims = _lblCharLvls[Characters.Count - 1].Font.MeasureString("Lvl " + character.Level);
-            _lblCharNames[Characters.Count - 1].Size = new Point((int)charNameDims.X, (int)charNameDims.Y);
-            _lblCharNames[Characters.Count - 1].Location.X -= (int)(charNameDims.X / 2);
-            _lblCharLvls[Characters.Count - 1].Location.X -= (int)(charLvlDims.X);
-            _lblCharLvls[Characters.Count - 1].Size = new Point((int)charLvlDims.X, (int)charLvlDims.Y);
+            Vector2 charNameDims = _lblCharNames[PlayerCharacters.Count - 1].Font.MeasureString(playerCharacter.Name);
+            Vector2 charLvlDims = _lblCharLvls[PlayerCharacters.Count - 1].Font.MeasureString("Lvl " + playerCharacter.Level);
+            _lblCharNames[PlayerCharacters.Count - 1].Size = new Point((int)charNameDims.X, (int)charNameDims.Y);
+            _lblCharNames[PlayerCharacters.Count - 1].Location.X -= (int)(charNameDims.X / 2);
+            _lblCharLvls[PlayerCharacters.Count - 1].Location.X -= (int)(charLvlDims.X);
+            _lblCharLvls[PlayerCharacters.Count - 1].Size = new Point((int)charLvlDims.X, (int)charLvlDims.Y);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -176,11 +176,11 @@ namespace DansWorld.GameClient.UI.Scenes
             _elapsedms += gameTime.ElapsedGameTime.Milliseconds;
             if (_elapsedms >= 1000)
             {
-                if (Characters != null)
+                if (PlayerCharacters != null)
                 {
-                    foreach (Character character in Characters)
+                    foreach (PlayerCharacter player in PlayerCharacters)
                     {
-                        character.SetFacing(character.Facing + 1);
+                        player.SetFacing(player.Facing + 1);
                     }
                 }
                 _elapsedms = 0;

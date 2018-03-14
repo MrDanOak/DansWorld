@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>C:/Users/dansc/source/repos/DansWorld/Client/DansWorld/Content/Fonts/arial.spritefont</SourceFile>
-  <SourceTime>2018-03-13T21:22:10.2141387+00:00</SourceTime>
+  <SourceTime>2018-03-14T12:53:51.044+00:00</SourceTime>
   <DestFile>C:/Users/dansc/source/repos/DansWorld/Client/DansWorld/Content/bin/Windows/Fonts/arial.xnb</DestFile>
-  <DestTime>2018-03-13T21:30:41.9201181+00:00</DestTime>
+  <DestTime>2018-03-14T12:54:07.3163556+00:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
   <ImporterTime>2017-03-01T15:05:36+00:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>

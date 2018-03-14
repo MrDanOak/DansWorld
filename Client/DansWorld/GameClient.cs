@@ -100,13 +100,13 @@ namespace DansWorld.GameClient
                 gameScene.ClearCharacters();
         }
 
-        public void AddCharacters(List<Character> characters)
+        public void AddCharacters(List<PlayerCharacter> playerCharacters)
         {
-            foreach (Character character in characters) 
-                AddCharacter(character);
+            foreach (PlayerCharacter player in playerCharacters) 
+                AddPlayerCharacter(player);
         }
 
-        public void AddCharacter(Character character)
+        public void AddPlayerCharacter(PlayerCharacter character)
         {
             if (_gameState == GameState.LoggedIn)
                 characterSelect.AddCharacter(character);
@@ -114,10 +114,10 @@ namespace DansWorld.GameClient
                 gameScene.AddCharacter(character);
         }
 
-        public List<Character> GetCharacters()
+        public List<PlayerCharacter> GetPlayers()
         {
-            if (_gameState == GameState.LoggedIn) return characterSelect.Characters;
-            else if (_gameState == GameState.Playing) return gameScene.Characters;
+            if (_gameState == GameState.LoggedIn) return characterSelect.PlayerCharacters;
+            else if (_gameState == GameState.Playing) return gameScene.PlayerCharacters;
             else return null;
         }
 
@@ -210,7 +210,7 @@ namespace DansWorld.GameClient
             }
         }
 
-        internal void RemoveCharacter(Character toRemove)
+        internal void RemoveCharacter(PlayerCharacter toRemove)
         {
             if (_gameState == GameState.Playing)
                 gameScene.RemoveCharacter(toRemove);

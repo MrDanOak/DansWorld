@@ -22,7 +22,7 @@ namespace DansWorld.Server
         public List<Client> Clients { get; private set; }
         private bool _shouldListen { get; set; }
         internal List<Account> Accounts { get; set; }
-        internal List<Character> LoggedInCharacters { get; set; }
+        internal List<PlayerCharacter> LoggedInPlayers { get; set; }
         private Database _database;
         System.Timers.Timer _pingTimer;
 
@@ -34,7 +34,7 @@ namespace DansWorld.Server
             Accounts = new List<Account>();
             _shouldListen = true;
             _port = port;
-            LoggedInCharacters = new List<Character>();
+            LoggedInPlayers = new List<PlayerCharacter>();
             _database = new Database();
             _LoadAccounts();
             Logger.Log(String.Format("Server object created {0}:{1}", "127.0.0.1", port));
@@ -59,7 +59,7 @@ namespace DansWorld.Server
                 DataTable characterTable = _database.Select("*", "Characters", "AccountUsername", account.Username);
                 foreach (DataRow row in characterTable.Rows)
                 {
-                    Character character = new Character()
+                    PlayerCharacter character = new PlayerCharacter()
                     {
                         Name = row["CharacterName"].ToString(),
                         Gender = (Gender)Convert.ToInt32(row["Gender"].ToString()),

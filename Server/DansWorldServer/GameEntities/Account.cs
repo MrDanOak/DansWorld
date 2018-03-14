@@ -17,7 +17,7 @@ namespace DansWorld.Server.GameEntities
         public string Username = "";
         public string Password = "";
         public string Email = "";
-        public List<Character> Characters;
+        public List<PlayerCharacter> Characters;
         public AccountState State = AccountState.LoggedOut;
 
         public string Fullname { get; private set; }
@@ -26,13 +26,13 @@ namespace DansWorld.Server.GameEntities
         {
             Username = username;
             Password = password;
-            Characters = new List<Character>();
+            Characters = new List<PlayerCharacter>();
             Fullname = fullname;
         }
 
-        public Character GetCharacter(string name)
+        public PlayerCharacter GetCharacter(string name)
         {
-            foreach (Character character in Characters)
+            foreach (PlayerCharacter character in Characters)
             {
                 if (character.Name == name)
                     return character;
@@ -40,7 +40,7 @@ namespace DansWorld.Server.GameEntities
             return null;
         }
 
-        public Character GetCharacter(int id)
+        public PlayerCharacter GetCharacter(int id)
         {
             if (id < Characters.Count)
                 return Characters[id];

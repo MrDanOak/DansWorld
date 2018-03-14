@@ -99,6 +99,7 @@ namespace DansWorld.GameClient.UI.Scenes
                 NumbersAllowed = true,
                 SpecialCharactersAllowed = false
             };
+            txtUsername.KeyPressed += txt_KeyPressed;
             txtUsername.OnClick += Control_OnClick;
             Controls.Add(txtUsername);
 
@@ -131,6 +132,7 @@ namespace DansWorld.GameClient.UI.Scenes
                 NumbersAllowed = true,
                 SpecialCharactersAllowed = false
             };
+            txtFullname.KeyPressed += txt_KeyPressed;
             txtFullname.OnClick += Control_OnClick;
             Controls.Add(txtFullname);
 
@@ -155,7 +157,7 @@ namespace DansWorld.GameClient.UI.Scenes
                 FrontColor = Color.Black,
                 BorderColor = Color.Black,
                 BorderThickness = 2,
-                CharacterLimit = 20,
+                CharacterLimit = 60,
                 Font = GameClient.DEFAULT_FONT,
                 Size = new Point(300, (int)GameClient.DEFAULT_FONT.MeasureString(" ").Y + 10),
                 Location = new Point(lblUsername.Location.X, lblEmail.Destination.Bottom + 10),
@@ -163,6 +165,7 @@ namespace DansWorld.GameClient.UI.Scenes
                 NumbersAllowed = true,
                 SpecialCharactersAllowed = true 
             };
+            txtEmail.KeyPressed += txt_KeyPressed;
             txtEmail.TextChanged += TxtEmail_TextChanged;
             txtEmail.OnClick += Control_OnClick;
             Controls.Add(txtEmail);
@@ -197,6 +200,7 @@ namespace DansWorld.GameClient.UI.Scenes
                 SpecialCharactersAllowed = true,
                 IsPasswordField = true
             };
+            txtPassword.KeyPressed += txt_KeyPressed;
             txtPassword.OnClick += Control_OnClick;
             Controls.Add(txtPassword);
 
@@ -230,6 +234,7 @@ namespace DansWorld.GameClient.UI.Scenes
                 SpecialCharactersAllowed = true,
                 IsPasswordField = true
             };
+            txtRepeat.KeyPressed += txt_KeyPressed;
             txtRepeat.OnClick += Control_OnClick;
             Controls.Add(txtRepeat);
 
@@ -276,6 +281,40 @@ namespace DansWorld.GameClient.UI.Scenes
             };
             Controls.Add(lblMessage);
 
+        }
+
+        private void txt_KeyPressed(object sender, KeyPressedEventArgs e)
+        {
+            if (e.KeyPressed == Microsoft.Xna.Framework.Input.Keys.Tab)
+            {
+                bool controlFound = false;
+                bool focusChanged = false;
+                bool iteratedOnce = false;
+                while (!focusChanged)
+                {
+                    foreach (Control control in Controls)
+                    {
+                        if (control is TextBox)
+                        {
+                            // if a control was found chronologically we set the focus to the next textbox in the collection
+                            // if not and we've iterated once, we'll just set the focus to the first text box.
+                            if (controlFound || iteratedOnce)
+                            {
+                                control.HasFocus = true;
+                                focusChanged = true;
+                                break;
+                            }
+
+                            if (control == sender)
+                            {
+                                controlFound = true;
+                            }
+                        }
+                    }
+                    iteratedOnce = true;
+                }
+                if (controlFound) ((TextBox)sender).HasFocus = false;
+            }
         }
 
         internal void DisplayMessage(string message)

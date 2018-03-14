@@ -21,7 +21,7 @@ namespace DansWorld.Server
         public Thread Thread { get; private set; }
         public bool ShouldReceive { get; private set; }
         private Account _accountHandling;
-        private Character _characterHandling;
+        private PlayerCharacter _characterHandling;
         private int _id;
         #endregion
 
@@ -135,7 +135,7 @@ namespace DansWorld.Server
                                 int userid = pkt.ReadByte();
                                 if (_accountHandling.Characters.Count >= userid) {
                                     pb = new PacketBuilder(PacketFamily.PLAY, PacketAction.ACCEPT);
-                                    Character c = _accountHandling.GetCharacter(userid);
+                                    PlayerCharacter c = _accountHandling.GetCharacter(userid);
                                     _characterHandling = c;
                                     c.ServerID = _id;
                                     pb = pb.AddByte((byte)c.Name.Length).AddString(c.Name)
@@ -144,9 +144,9 @@ namespace DansWorld.Server
                                            .AddInt(c.X)
                                            .AddInt(c.Y)
                                            .AddByte((byte)c.Facing)
-                                           .AddInt(c.ServerID).AddInt(_server.LoggedInCharacters.Count);
+                                           .AddInt(c.ServerID).AddInt(_server.LoggedInPlayers.Count);
 
-                                    foreach (Character character in _server.LoggedInCharacters)
+                                    foreach (PlayerCharacter character in _server.LoggedInPlayers)
                                     {
                                         pb = pb.AddByte((byte)character.Name.Length).AddString(character.Name)
                                            .AddByte((byte)character.Level)
@@ -158,7 +158,7 @@ namespace DansWorld.Server
                                     }
                                     Send(pb.Build());
 
-                                    _server.LoggedInCharacters.Add(c);
+                                    _server.LoggedInPlayers.Add(c);
 
                                     foreach (Client client in _server.Clients)
                                     {
@@ -245,7 +245,7 @@ namespace DansWorld.Server
                             pb = new PacketBuilder()
                                 .AddByte((byte)PacketFamily.LOGIN)
                                 .AddByte((byte)PacketAction.ACCEPT);
-                            foreach (Character character in account.Characters)
+                            foreach (PlayerCharacter character in account.Characters)
                             {
                                 pb = pb.AddByte((byte)character.Name.Length)
                                     .AddString(character.Name)
@@ -320,7 +320,7 @@ namespace DansWorld.Server
                 Thread.Join();
         }
 
-        public void LogOut(Character character)
+        public void LogOut(PlayerCharacter character)
         {
             character.Save(_database);
             character.ServerID = 0;
@@ -339,7 +339,7 @@ namespace DansWorld.Server
         public void Stop()
         {
             if (_accountHandling != null) _accountHandling.State = AccountState.LoggedOut;
-            if (_server.LoggedInCharacters.Contains(_characterHandling)) _server.LoggedInCharacters.Remove(_characterHandling);
+            if (_server.LoggedInPlayers.Contains(_characterHandling)) _server.LoggedInPlayers.Remove(_characterHandling);
             if (_characterHandling != null) LogOut(_characterHandling);
 
             try

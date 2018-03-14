@@ -7,7 +7,7 @@ using DansWorld.Server.Data;
 
 namespace DansWorld.Server.GameEntities
 {
-    public class Character
+    public class PlayerCharacter
     {
         public string Name;
         public int Level;
@@ -15,7 +15,7 @@ namespace DansWorld.Server.GameEntities
         public int ServerID;
         public int X, Y, EXP;
         public Direction Facing;
-        public Character()
+        public PlayerCharacter()
         {
             Name = "";
             Level = 0;
