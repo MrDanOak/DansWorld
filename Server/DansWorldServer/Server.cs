@@ -10,6 +10,7 @@ using DansWorld.Server.GameEntities;
 using DansWorld.Server.Data;
 using System.Data;
 using DansWorld.Common.Enums;
+using DansWorld.Common.Net;
 
 namespace DansWorld.Server
 {
@@ -22,40 +23,49 @@ namespace DansWorld.Server
         private bool _shouldListen { get; set; }
         internal List<Account> Accounts { get; set; }
         internal List<Character> LoggedInCharacters { get; set; }
-        internal Database Database;
+        private Database _database;
+        System.Timers.Timer _pingTimer;
 
         public Server(int port)
         {
             _listener = new TcpListener(IPAddress.Any, port);
             _thread = new Thread(new ThreadStart(Main));
             Clients = new List<Client>();
+            Accounts = new List<Account>();
             _shouldListen = true;
             _port = port;
-            Accounts = new List<Account>();
-            //{ new Account("test", "test", "test@test.com") };
-            //Accounts[0].Characters.Add(new Character() { Name = "Male Test", Gender = Common.Enums.Gender.MALE });
-            //Accounts[0].Characters.Add(new Character() { Name = "Female Test", Gender = Common.Enums.Gender.FEMALE });
-            Logger.Log(String.Format("Server object created {0}:{1}", "127.0.0.1", port));
             LoggedInCharacters = new List<Character>();
-            Database = new Database();
-            DataTable accountsTable = Database.Select("*", "Accounts");
+            _database = new Database();
+            _LoadAccounts();
+            Logger.Log(String.Format("Server object created {0}:{1}", "127.0.0.1", port));
+
+            _pingTimer = new System.Timers.Timer(1000);
+            _pingTimer.Elapsed += _pingTimer_Elapsed;
+            _pingTimer.Start();
+        }
+
+        private void _LoadAccounts()
+        {
+            DataTable accountsTable = _database.Select("*", "Accounts");
             foreach (DataRow row in accountsTable.Rows)
             {
-                Account account = new Account(row["Username"].ToString(), row["Password"].ToString(), row["Email"].ToString());
+                Account account = new Account(row["Username"].ToString(), row["Password"].ToString(), row["Email"].ToString(), row["Fullname"].ToString());
                 Accounts.Add(account);
             }
 
             int characters = 0;
             foreach (Account account in Accounts)
             {
-                DataTable characterTable = Database.Select("*", "Characters", "AccountUsername", account.Username);
+                DataTable characterTable = _database.Select("*", "Characters", "AccountUsername", account.Username);
                 foreach (DataRow row in characterTable.Rows)
                 {
                     Character character = new Character()
                     {
                         Name = row["CharacterName"].ToString(),
                         Gender = (Gender)Convert.ToInt32(row["Gender"].ToString()),
-                        Level = Convert.ToInt32(row["Level"].ToString())
+                        Level = Convert.ToInt32(row["Level"].ToString()),
+                        X = Convert.ToInt32(row["X"].ToString()), 
+                        Y = Convert.ToInt32(row["Y"].ToString())
                     };
                     account.Characters.Add(character);
                     characters++;
@@ -63,6 +73,22 @@ namespace DansWorld.Server
             }
             Logger.Log("Loaded " + Accounts.Count + " account(s)");
             Logger.Log("Loaded " + characters + " character(s)");
+        }
+
+        private void _pingTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            PacketBuilder pb = new PacketBuilder(PacketFamily.CONNECTION, PacketAction.PING);
+            DateTime now = DateTime.Now.ToUniversalTime();
+            string nowString = now.ToString("hh.mm.ss.ffffff");
+            pb = pb.AddInt(nowString.Length).AddString(nowString);
+
+            lock (Clients)
+            {
+                foreach (Client client in Clients)
+                {
+                    client.Send(pb.Build());
+                }
+            }
         }
 
         public void Add(Client client)
@@ -104,7 +130,7 @@ namespace DansWorld.Server
             {
                 try 
                 {
-                    Client client = new Client(this, _listener.AcceptTcpClient(), Clients.Count);
+                    Client client = new Client(this, _listener.AcceptTcpClient(), Clients.Count, _database);
                     Logger.Log(String.Format("Client connection accepted from {0}", client.Socket.Client.RemoteEndPoint));
                     Add(client);
                     client.Start();
@@ -126,7 +152,6 @@ namespace DansWorld.Server
         {
             Logger.Log("Server shutting down...");
             _shouldListen = false;
-            _thread.Abort();
             _thread.Join();
         }
 

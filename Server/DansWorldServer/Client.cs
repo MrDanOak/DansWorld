@@ -8,6 +8,8 @@ using DansWorld.Common.IO;
 using System.Collections.Generic;
 using DansWorld.Server.GameEntities;
 using DansWorld.Common.Enums;
+using DansWorld.Server.Data;
+using System.Security.Cryptography;
 
 namespace DansWorld.Server
 {
@@ -25,15 +27,17 @@ namespace DansWorld.Server
 
         #region private accessors
         private Server _server;
+        private Database _database;
         #endregion
 
-        public Client(Server server, TcpClient socket, int id)
+        public Client(Server server, TcpClient socket, int id, Database database)
         {
             _server = server;
             Socket = socket;
             Thread = new Thread(new ThreadStart(Main));
             ShouldReceive = true;
             _id = id;
+            _database = database;
         }
 
         public void Main() 
@@ -82,11 +86,9 @@ namespace DansWorld.Server
                         {
                             if (pkt.Action == PacketAction.REQUEST)
                             {
-                                Logger.Log("Login Requested from accepted packet");
-                                string s = pkt.ReadString(pkt.Length - 2);
-                                string user = s.Split("p:")[0];
-                                user = user.Substring(2, user.Length - 2);
-                                string pass = s.Split("p:")[1];
+                                string user = pkt.ReadString(pkt.ReadByte());
+                                string pass = pkt.ReadString(pkt.ReadByte());
+                                pass = Utils.Security.GetHashString(pass + "PROCO304" + user);
                                 CheckLogin(user, pass);
                             }
                         }
@@ -94,10 +96,11 @@ namespace DansWorld.Server
                         {
                             if (pkt.Action == PacketAction.REQUEST)
                             {
-                                Logger.Log("Registration request from accepted packet");
                                 string username = pkt.ReadString(pkt.ReadByte());
                                 string password = pkt.ReadString(pkt.ReadByte());
+                                password = Utils.Security.GetHashString(password + "PROCO304" + username);
                                 string email = pkt.ReadString(pkt.ReadByte());
+                                string fullname = pkt.ReadString(pkt.ReadByte());
                                 Logger.Log(String.Format("Requested username {0} password {1} email {2}", username, password, email));
                                 bool userExists = false;
                                 foreach (Account account in _server.Accounts)
@@ -118,8 +121,9 @@ namespace DansWorld.Server
                                     pb = new PacketBuilder(PacketFamily.REGISTER, PacketAction.ACCEPT);
                                     pb = pb.AddByte((byte)username.Length).AddString(username);
                                     Send(pb.Build());
-                                    Account account = new Account(username, password, email);
+                                    Account account = new Account(username, password, email, fullname);
                                     _server.Accounts.Add(account);
+                                    account.CreateDatabaseEntry(_database, Socket.Client.RemoteEndPoint.ToString().Split(":")[0]);
                                     Logger.Log("Account Created. Username: " + username);
                                 }
                             }
@@ -176,7 +180,7 @@ namespace DansWorld.Server
                         }
                         else if (pkt.Family == PacketFamily.PLAYER)
                         {
-                            if (pkt.Action == PacketAction.MOVE)
+                            if (pkt.Action == PacketAction.MOVE || pkt.Action == PacketAction.STOP)
                             {
                                 int x = pkt.ReadInt();
                                 int y = pkt.ReadInt();
@@ -201,8 +205,8 @@ namespace DansWorld.Server
                     } 
                     catch (Exception e)
                     {
-                        Logger.Warn("Packet was not in a recognised format and therefore will not be handled. Remote endpoint: " 
-                            + Socket.Client.RemoteEndPoint + "\n\r StackTrace:" + e.StackTrace);
+                        Logger.Warn("Packet handling error. Remote endpoint: " 
+                            + Socket.Client.RemoteEndPoint + "\n\r StackTrace:" + e.StackTrace + "\n\r Message:" + e.Message);
                     }
 
                 }
@@ -239,14 +243,12 @@ namespace DansWorld.Server
                                     .AddString(character.Name)
                                     .AddByte((byte)character.Level)
                                     .AddByte((byte)character.Gender);
-                                Logger.Log("Building serialised packet of character: " + character.Name);
                             }
                             account.State = AccountState.LoggedIn;
                             _accountHandling = account;
                         }
                         else
                         {
-                            Logger.Log("Login accepted from " + Socket.Client.RemoteEndPoint + " for account " + user + " However the client is logged in somewhere else");
                             pb = new PacketBuilder()
                                 .AddByte((byte)PacketFamily.LOGIN)
                                 .AddByte((byte)PacketAction.REJECT)
@@ -312,6 +314,7 @@ namespace DansWorld.Server
 
         public void LogOut(Character character)
         {
+            character.Save(_database);
             character.ServerID = 0;
             PacketBuilder pb = new PacketBuilder(PacketFamily.PLAYER, PacketAction.LOGOUT);
             pb = pb.AddInt(character.ServerID);
@@ -327,10 +330,9 @@ namespace DansWorld.Server
 
         public void Stop()
         {
-            LogOut(_characterHandling);
             if (_accountHandling != null) _accountHandling.State = AccountState.LoggedOut;
             if (_server.LoggedInCharacters.Contains(_characterHandling)) _server.LoggedInCharacters.Remove(_characterHandling);
-            if (_characterHandling != null) _characterHandling.ServerID = 0;
+            if (_characterHandling != null) LogOut(_characterHandling);
 
             try
             {
@@ -349,7 +351,6 @@ namespace DansWorld.Server
                 if (Thread != null && Thread.IsAlive)
                 {
                     ShouldReceive = false;
-                    Thread.Abort();
                     Thread.Join();
                 }
             }

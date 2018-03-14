@@ -9,6 +9,7 @@ using DansWorld.Common.IO;
 using DansWorld.Common.Net;
 using DansWorld.Common.GameEntities;
 using DansWorld.Common.Enums;
+using System.Globalization;
 
 namespace DansWorld.GameClient.Net
 {
@@ -22,6 +23,7 @@ namespace DansWorld.GameClient.Net
         public bool ShouldReceive { get; private set; }
         public Thread Thread { get; private set; }
         private GameClient _gameClient;
+        private int pingFromServer = 0;
 
         public Client(string host, int port, GameClient gameClient)
         {
@@ -43,6 +45,7 @@ namespace DansWorld.GameClient.Net
             }
             catch (Exception e)
             {
+                Logger.Error(e.Message + " Stack: " + e.StackTrace);
                 Console.WriteLine(e.Message);
             }
         }
@@ -188,6 +191,7 @@ namespace DansWorld.GameClient.Net
                                 {
                                     character.X = x;
                                     character.Y = y;
+                                    character.IsWalking = true;
                                     character.SetFacing(d);
                                 }
                             }
@@ -204,10 +208,24 @@ namespace DansWorld.GameClient.Net
                                 _gameClient.RemoveCharacter(toRemove);
                         }
                     }
+                    else if (pkt.Family == PacketFamily.CONNECTION)
+                    {
+                        if (pkt.Action == PacketAction.PING)
+                        {
+                            PacketBuilder pBuilder = new PacketBuilder(PacketFamily.CONNECTION, PacketAction.PONG);
+                            DateTime now = DateTime.Now.ToUniversalTime();
+                            DateTime fromServer = DateTime.ParseExact(pkt.ReadString(pkt.ReadInt()), "hh.mm.ss.ffffff", CultureInfo.InvariantCulture);
+                            TimeSpan t = now.Subtract(fromServer);
+                            string nowString = now.ToShortTimeString();
+                            pBuilder = pBuilder.AddInt(nowString.Length).AddString(nowString);
+                            Send(pBuilder.Build());
+                            _gameClient.ShowPing(t.Milliseconds);
+                        }
+                    }
                 }
                 catch (Exception e)
                 {
-                    Logger.Error("Fatal Exception: " + e.Message);
+                    Logger.Error(e.Message + " Stack " + e.StackTrace);
                     break;
                 }
             }
@@ -229,6 +247,7 @@ namespace DansWorld.GameClient.Net
                 }
                 catch (Exception e)
                 {
+                    Logger.Error(e.Message + " Stack " + e.StackTrace);
                     tries++;
                     Connect();
                 }

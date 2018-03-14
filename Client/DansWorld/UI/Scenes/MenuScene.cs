@@ -186,6 +186,11 @@ namespace DansWorld.GameClient.UI.Scenes
 
         public override void Update(GameTime gameTime)
         {
+            _txtUser.Location = new Point(GameClient.WIDTH / 2 - 150, GameClient.HEIGHT / 2);
+            _txtPassword.Location = new Point(GameClient.WIDTH / 2 - 150, _txtUser.Destination.Bottom + 10);
+            _btnPlay.Location = new Point(_txtPassword.Destination.Right - ((int)GameClient.GW2_FONT.MeasureString("Play").X + 10), _txtPassword.Destination.Bottom + 10);
+            _btnRegister.Location = new Point(_btnPlay.Destination.Left - ((int)GameClient.GW2_FONT.MeasureString("Register").X + 20), _btnPlay.Destination.Top);
+            _lblDansWorld.Location = new Point(GameClient.WIDTH / 2 - (((int)GameClient.GW2_FONT_LARGE.MeasureString("Dan's World").X + 10) / 2), _txtUser.Destination.Top - ((int)GameClient.GW2_FONT_LARGE.MeasureString("Dan's World").Y + 20));
             foreach (Control control in Controls)
             {
                 control.Update(gameTime);
@@ -216,8 +221,11 @@ namespace DansWorld.GameClient.UI.Scenes
                 GameClient.NetClient.Connect();
             }
             PacketBuilder pb = new PacketBuilder(PacketFamily.LOGIN, PacketAction.REQUEST);
-            pb = pb.AddString("u:" + _txtUser.Text)
-                   .AddString("p:" + _txtPassword.Text);
+            pb = pb.AddByte((byte)_txtUser.Text.Length)
+                    .AddString(_txtUser.Text)
+                    .AddByte((byte)_txtPassword.Text.Length)
+                    .AddString(_txtPassword.Text);
+                    
             GameClient.NetClient.Send(pb.Build());
             Console.WriteLine("Attempting to login using user: {0} pass: {1}", _txtUser.Text, _txtPassword.Text);
         }

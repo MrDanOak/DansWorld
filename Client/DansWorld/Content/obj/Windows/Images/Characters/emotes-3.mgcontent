@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>C:/Users/dansc/source/repos/DansWorld/Client/DansWorld/Content/Images/Characters/emotes-3.png</SourceFile>
-  <SourceTime>2018-03-05T13:51:16.2117835+00:00</SourceTime>
+  <SourceTime>2018-03-13T21:22:10.2211375+00:00</SourceTime>
   <DestFile>C:/Users/dansc/source/repos/DansWorld/Client/DansWorld/Content/bin/Windows/Images/Characters/emotes-3.xnb</DestFile>
-  <DestTime>2018-03-08T14:53:38.3355329+00:00</DestTime>
+  <DestTime>2018-03-13T21:30:42.3741213+00:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T15:05:36+00:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

@@ -18,6 +18,8 @@ namespace DansWorld.GameClient.UI.Scenes
         private List<CharacterSprite> characterSprites;
         private ContentManager _content;
         private GameClient _gameClient;
+        private Label _pingLabel;
+        private bool _serverNotifiedOfIdle = false;
 
 
         public List<Character> Characters
@@ -43,6 +45,13 @@ namespace DansWorld.GameClient.UI.Scenes
         {
             characterSprites = new List<CharacterSprite>();
             _content = Content;
+            _pingLabel = new Label()
+            {
+                Font = GameClient.DEFAULT_FONT,
+                FrontColor = Color.Black,
+                Location = new Point(0, 0),
+                Text = "0 ms",
+            };
         }
 
         public void AddCharacter(Character character)
@@ -81,15 +90,11 @@ namespace DansWorld.GameClient.UI.Scenes
             characterSprites = new List<CharacterSprite>();
         }
 
-        private int IsOnTop(CharacterSprite a, CharacterSprite b)
-        {
-            return a.Character.Y.CompareTo(b.Character.Y);
-        }
-
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             // TODO: 
             // Sort character sprites by what is in front first
+            _pingLabel.Draw(gameTime, spriteBatch);
             foreach (CharacterSprite characterSprite in characterSprites)
             {
                 characterSprite.Draw(gameTime, spriteBatch);
@@ -99,6 +104,7 @@ namespace DansWorld.GameClient.UI.Scenes
 
         public override void Update(GameTime gameTime)
         {
+            _pingLabel.Update(gameTime);
             bool moved = false;
             PacketBuilder pb = new PacketBuilder(PacketFamily.PLAYER, PacketAction.MOVE);
             if (Keyboard.GetState().IsKeyDown(Keys.A)) { characterSprites[0].Character.X -= 1; characterSprites[0].Character.SetFacing(Common.Enums.Direction.LEFT); moved = true; }
@@ -110,16 +116,43 @@ namespace DansWorld.GameClient.UI.Scenes
             // it will send the server the characters x and y (Many times a second)
             if (moved)
             {
-                pb = pb.AddInt(characterSprites[0].Character.X).AddInt(characterSprites[0].Character.Y).AddByte((byte)characterSprites[0].Character.Facing)
+                pb = new PacketBuilder(PacketFamily.PLAYER, PacketAction.MOVE)
+                    .AddInt(characterSprites[0].Character.X)
+                    .AddInt(characterSprites[0].Character.Y)
+                    .AddByte((byte)characterSprites[0].Character.Facing)
                     .AddInt(_gameClient.CharacterID);
                 GameClient.NetClient.Send(pb.Build());
+
+                _serverNotifiedOfIdle = false;
             }
+            else if (!_serverNotifiedOfIdle)
+            {
+                pb = new PacketBuilder(PacketFamily.PLAYER, PacketAction.STOP)
+                    .AddInt(characterSprites[0].Character.X)
+                    .AddInt(characterSprites[0].Character.Y)
+                    .AddByte((byte)characterSprites[0].Character.Facing)
+                    .AddInt(_gameClient.CharacterID);
+                GameClient.NetClient.Send(pb.Build());
+                _serverNotifiedOfIdle = true;
+            }
+
+            characterSprites[0].Character.IsIdle = !moved;
+            characterSprites[0].Character.IsWalking = moved;
 
             foreach (CharacterSprite characterSprite in characterSprites)
             {
                 characterSprite.Update(gameTime);
             }
             base.Update(gameTime);
+        }
+
+        internal void ShowPing(int ms)
+        {
+            _pingLabel.Text = ms + " ms";
+            _pingLabel.Size = new Point(
+                (int)_pingLabel.Font.MeasureString(_pingLabel.Text).X,
+                (int)_pingLabel.Font.MeasureString(_pingLabel.Text).Y);
+
         }
     }
 }

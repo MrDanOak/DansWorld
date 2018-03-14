@@ -299,11 +299,15 @@ namespace DansWorld.GameClient.UI.Scenes
                 }
 
                 PacketBuilder pb = new PacketBuilder(PacketFamily.REGISTER, PacketAction.REQUEST);
-                pb = pb.AddByte((byte)txtUsername.Text.Length).AddString(txtUsername.Text)
-                       .AddByte((byte)txtPassword.Text.Length).AddString(txtPassword.Text)
-                       .AddByte((byte)txtEmail.Text.Length).AddString(txtEmail.Text);
+                pb = pb.AddByte((byte)txtUsername.Text.Length)
+                       .AddString(txtUsername.Text)
+                       .AddByte((byte)txtPassword.Text.Length)
+                       .AddString(txtPassword.Text)
+                       .AddByte((byte)txtEmail.Text.Length)
+                       .AddString(txtEmail.Text)
+                       .AddByte((byte)txtFullname.Text.Length)
+                       .AddString(txtFullname.Text);
                 GameClient.NetClient.Send(pb.Build());
-                Console.WriteLine("Attempting to create user: {0} pass: {1}", txtUsername.Text, txtPassword.Text, txtEmail.Text);
             }
         }
 

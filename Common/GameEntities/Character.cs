@@ -10,8 +10,10 @@ namespace DansWorld.Common.GameEntities
         public string Name;
         public int Level;
         public Gender Gender;
-        public bool IsIdle { get; private set; }
+        public bool IsIdle { get; set; }
+        public bool IsWalking { get; set; }
         public Direction Facing { get; set; }
+
         public int X, Y, ServerID;
         public Character()
         {
@@ -19,6 +21,7 @@ namespace DansWorld.Common.GameEntities
             Level = 0;
             Gender = Gender.MALE;
             IsIdle = true;
+            IsWalking = false;
             Facing = Direction.DOWN;
             X = 0;
             Y = 0;

@@ -23,8 +23,8 @@ namespace DansWorld.GameClient
         GameState _gameState = GameState.MainMenu;
         List<Control> _characterSelectControls = new List<Control>();
         public static Net.Client NetClient;
-        public const int HEIGHT = 1080;
-        public const int WIDTH = 1920;
+        public static int HEIGHT = 720;
+        public static int WIDTH = 1366;
         public static Texture2D DEFAULT_TEXTURE;
         public static SpriteFont DEFAULT_FONT;
         public static SpriteFont DEFAULT_FONT_BOLD;
@@ -54,8 +54,19 @@ namespace DansWorld.GameClient
             Content.RootDirectory = "Content";
             _graphics.PreferredBackBufferHeight = HEIGHT;
             _graphics.PreferredBackBufferWidth = WIDTH;
-            
+            Window.AllowAltF4 = true;
+            Window.AllowUserResizing = true;
+            Window.ClientSizeChanged += Window_ClientSizeChanged;
         }
+
+        private void Window_ClientSizeChanged(object sender, EventArgs e)
+        {
+            WIDTH = Window.ClientBounds.Width;
+            HEIGHT = Window.ClientBounds.Height;
+            _graphics.PreferredBackBufferHeight = HEIGHT;
+            _graphics.PreferredBackBufferWidth = WIDTH;
+        }
+
         protected override void Initialize()
         {
             menu = new MenuScene(this);
@@ -188,6 +199,16 @@ namespace DansWorld.GameClient
         public void SetState(GameState state)
         {
             _gameState = state;
+        }
+
+        public void ShowPing(int ms)
+        {
+            switch (_gameState)
+            {
+                case GameState.Playing:
+                    gameScene.ShowPing(ms);
+                    break;
+            }
         }
 
         internal void RemoveCharacter(Character toRemove)

@@ -12,6 +12,8 @@ namespace DansWorld.Common.Net
         MOVE = 4, 
         STOP = 5, 
         WELCOME = 6,
-        LOGOUT = 7
+        LOGOUT = 7,
+        PING = 8,
+        PONG = 9
     }
 }

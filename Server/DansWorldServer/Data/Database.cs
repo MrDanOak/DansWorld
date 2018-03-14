@@ -8,7 +8,7 @@ using System.Text;
 
 namespace DansWorld.Server.Data
 {
-    class Database
+    public class Database
     {
         private MySqlConnection Connection { get; set; }
         private string Server { get; set; }
@@ -26,9 +26,10 @@ namespace DansWorld.Server.Data
             ConnectionString = "Server=" + Server + "; Database=" + DatabaseName +
                 "; Uid=" + User + "; Pwd=" + Password + ";";
             Connection = new MySqlConnection(ConnectionString);
+            OpenConnection();
         }
 
-        private bool openConnection()
+        public bool OpenConnection()
         {
             try
             {
@@ -47,24 +48,23 @@ namespace DansWorld.Server.Data
                         Logger.Error("Invalid username/password.");
                         break;
                 }
-                Logger.Error(e.Message);
+                Logger.Error(e.Message + " Stack " + e.StackTrace);
                 return false;
             }
         }
 
         public DataTable Select(string what, string from, string col = "", string whereVal = "")
         {
-            openConnection();
-            MySqlCommand Command = new MySqlCommand("SELECT " + what + " FROM " + from + (col != "" ? " WHERE " + col + " = '" + whereVal + "'" : ""), Connection);
+            MySqlCommand cmd = new MySqlCommand("SELECT " + what + " FROM " + from + (col != "" ? " WHERE " + col + " = '" + whereVal + "'" : ""), Connection);
             DataTable dt = new DataTable();
-            MySqlDataReader reader = Command.ExecuteReader();
+            MySqlDataReader reader = cmd.ExecuteReader();
             dt.Load(reader);
             reader.Close();
-            closeConnection();
+            reader.Dispose();
             return dt;
         }
 
-        private bool closeConnection()
+        public bool CloseConnection()
         {
             try
             {
@@ -73,7 +73,7 @@ namespace DansWorld.Server.Data
             }
             catch (MySqlException e)
             {
-                Logger.Log(e.Message, LogLevel.ERROR);
+                Logger.Error(e.Message + " Stack " + e.StackTrace);
                 return false;
             }
         }
@@ -85,14 +85,9 @@ namespace DansWorld.Server.Data
 
         public int Query(string query)
         {
-            if (openConnection() == true)
-            {
-                MySqlCommand cmd = new MySqlCommand(query, Connection);
-                int returnRows = cmd.ExecuteNonQuery();
-                closeConnection();
-                return returnRows;
-            }
-            return -1;
+            MySqlCommand cmd = new MySqlCommand(query, Connection);
+            int returnRows = cmd.ExecuteNonQuery();
+            return returnRows;
         }
 
         public int Update(string query)
@@ -138,11 +133,11 @@ namespace DansWorld.Server.Data
         public int Count(string query)
         {
             int count = -1;
-            if (openConnection() == true)
+            if (OpenConnection() == true)
             {
                 MySqlCommand cmd = new MySqlCommand(query, Connection);
                 count = int.Parse(cmd.ExecuteScalar() + "");
-                closeConnection();
+                CloseConnection();
                 return count;
             }
             else
@@ -150,5 +145,6 @@ namespace DansWorld.Server.Data
                 return count;
             }
         }
+
     }
 }
