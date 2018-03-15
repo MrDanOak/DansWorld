@@ -50,12 +50,15 @@ namespace DansWorld.GameClient.UI.Scenes
         private void Window_ClientSizeChanged(object sender, EventArgs e)
         {
             if(_txtIn != null) _txtIn.Location = new Point(10, GameClient.HEIGHT - (int)GameClient.DEFAULT_FONT.MeasureString(" ").Y - 5);
-            for (int i = 0; i < 10; i++)
+            if (_lblMessages != null)
             {
-                if (_lblMessages[i] != null)
+                for (int i = 0; i < _lblMessages.Count; i++)
                 {
-                    _lblMessages[i].Location = new Point(10,
-                        GameClient.HEIGHT - ((i + 1) * (int)GameClient.DEFAULT_FONT.MeasureString("test").Y) - _txtIn.Destination.Height - 5);
+                    if (_lblMessages[i] != null)
+                    {
+                        _lblMessages[i].Location = new Point(10,
+                            GameClient.HEIGHT - ((i + 1) * (int)GameClient.DEFAULT_FONT.MeasureString("test").Y) - _txtIn.Destination.Height - 5);
+                    }
                 }
             }
         }
