@@ -137,3 +137,9 @@ C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Debug\Dans World.
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Debug\Dans World.application
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Debug\Dans World.exe
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Debug\Dans World.pdb
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Content\Images\Enemies\cactite.xnb
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Content\Images\Enemies\dragon.xnb
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Content\Images\Enemies\float_eye.xnb
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Content\Images\Enemies\ghost.xnb
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Content\Images\Enemies\mushroom.xnb
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Debug\Content\Images\Enemies\slime.xnb

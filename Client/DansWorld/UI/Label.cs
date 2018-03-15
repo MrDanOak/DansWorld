@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace DansWorld.GameClient.UI
 {
-    class Label : Control
+    public class Label : Control
     {
         public string Text = "";
         public Texture2D BackgroundImage;

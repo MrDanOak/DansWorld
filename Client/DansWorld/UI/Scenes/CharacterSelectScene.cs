@@ -21,7 +21,7 @@ namespace DansWorld.GameClient.UI.Scenes
         Button[] _btnPlayChar = new Button[3];
         Button[] _btnDeleteChar = new Button[3];
         Button[] _btnCreateChar = new Button[3];
-        CharacterSprite[] _characterSprite = new CharacterSprite[3];
+        PlayerCharacterSprite[] _characterSprites = new PlayerCharacterSprite[3];
         public List<PlayerCharacter> PlayerCharacters;
         private int _elapsedms = 0;
         private GameClient _gameClient;
@@ -112,18 +112,15 @@ namespace DansWorld.GameClient.UI.Scenes
                 };
                 Controls.Add(_btnCreateChar[i]);
 
-                _characterSprite[i] = new CharacterSprite()
+                _characterSprites[i] = new PlayerCharacterSprite()
                 {
                     IsVisible = true,
-                    SpriteWidth = 48,
-                    SpriteHeight = 48,
+                    Width = 48,
+                    Height = 48,
                     Size = new Point(48, 48),
                     Location = new Point(_charBox[i].Destination.Left + (_charBox[i].Size.X / 2) - 24, _charBox[i].Destination.Top + (_charBox[i].Size.Y / 2) - 24),
-                    Name = "charSprite" + i,
-                    FrontColor = Color.White,
-                    BaseTexture = baseCharacterTexture
+                    Texture = baseCharacterTexture
                 };
-                Controls.Add(_characterSprite[i]);
             }
         }
 
@@ -145,7 +142,7 @@ namespace DansWorld.GameClient.UI.Scenes
             if (PlayerCharacters == null) PlayerCharacters = new List<PlayerCharacter>();
             if (PlayerCharacters.Count >= 3) return;
             PlayerCharacters.Add(playerCharacter);
-            _characterSprite[PlayerCharacters.Count - 1].PlayerCharacter = playerCharacter;
+            _characterSprites[PlayerCharacters.Count - 1].PlayerCharacter = playerCharacter;
 
             _btnPlayChar[PlayerCharacters.Count - 1].IsVisible = true;
             _btnDeleteChar[PlayerCharacters.Count - 1].IsVisible = true;
@@ -164,11 +161,16 @@ namespace DansWorld.GameClient.UI.Scenes
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+
             foreach (Control control in Controls)
             {
                 control.Draw(gameTime, spriteBatch);
             }
-            base.Draw(gameTime, spriteBatch);
+
+            for (int i = 0; i < _characterSprites.Length; i++)
+            {
+                _characterSprites[i].Draw(gameTime, spriteBatch);
+            }
         }
 
         public override void Update(GameTime gameTime)
@@ -185,11 +187,16 @@ namespace DansWorld.GameClient.UI.Scenes
                 }
                 _elapsedms = 0;
             }
+
+            foreach (PlayerCharacterSprite cSprite in _characterSprites)
+            {
+                cSprite.Update(gameTime);
+            }
+
             foreach (Control control in Controls)
             {
                 control.Update(gameTime);
             }
-            base.Update(gameTime);
         }
     }
 }

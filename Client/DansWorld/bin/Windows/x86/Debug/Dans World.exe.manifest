@@ -4,7 +4,7 @@
   <description asmv2:iconFile="Icon.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="Dans World" version="0.1.0.25906" language="neutral" processorArchitecture="x86" />
+    <assemblyIdentity name="Dans World" version="0.1.0.41885" language="neutral" processorArchitecture="x86" />
     <commandLine file="Dans World.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -291,14 +291,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Dans World.exe" size="196064">
-      <assemblyIdentity name="Dans World" version="0.1.0.25906" language="neutral" processorArchitecture="x86" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Dans World.exe" size="196576">
+      <assemblyIdentity name="Dans World" version="0.1.0.41885" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>9H6jjZ6HfYxvG9s3LkNNr5PC7olUp1s1BDttN/cAIPM=</dsig:DigestValue>
+        <dsig:DigestValue>CEbmf6a45bkBO0ulmGPGP5IhcuW5LQxQXIxkCajl+vQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -528,6 +528,60 @@
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
       <dsig:DigestValue>lKbocTIfxe4d94l/tVvEn8VGog9zKnvS51gajDWpd1Q=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Content\Images\Enemies\cactite.xnb" size="884821">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>2aogxRtvl9I4Yb88ILy3iymaGXNxhFzWoxxiPRIpsp0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Content\Images\Enemies\dragon.xnb" size="884821">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>6sqccuU3mRHljvMNUhS0Bn8grkRoc3JdfKUaWAx49M4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Content\Images\Enemies\float_eye.xnb" size="884821">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>v44PFIuIvQNHjD8qlWu4aA5tYY/+2e0EaUQb1aCZBlw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Content\Images\Enemies\ghost.xnb" size="110677">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>aVlCJZgJm8xYeaHrII4XNL3yszCGlboI1qcFsLBK3P4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Content\Images\Enemies\mushroom.xnb" size="884821">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>33sz5yBDXHPN/PiqVT8n6dieq7GdmZw3CYarCV5fH9E=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Content\Images\Enemies\slime.xnb" size="884821">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>R4CPYbCOSLAeHitZKAD7H+5pwZT4xXMqIdIcu1J7GCM=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Dans World.exe.config" size="163">

@@ -25,6 +25,7 @@ namespace DansWorld.Server
         internal List<PlayerCharacter> LoggedInPlayers { get; set; }
         private Database _database;
         System.Timers.Timer _pingTimer;
+        private object _clienstLock = new object();
 
         public Server(int port)
         {
@@ -82,7 +83,7 @@ namespace DansWorld.Server
             string nowString = now.ToString("hh.mm.ss.ffffff");
             pb = pb.AddInt(nowString.Length).AddString(nowString);
 
-            lock (Clients)
+            lock (_clienstLock)
             {
                 foreach (Client client in Clients)
                 {
@@ -93,7 +94,7 @@ namespace DansWorld.Server
 
         public void Add(Client client)
         {
-            lock (Clients)
+            lock (_clienstLock)
             {
                 if (!Clients.Contains(client))
                     Clients.Add(client);
@@ -102,7 +103,7 @@ namespace DansWorld.Server
 
         public void Remove(Client client)
         {
-            lock (Clients)
+            lock (_clienstLock)
             {
                 if (Clients.Contains(client)) 
                     Clients.Remove(client);

@@ -15,7 +15,7 @@ namespace DansWorld.GameClient.UI.Scenes
 {
     class GameScene : BaseScene
     {
-        private List<CharacterSprite> characterSprites;
+        private List<PlayerCharacterSprite> characterSprites;
         private ContentManager _content;
         private GameClient _gameClient;
         private Label _pingLabel;
@@ -30,7 +30,7 @@ namespace DansWorld.GameClient.UI.Scenes
             get
             {
                 List<PlayerCharacter> ret = new List<PlayerCharacter>();
-                foreach (CharacterSprite sprite in characterSprites)
+                foreach (PlayerCharacterSprite sprite in characterSprites)
                 {
                     ret.Add(sprite.PlayerCharacter);
                 }
@@ -61,7 +61,7 @@ namespace DansWorld.GameClient.UI.Scenes
 
         public override void Initialise(ContentManager Content)
         {
-            characterSprites = new List<CharacterSprite>();
+            characterSprites = new List<PlayerCharacterSprite>();
             _content = Content;
             _pingLabel = new Label()
             {
@@ -101,16 +101,14 @@ namespace DansWorld.GameClient.UI.Scenes
 
         public void AddCharacter(PlayerCharacter player)
         {
-            CharacterSprite sprite = new CharacterSprite()
+            PlayerCharacterSprite sprite = new PlayerCharacterSprite()
             {
-                Name = player.Name + "sprite",
                 IsVisible = true,
-                BaseTexture = _content.Load<Texture2D>("Images/Characters/base"),
-                SpriteWidth = 48,
-                SpriteHeight = 48,
+                Texture = _content.Load<Texture2D>("Images/Characters/base"),
+                Width = 48,
+                Height = 48,
                 Size = new Point(48, 48),
                 Location = new Point(player.X, player.Y),
-                FrontColor = Color.White,
                 PlayerCharacter = player,
                 InGame = true
             };
@@ -119,8 +117,8 @@ namespace DansWorld.GameClient.UI.Scenes
 
         public void RemoveCharacter(PlayerCharacter player)
         {
-            CharacterSprite toRemove = new CharacterSprite();
-            foreach (CharacterSprite sprite in characterSprites)
+            PlayerCharacterSprite toRemove = new PlayerCharacterSprite();
+            foreach (PlayerCharacterSprite sprite in characterSprites)
             {
                 if (player == sprite.PlayerCharacter)
                 {
@@ -132,7 +130,7 @@ namespace DansWorld.GameClient.UI.Scenes
 
         public void ClearCharacters()
         {
-            characterSprites = new List<CharacterSprite>();
+            characterSprites = new List<PlayerCharacterSprite>();
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -142,7 +140,7 @@ namespace DansWorld.GameClient.UI.Scenes
             _pingLabel.Draw(gameTime, spriteBatch);
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.BackToFront);
-            foreach (CharacterSprite characterSprite in characterSprites)
+            foreach (PlayerCharacterSprite characterSprite in characterSprites)
             {
                 characterSprite.Draw(gameTime, spriteBatch);
             }
@@ -222,7 +220,7 @@ namespace DansWorld.GameClient.UI.Scenes
             characterSprites[0].PlayerCharacter.IsIdle = !moved;
             characterSprites[0].PlayerCharacter.IsWalking = moved;
 
-            foreach (CharacterSprite characterSprite in characterSprites)
+            foreach (PlayerCharacterSprite characterSprite in characterSprites)
             {
                 characterSprite.Update(gameTime);
             }
