@@ -1,33 +1,21 @@
-﻿using System;
+﻿using DansWorld.Common.Enums;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using DansWorld.Common.Enums;
-using DansWorld.Common.IO;
-using DansWorld.Server.Data;
 
 namespace DansWorld.Server.GameEntities
 {
-    public class PlayerCharacter
+    public class Character
     {
+        public int X;
+        public int Y;
         public string Name;
         public int Level;
-        public Gender Gender;
-        public int ServerID;
-        public int X, Y, EXP;
+        public int ID;
+        public int Strength;
+        public int Intelligence;
+        public int Dexterity;
+        public int Vitality;
         public Direction Facing;
-        public PlayerCharacter()
-        {
-            Name = "";
-            Level = 0;
-            Gender = Gender.MALE;
-        }
-
-        public void Save(Database database)
-        {
-            Logger.Log("Saving Character: " + Name + " information");
-            string query = "UPDATE Characters SET EXP = " + EXP + ", Level = " + Level + ", X = " + X + ", Y = " + Y + ", Facing = " 
-                           + (int)Facing + " WHERE CharacterName = '" + Name + "'";
-            database.Update(query);
-        }
     }
 }

@@ -4,7 +4,7 @@
   <description asmv2:iconFile="Icon.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="Dans World" version="0.1.0.41885" language="neutral" processorArchitecture="x86" />
+    <assemblyIdentity name="Dans World" version="0.1.0.23677" language="neutral" processorArchitecture="x86" />
     <commandLine file="Dans World.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -291,26 +291,26 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Dans World.exe" size="196576">
-      <assemblyIdentity name="Dans World" version="0.1.0.41885" language="neutral" processorArchitecture="x86" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Dans World.exe" size="197088">
+      <assemblyIdentity name="Dans World" version="0.1.0.23677" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>CEbmf6a45bkBO0ulmGPGP5IhcuW5LQxQXIxkCajl+vQ=</dsig:DigestValue>
+        <dsig:DigestValue>ViX+O14/Lc1mO2D2dtQptNUywWEW7jaHcnplHnnlbMw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DansWorld.Common.dll" size="9216">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DansWorld.Common.dll" size="9728">
       <assemblyIdentity name="DansWorld.Common" version="0.1.0.2" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>gnc0a26+CdAcC0vR6TM5OSrr10H32KfALkOr5J6UYIw=</dsig:DigestValue>
+        <dsig:DigestValue>qDmAzqGUCmcISJnOZz904ecJ/cqtA1DqdKueaSTUH0A=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

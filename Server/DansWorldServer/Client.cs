@@ -209,6 +209,10 @@ namespace DansWorld.Server
                                     client.Send(pkt);
                                 }
                             }
+                            else if (pkt.Action == PacketAction.ATTACK)
+                            {
+
+                            }
                         }
                     } 
                     catch (Exception e)
