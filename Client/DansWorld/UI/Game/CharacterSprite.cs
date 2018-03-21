@@ -19,6 +19,15 @@ namespace DansWorld.GameClient.UI.Game
         protected Label _namePlate;
         protected bool _mouseOver;
 
+        protected int _framesWide
+        {
+            get
+            {
+                if (Texture != null) return Texture.Width / Width;
+                else return -1;
+            }
+        }
+
         public Rectangle Destination
         {
             get

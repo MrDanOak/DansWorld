@@ -10,6 +10,7 @@ namespace DansWorld.Common.Net
         REGISTER = 2, 
         PLAY = 3, 
         PLAYER = 4,
-        CONNECTION = 5
+        CONNECTION = 5,
+        ENEMY = 6
     }
 }

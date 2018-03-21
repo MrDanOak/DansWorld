@@ -9,6 +9,7 @@ namespace DansWorld.Server.GameEntities
     {
         public int X;
         public int Y;
+        public int EXP;
         public string Name;
         public int Level;
         public int ID;
@@ -16,6 +17,7 @@ namespace DansWorld.Server.GameEntities
         public int Intelligence;
         public int Dexterity;
         public int Vitality;
+        public int Health;
         public Direction Facing;
     }
 }

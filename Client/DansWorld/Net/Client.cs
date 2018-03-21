@@ -55,23 +55,25 @@ namespace DansWorld.GameClient.Net
             {
                 try
                 {
+                    if (Stream == null)
+                        return;
+
                     byte[] buffer = new byte[2];
                     int readTotal = 0;
                     Stream.Read(buffer, 0, 2);
                     if (buffer[0] == 0)
-                        return;
+                        continue;
 
                     byte length = buffer[0];
                     if (length < 2)
                     {
-                        Logger.Warn("Packet of length less than 2 received");
-                        return;
+                        Logger.Error("Packet of length less than 2 received");
+                        continue;
                     }
 
-                    Logger.Log(String.Format("Received packet of length: {0}", length));
                     byte[] data = new byte[length];
 
-                    while (readTotal != length)
+                    while (readTotal < length)
                     {
                         int read = Stream.Read(data, 0, length);
                         if (read == 0)
@@ -82,9 +84,10 @@ namespace DansWorld.GameClient.Net
                         readTotal += read;
                     }
 
-                    Console.Write("Packet data: ");
-                    for (int i = 0; i < data.Length; i++) { Console.Write("{" + data[i] + "} "); }
-                    Console.WriteLine();
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append("Packet Data: ");
+                    for (int i = 0; i < data.Length; i++) { sb.Append("{" + data[i] + "} "); }
+                    Logger.Log(sb.ToString());
 
                     PacketBuilder pb = new PacketBuilder().AddBytes(data);
                     Packet pkt = pb.Build();
@@ -139,11 +142,11 @@ namespace DansWorld.GameClient.Net
                                 X = pkt.ReadInt(), 
                                 Y = pkt.ReadInt(), 
                                 Facing = (Direction)pkt.ReadByte(), 
-                                ServerID = pkt.ReadInt()
+                                ID = pkt.ReadInt()
                             };
                             _gameClient.ClearCharacters();
                             _gameClient.SetState(GameExecution.GameState.Playing);
-                            _gameClient.CharacterID = player.ServerID;
+                            _gameClient.CharacterID = player.ID;
                             _gameClient.AddPlayerCharacter(player);
                             int loggedInCharacters = pkt.ReadInt();
                             for (int i = 0; i < loggedInCharacters; i++)
@@ -156,7 +159,7 @@ namespace DansWorld.GameClient.Net
                                     X = pkt.ReadInt(),
                                     Y = pkt.ReadInt(),
                                     Facing = (Direction)pkt.ReadByte(),
-                                    ServerID = pkt.ReadInt()
+                                    ID = pkt.ReadInt()
                                 };
                                 _gameClient.AddPlayerCharacter(p);
                             }
@@ -174,7 +177,7 @@ namespace DansWorld.GameClient.Net
                                 X = pkt.ReadInt(), 
                                 Y = pkt.ReadInt(),
                                 Facing = (Direction)pkt.ReadByte(),
-                                ServerID = pkt.ReadInt()
+                                ID = pkt.ReadInt()
                             };
                             _gameClient.AddPlayerCharacter(player);
                         }
@@ -186,13 +189,13 @@ namespace DansWorld.GameClient.Net
                             int id = pkt.ReadInt();
                             foreach (PlayerCharacter player in _gameClient.GetPlayers())
                             {
-                                if (player.ServerID == id && _gameClient.CharacterID != id)
+                                if (player.ID == id && _gameClient.CharacterID != id)
                                 {
                                     player.X = x;
                                     player.Y = y;
                                     player.IsWalking = true;
                                     player.IsIdle = false;
-                                    player.SetFacing(d);
+                                    player.Facing = d;
                                 }
                             }
                         }
@@ -204,13 +207,13 @@ namespace DansWorld.GameClient.Net
                             int id = pkt.ReadInt();
                             foreach (PlayerCharacter player in _gameClient.GetPlayers())
                             {
-                                if (player.ServerID == id && _gameClient.CharacterID != id)
+                                if (player.ID == id && _gameClient.CharacterID != id)
                                 {
                                     player.X = x;
                                     player.Y = y;
                                     player.IsWalking = false;
                                     player.IsIdle = true;
-                                    player.SetFacing(d);
+                                    player.Facing = d;
                                 }
                             }
                         }
@@ -219,7 +222,7 @@ namespace DansWorld.GameClient.Net
                             PlayerCharacter toRemove = null;
                             foreach (PlayerCharacter player in _gameClient.GetPlayers())
                             {
-                                if (player.ServerID == pkt.PeekInt())
+                                if (player.ID == pkt.PeekInt())
                                     toRemove = player;
                             }
                             if (toRemove != null)
@@ -232,7 +235,7 @@ namespace DansWorld.GameClient.Net
                             int id = pkt.ReadInt();
                             foreach (PlayerCharacter player in _gameClient.GetPlayers())
                             {
-                                if (player.ServerID == id)
+                                if (player.ID == id)
                                 {
                                     p = player;
                                 }
@@ -254,11 +257,45 @@ namespace DansWorld.GameClient.Net
                             _gameClient.ShowPing(t.Milliseconds);
                         }
                     }
+                    else if (pkt.Family == PacketFamily.ENEMY)
+                    {
+                        if (pkt.Action == PacketAction.WELCOME)
+                        {
+                            Enemy enemy = new Enemy();
+                            enemy.ID = pkt.ReadInt();
+                            enemy.Name = pkt.ReadString(pkt.ReadByte());
+                            enemy.Facing = (Direction)pkt.ReadByte();
+                            enemy.X = pkt.ReadInt();
+                            enemy.Y = pkt.ReadInt();
+                            enemy.Vitality = pkt.ReadInt();
+                            enemy.Level = pkt.ReadByte();
+                            enemy.Health = pkt.ReadInt();
+                            enemy.SpriteID = pkt.ReadInt();
+                            enemy.ServerID = pkt.ReadByte();
+                            _gameClient.AddEnemy(enemy);
+                        }
+                        else if (pkt.Action == PacketAction.MOVE)
+                        {
+                            int id = pkt.ReadInt();
+                            int x = pkt.ReadInt();
+                            int y = pkt.ReadInt();
+                            byte facing = pkt.ReadByte();
+                            foreach (Enemy enemy in _gameClient.GetEnemies())
+                            {
+                                if (enemy.ServerID == id)
+                                {
+                                    enemy.X = x;
+                                    enemy.Y = y;
+                                    enemy.Facing = (Direction)facing;
+                                }
+                            }
+                        }
+                    }
                 }
                 catch (Exception e)
                 {
                     Logger.Error(e.Message + " Stack " + e.StackTrace);
-                    break;
+                    continue;
                 }
             }
         }

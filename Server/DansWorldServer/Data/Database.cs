@@ -42,6 +42,22 @@ namespace DansWorld.Server.Data
             }
         }
 
+        public DataTable Select(string what, string from, string col, int whereVal)
+        {
+            using (MySqlConnection Connection = new MySqlConnection(ConnectionString))
+            {
+                Connection.Open();
+                MySqlCommand cmd = new MySqlCommand("SELECT " + what + " FROM " + from + (col != "" ? " WHERE " + col + " = " + whereVal + "" : ""), Connection);
+                DataTable dt = new DataTable();
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    dt.Load(reader);
+                }
+                Connection.Close();
+                return dt;
+            }
+        }
+
         public int Insert(string query)
         {
             return Query(query);

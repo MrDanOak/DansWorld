@@ -73,8 +73,15 @@ namespace DansWorld.GameClient
             characterSelect = new CharacterSelectScene(this);
             registerAccount = new RegisterAccountScene(this);
             gameScene = new GameScene(this);
+            this.Exiting += GameClient_Exiting;
             base.Initialize();
         }
+
+        private void GameClient_Exiting(object sender, EventArgs e)
+        {
+            NetClient.Stop();
+        }
+
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -83,6 +90,7 @@ namespace DansWorld.GameClient
             SpriteFont gw2FontLarge = GW2_FONT_LARGE = Content.Load<SpriteFont>("Fonts/GW2FontLarge");
             SpriteFont defaultBold = DEFAULT_FONT_BOLD =  Content.Load<SpriteFont>("Fonts/arialBold");
             Texture2D baseCharacterTexture = Content.Load<Texture2D>("Images/Characters/base");
+            Texture2D enemyTextures = Content.Load<Texture2D>("Images/Characters/enemies");
             DEFAULT_TEXTURE = new Texture2D(GraphicsDevice, 1, 1);
             DEFAULT_TEXTURE.SetData(new Color[] { Color.White });
 
@@ -100,10 +108,18 @@ namespace DansWorld.GameClient
                 gameScene.ClearCharacters();
         }
 
-        public void AddCharacters(List<PlayerCharacter> playerCharacters)
+        public void AddPlayerCharacters(List<PlayerCharacter> playerCharacters)
         {
             foreach (PlayerCharacter player in playerCharacters) 
                 AddPlayerCharacter(player);
+        }
+
+        public void AddEnemy(Enemy enemy)
+        {
+            if (_gameState == GameState.Playing)
+            {
+                gameScene.AddEnemy(enemy);
+            }
         }
 
         public void AddPlayerCharacter(PlayerCharacter character)
@@ -119,6 +135,11 @@ namespace DansWorld.GameClient
             if (_gameState == GameState.LoggedIn) return characterSelect.PlayerCharacters;
             else if (_gameState == GameState.Playing) return gameScene.PlayerCharacters;
             else return null;
+        }
+
+        public List<Enemy> GetEnemies()
+        {
+            return gameScene.Enemies;
         }
 
         public void DisplayMessage(string message)

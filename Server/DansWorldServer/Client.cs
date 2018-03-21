@@ -20,14 +20,17 @@ namespace DansWorld.Server
         public NetworkStream Stream { get { return Socket.GetStream(); } }
         public Thread Thread { get; private set; }
         public bool ShouldReceive { get; private set; }
-        private Account _accountHandling;
-        private PlayerCharacter _characterHandling;
-        private int _id;
+        public Account Account;
+        public bool NeedPong = false;
+        public int ID;
         #endregion
 
         #region private accessors
+        private static bool _isSending = false;
         private Server _server;
         private Database _database;
+        private PlayerCharacter _characterHandling;
+        private int _timeout = 0;
         #endregion
 
         public Client(Server server, TcpClient socket, int id, Database database)
@@ -36,7 +39,7 @@ namespace DansWorld.Server
             Socket = socket;
             Thread = new Thread(new ThreadStart(Main));
             ShouldReceive = true;
-            _id = id;
+            ID = id;
             _database = database;
         }
 
@@ -133,11 +136,11 @@ namespace DansWorld.Server
                             if (pkt.Action == PacketAction.REQUEST)
                             {
                                 int userid = pkt.ReadByte();
-                                if (_accountHandling.Characters.Count >= userid) {
+                                if (Account.Characters.Count >= userid) {
                                     pb = new PacketBuilder(PacketFamily.PLAY, PacketAction.ACCEPT);
-                                    PlayerCharacter c = _accountHandling.GetCharacter(userid);
+                                    PlayerCharacter c = Account.GetCharacter(userid);
                                     _characterHandling = c;
-                                    c.ServerID = _id;
+                                    c.ServerID = ID;
                                     pb = pb.AddByte((byte)c.Name.Length).AddString(c.Name)
                                            .AddByte((byte)c.Level)
                                            .AddByte((byte)c.Gender)
@@ -175,6 +178,25 @@ namespace DansWorld.Server
                                             client.Send(pb.Build());
                                         }
                                     }
+                                    int servID = 0;
+                                    foreach (Enemy enemy in _server.Enemies)
+                                    {
+                                        pb = new PacketBuilder(PacketFamily.ENEMY, PacketAction.WELCOME);
+                                        pb = pb.AddInt(enemy.ID)
+                                            .AddByte((byte)enemy.Name.Length)
+                                            .AddString(enemy.Name)
+                                            .AddByte((byte)enemy.Facing)
+                                            .AddInt(enemy.X)
+                                            .AddInt(enemy.Y)
+                                            .AddInt(enemy.Vitality)
+                                            .AddByte((byte)enemy.Level)
+                                            .AddInt(enemy.Health)
+                                            .AddInt(enemy.SpriteID)
+                                            .AddByte((byte)servID++);
+                                            Send(pb.Build());
+                                        Thread.Sleep(1);
+                                    }
+                                    Account.State = AccountState.Playing;
                                 }
                             }
                         }
@@ -212,6 +234,13 @@ namespace DansWorld.Server
                             else if (pkt.Action == PacketAction.ATTACK)
                             {
 
+                            }
+                        }
+                        else if (pkt.Family == PacketFamily.CONNECTION)
+                        {
+                            if (pkt.Action == PacketAction.PONG)
+                            {
+                                NeedPong = false;
                             }
                         }
                     } 
@@ -257,7 +286,7 @@ namespace DansWorld.Server
                                     .AddByte((byte)character.Gender);
                             }
                             account.State = AccountState.LoggedIn;
-                            _accountHandling = account;
+                            Account = account;
                         }
                         else
                         {
@@ -297,9 +326,20 @@ namespace DansWorld.Server
         {
             try
             {
+                while (_isSending && _timeout < 1000) { _timeout += 1; Thread.Sleep(1); }
+
+                _timeout = 0;
+                _isSending = true;
                 byte length = (byte)data.Length;
                 Stream.Write(new byte[] { length, 0 }, 0, 2);
                 Stream.Write(data, 0, length);
+                _isSending = false;
+                StringBuilder sb = new StringBuilder();
+                foreach (byte b in data)
+                {
+                    sb.Append($"[{b}] ");
+                }
+                Logger.Log($"Length: {length} Data: {sb.ToString()}");
             }
             catch (Exception e)
             {
@@ -342,33 +382,27 @@ namespace DansWorld.Server
 
         public void Stop()
         {
-            if (_accountHandling != null) _accountHandling.State = AccountState.LoggedOut;
+            if (Account != null) Account.State = AccountState.LoggedOut;
             if (_server.LoggedInPlayers.Contains(_characterHandling)) _server.LoggedInPlayers.Remove(_characterHandling);
             if (_characterHandling != null) LogOut(_characterHandling);
 
-            try
+            Logger.Log("Client iniating shutdown");
+            if (_server.Clients.Contains(this))
             {
-                Logger.Log("Client iniating shutdown");
-                if (_server.Clients.Contains(this))
-                {
-                    _server.Remove(this);
-                }
-
-                if (Socket != null && Socket.Connected)
-                {
-                    Socket.Client.Shutdown(SocketShutdown.Both);
-                    Socket.Close();
-                }
-
-                if (Thread != null && Thread.IsAlive)
-                {
-                    ShouldReceive = false;
-                    Thread.Join();
-                }
+                _server.Remove(this);
             }
-            catch (Exception e)
+
+            if (Socket != null && Socket.Connected)
             {
-                Logger.Error("Caught exception on close: " + e.Message);
+                Socket.Client.Shutdown(SocketShutdown.Both);
+                Socket.Close();
+            }
+
+            if (Thread != null && Thread.IsAlive)
+            {
+                ShouldReceive = false;
+                Thread.Interrupt();
+                Thread.Join();
             }
         }
     }

@@ -182,7 +182,8 @@ namespace DansWorld.GameClient.UI.Scenes
                 {
                     foreach (PlayerCharacter player in PlayerCharacters)
                     {
-                        player.SetFacing(player.Facing + 1);
+                        player.Facing = player.Facing + 1;
+                        if ((byte)player.Facing == 4) player.Facing = 0;
                     }
                 }
                 _elapsedms = 0;

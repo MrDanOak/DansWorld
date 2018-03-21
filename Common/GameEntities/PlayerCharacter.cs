@@ -8,7 +8,6 @@ namespace DansWorld.Common.GameEntities
     public class PlayerCharacter : Character
     {
         public Gender Gender;
-        public int ServerID;
         public PClass Class;
         public PlayerCharacter()
         {

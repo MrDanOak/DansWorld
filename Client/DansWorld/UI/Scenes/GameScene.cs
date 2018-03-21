@@ -16,6 +16,7 @@ namespace DansWorld.GameClient.UI.Scenes
     class GameScene : BaseScene
     {
         private List<PlayerCharacterSprite> characterSprites;
+        private List<EnemySprite> enemySprites;
         private ContentManager _content;
         private GameClient _gameClient;
         private Label _pingLabel;
@@ -39,10 +40,25 @@ namespace DansWorld.GameClient.UI.Scenes
             }
         }
 
+        public List<Enemy> Enemies
+        {
+            get
+            {
+                List<Enemy> ret = new List<Enemy>();
+                foreach (EnemySprite sprite in enemySprites)
+                {
+                    ret.Add(sprite.Enemy);
+                }
+                return ret;
+            }
+        }
+
         public GameScene(GameClient gameClient)
         {
             Controls = new List<Control>();
             _lblMessages = new List<Label>();
+            characterSprites = new List<PlayerCharacterSprite>();
+            enemySprites = new List<EnemySprite>();
             _gameClient = gameClient;
             _gameClient.Window.ClientSizeChanged += Window_ClientSizeChanged;
         }
@@ -62,7 +78,6 @@ namespace DansWorld.GameClient.UI.Scenes
 
         public override void Initialise(ContentManager Content)
         {
-            characterSprites = new List<PlayerCharacterSprite>();
             _content = Content;
             _pingLabel = new Label()
             {
@@ -129,6 +144,21 @@ namespace DansWorld.GameClient.UI.Scenes
             characterSprites.Remove(toRemove);
         }
 
+        internal void AddEnemy(Enemy enemy)
+        {
+            EnemySprite enemySprite = new EnemySprite()
+            {
+                IsVisible = true,
+                Texture = _content.Load<Texture2D>("Images/Characters/enemies"),
+                Width = 48,
+                Height = 48,
+                Size = new Point(48, 48),
+                Location = new Point(enemy.X, enemy.Y), 
+                Enemy = enemy
+            };
+            enemySprites.Add(enemySprite);
+        }
+
         public void ClearCharacters()
         {
             characterSprites = new List<PlayerCharacterSprite>();
@@ -136,14 +166,17 @@ namespace DansWorld.GameClient.UI.Scenes
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            // TODO: 
-            // Sort character sprites by what is in front first
             _pingLabel.Draw(gameTime, spriteBatch);
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.BackToFront);
             foreach (PlayerCharacterSprite characterSprite in characterSprites)
             {
                 characterSprite.Draw(gameTime, spriteBatch);
+            }
+
+            foreach (EnemySprite enemySprite in enemySprites)
+            {
+                enemySprite.Draw(gameTime, spriteBatch);
             }
             spriteBatch.End();
 
@@ -166,10 +199,10 @@ namespace DansWorld.GameClient.UI.Scenes
 
             if (!_txtIn.HasFocus)
             {
-                if (Keyboard.GetState().IsKeyDown(Keys.A)) { characterSprites[0].PlayerCharacter.X -= 1; characterSprites[0].PlayerCharacter.SetFacing(Common.Enums.Direction.LEFT); moved = true; }
-                else if (Keyboard.GetState().IsKeyDown(Keys.S)) { characterSprites[0].PlayerCharacter.Y += 1; characterSprites[0].PlayerCharacter.SetFacing(Common.Enums.Direction.DOWN); moved = true; }
-                else if (Keyboard.GetState().IsKeyDown(Keys.D)) { characterSprites[0].PlayerCharacter.X += 1; characterSprites[0].PlayerCharacter.SetFacing(Common.Enums.Direction.RIGHT); moved = true; }
-                else if (Keyboard.GetState().IsKeyDown(Keys.W)) { characterSprites[0].PlayerCharacter.Y -= 1; characterSprites[0].PlayerCharacter.SetFacing(Common.Enums.Direction.UP); moved = true; }
+                if (Keyboard.GetState().IsKeyDown(Keys.A)) { characterSprites[0].PlayerCharacter.X -= 1; characterSprites[0].PlayerCharacter.Facing = Common.Enums.Direction.LEFT; moved = true; }
+                else if (Keyboard.GetState().IsKeyDown(Keys.S)) { characterSprites[0].PlayerCharacter.Y += 1; characterSprites[0].PlayerCharacter.Facing = Common.Enums.Direction.DOWN; moved = true; }
+                else if (Keyboard.GetState().IsKeyDown(Keys.D)) { characterSprites[0].PlayerCharacter.X += 1; characterSprites[0].PlayerCharacter.Facing = Common.Enums.Direction.RIGHT; moved = true; }
+                else if (Keyboard.GetState().IsKeyDown(Keys.W)) { characterSprites[0].PlayerCharacter.Y -= 1; characterSprites[0].PlayerCharacter.Facing = Common.Enums.Direction.UP; moved = true; }
                 else if (Keyboard.GetState().IsKeyUp(Keys.Enter) && _enterDown) { _txtIn.HasFocus = true; }
 
                 if (Mouse.GetState().LeftButton == ButtonState.Pressed)
@@ -240,6 +273,11 @@ namespace DansWorld.GameClient.UI.Scenes
             foreach (PlayerCharacterSprite characterSprite in characterSprites)
             {
                 characterSprite.Update(gameTime);
+            }
+
+            foreach (EnemySprite enemySprite in enemySprites)
+            {
+                enemySprite.Update(gameTime);
             }
 
             foreach (Label lbl in _lblMessages)

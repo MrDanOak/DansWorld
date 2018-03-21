@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DansWorld.Common.GameEntities
 {
-    class Enemy : Character
+    public class Enemy : Character
     {
         public int EXPReward
         {
@@ -17,6 +17,15 @@ namespace DansWorld.Common.GameEntities
             {
                 EXP = value;
             }
+        }
+
+        public int SpriteID;
+
+        public int ServerID;
+
+        public Enemy()
+        {
+
         }
     }
 }

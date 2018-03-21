@@ -11,6 +11,7 @@ using DansWorld.Server.Data;
 using System.Data;
 using DansWorld.Common.Enums;
 using DansWorld.Common.Net;
+using DansWorld.Server.Utils;
 
 namespace DansWorld.Server
 {
@@ -20,29 +21,98 @@ namespace DansWorld.Server
         private int _port { get; set; }
         private Thread _thread { get; set; }
         public List<Client> Clients { get; private set; }
+        public List<Enemy> Enemies;
         private bool _shouldListen { get; set; }
         internal List<Account> Accounts { get; set; }
         internal List<PlayerCharacter> LoggedInPlayers { get; set; }
         private Database _database;
         System.Timers.Timer _pingTimer;
-        private object _clienstLock = new object();
+        System.Timers.Timer _enemyUpdateTimer;
+        private Random _random = new Random();
 
         public Server(int port)
         {
+            Clients = new List<Client>();
+            LoggedInPlayers = new List<PlayerCharacter>();
+            Enemies = new List<Enemy>();
+            Accounts = new List<Account>();
+
             _listener = new TcpListener(IPAddress.Any, port);
             _thread = new Thread(new ThreadStart(Main));
-            Clients = new List<Client>();
-            Accounts = new List<Account>();
             _shouldListen = true;
             _port = port;
-            LoggedInPlayers = new List<PlayerCharacter>();
             _database = new Database();
+
             _LoadAccounts();
+            _LoadNPCs();
+
             Logger.Log(String.Format("Server object created {0}:{1}", "127.0.0.1", port));
 
             _pingTimer = new System.Timers.Timer(1000);
             _pingTimer.Elapsed += _pingTimer_Elapsed;
             _pingTimer.Start();
+
+
+            _enemyUpdateTimer = new System.Timers.Timer(500);
+            _enemyUpdateTimer.Elapsed += _enemyUpdateTimer_Elapsed;
+            _enemyUpdateTimer.Start();
+        }
+
+        private void _enemyUpdateTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            int servID = 0;
+            foreach (Enemy enemy in Enemies)
+            {
+                if (enemy.IdleMove())
+                {
+                    PacketBuilder pb = new PacketBuilder(PacketFamily.ENEMY, PacketAction.MOVE);
+                    pb = pb.AddInt(servID)
+                            .AddInt(enemy.X)
+                            .AddInt(enemy.Y)
+                            .AddByte((byte)enemy.Facing);
+
+                    lock (Clients)
+                    {
+                        foreach (Client client in Clients)
+                        {
+                            if (client.Account != null && client.Account.State == AccountState.Playing)
+                            {
+                                client.Send(pb.Build());
+                            }
+                        }
+                    }
+                }
+                servID += 1;
+            }
+        }
+
+        private void _LoadNPCs()
+        {
+            DataTable npcMapSpawnTable = _database.Select("*", "MapNPC");
+            foreach (DataRow npcSpawnRow in npcMapSpawnTable.Rows)
+            {
+                DataTable NPCData = _database.Select("*", "NPC", "ID", Convert.ToInt32(npcSpawnRow["NPCID"]));
+                DataRow NPCDataRow = NPCData.Rows[0];
+                DataTable NPCIdentityTable = _database.Select("*", "NPCIdentity", "NPCName", NPCDataRow["NPCName"].ToString());
+                DataRow NPCIDRow = NPCIdentityTable.Rows[0];
+                for (int i = 0; i < Convert.ToInt32(npcSpawnRow["Quantity"]); i++)
+                {
+                    Enemy enemy = new Enemy()
+                    {
+                        Name = NPCDataRow["NPCName"].ToString(),
+                        Level = Convert.ToInt32(NPCDataRow["Level"]), 
+                        Health = Convert.ToInt32(NPCDataRow["HP"]), 
+                        Strength = Convert.ToInt32(NPCDataRow["Strength"]), 
+                        EXP = Convert.ToInt32(NPCDataRow["EXP"]), 
+                        ID = Convert.ToInt32(NPCDataRow["ID"]), 
+                        X = Convert.ToInt32(npcSpawnRow["SpawnX"]), 
+                        Y = Convert.ToInt32(npcSpawnRow["SpawnY"]),
+                        SpriteID = Convert.ToInt32(NPCIDRow["NPCImage"])
+                    };
+                    Enemies.Add(enemy);
+                }
+            }
+            Logger.Log(String.Format("Loaded {0} NPC(s)", Enemies.Count));
         }
 
         private void _LoadAccounts()
@@ -83,18 +153,33 @@ namespace DansWorld.Server
             string nowString = now.ToString("hh.mm.ss.ffffff");
             pb = pb.AddInt(nowString.Length).AddString(nowString);
 
-            lock (_clienstLock)
+            List<Client> disconnectedClients = new List<Client>();
+
+            lock (Clients)
             {
                 foreach (Client client in Clients)
                 {
-                    client.Send(pb.Build());
+                    if (client.NeedPong)
+                    {
+                        disconnectedClients.Add(client);
+                    }
+                    else
+                    {
+                        client.Send(pb.Build());
+                        client.NeedPong = true;
+                    }
                 }
+            }
+
+            foreach (Client client in disconnectedClients)
+            {
+                client.Stop();
             }
         }
 
         public void Add(Client client)
         {
-            lock (_clienstLock)
+            lock (Clients)
             {
                 if (!Clients.Contains(client))
                     Clients.Add(client);
@@ -103,9 +188,9 @@ namespace DansWorld.Server
 
         public void Remove(Client client)
         {
-            lock (_clienstLock)
+            lock (Clients)
             {
-                if (Clients.Contains(client)) 
+                if (Clients.Contains(client))
                     Clients.Remove(client);
             }
         }
@@ -124,6 +209,22 @@ namespace DansWorld.Server
             }
         }
 
+        public int GenerateID()
+        {
+            bool IDInUse;
+            int i;
+            do
+            {
+                i = RNG.Next(0, 10000);
+                IDInUse = false;
+                foreach (Client client in Clients)
+                {
+                    if (client.ID != i) IDInUse = true;
+                }
+            } while (IDInUse);
+            return i;
+        }
+
         public void Main() 
         {
             Logger.Log(String.Format("Server listener thread spawned id:{0}", Thread.CurrentThread.ManagedThreadId));
@@ -131,7 +232,7 @@ namespace DansWorld.Server
             {
                 try 
                 {
-                    Client client = new Client(this, _listener.AcceptTcpClient(), Clients.Count, _database);
+                    Client client = new Client(this, _listener.AcceptTcpClient(), GenerateID(), _database);
                     Logger.Log(String.Format("Client connection accepted from {0}", client.Socket.Client.RemoteEndPoint));
                     Add(client);
                     client.Start();
