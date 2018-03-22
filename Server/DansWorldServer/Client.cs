@@ -194,7 +194,6 @@ namespace DansWorld.Server
                                             .AddInt(enemy.SpriteID)
                                             .AddByte((byte)servID++);
                                             Send(pb.Build());
-                                        Thread.Sleep(1);
                                     }
                                     Account.State = AccountState.Playing;
                                 }
@@ -398,11 +397,18 @@ namespace DansWorld.Server
                 Socket.Close();
             }
 
-            if (Thread != null && Thread.IsAlive)
+            try
             {
-                ShouldReceive = false;
-                Thread.Interrupt();
-                Thread.Join();
+                if (Thread != null && Thread.IsAlive)
+                {
+                    ShouldReceive = false;
+                    Thread.Interrupt();
+                    Thread.Join();
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e.Message.ToString());
             }
         }
     }

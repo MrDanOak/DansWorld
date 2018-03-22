@@ -48,7 +48,7 @@ namespace DansWorld.Server
 
             Logger.Log(String.Format("Server object created {0}:{1}", "127.0.0.1", port));
 
-            _pingTimer = new System.Timers.Timer(1000);
+            _pingTimer = new System.Timers.Timer(10000);
             _pingTimer.Elapsed += _pingTimer_Elapsed;
             _pingTimer.Start();
 
@@ -219,7 +219,7 @@ namespace DansWorld.Server
                 IDInUse = false;
                 foreach (Client client in Clients)
                 {
-                    if (client.ID != i) IDInUse = true;
+                    if (client.ID == i) IDInUse = true;
                 }
             } while (IDInUse);
             return i;
@@ -233,7 +233,7 @@ namespace DansWorld.Server
                 try 
                 {
                     Client client = new Client(this, _listener.AcceptTcpClient(), GenerateID(), _database);
-                    Logger.Log(String.Format("Client connection accepted from {0}", client.Socket.Client.RemoteEndPoint));
+                    Logger.Log(String.Format("Client connection accepted from {0} Assigned ID: {1}", client.Socket.Client.RemoteEndPoint, client.ID));
                     Add(client);
                     client.Start();
                 }

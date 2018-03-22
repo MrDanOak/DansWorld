@@ -208,7 +208,7 @@ namespace DansWorld.GameClient.UI.Scenes
                 if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                 {
                     attackTimer += gameTime.ElapsedGameTime.Milliseconds;
-                    if (attackTimer > 1000)
+                    if (attackTimer > 500)
                     {
                         PacketBuilder pb = new PacketBuilder(PacketFamily.PLAYER, PacketAction.ATTACK);
                         pb.AddInt(_gameClient.CharacterID);

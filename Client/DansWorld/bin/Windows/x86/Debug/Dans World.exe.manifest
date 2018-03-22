@@ -4,7 +4,7 @@
   <description asmv2:iconFile="Icon.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="Dans World" version="0.1.0.42064" language="neutral" processorArchitecture="x86" />
+    <assemblyIdentity name="Dans World" version="0.1.0.6937" language="neutral" processorArchitecture="x86" />
     <commandLine file="Dans World.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -292,13 +292,13 @@
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Dans World.exe" size="199136">
-      <assemblyIdentity name="Dans World" version="0.1.0.42064" language="neutral" processorArchitecture="x86" />
+      <assemblyIdentity name="Dans World" version="0.1.0.6937" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>Uvwws2WmfX/z50gouvcTpqcY802QJkLWUvvjUvaAP7w=</dsig:DigestValue>
+        <dsig:DigestValue>A2g0cJ1CTmQE5+8JJlpEfmQyQbh/jWmdQakVeYpA6E4=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -476,6 +476,15 @@
       <dsig:DigestValue>ZAuyRO/BFSw5s+gUmNBv8tFMsluV8+UhLrltBPRNagQ=</dsig:DigestValue>
     </hash>
   </file>
+  <file name="Content\Images\Characters\Archer.xnb" size="43520085">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>RXah7a8/MEiPAuZgPD2dxCczKBKERdbgK7qAcGD7D2E=</dsig:DigestValue>
+    </hash>
+  </file>
   <file name="Content\Images\Characters\base.xnb" size="884821">
     <hash>
       <dsig:Transforms>
@@ -519,6 +528,24 @@
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
       <dsig:DigestValue>V7o1gNjUl0uf1h9q8EYWVq5sV7QWoNPZVSpdKpsg7jw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Content\Images\Characters\IceWizard.xnb" size="40960085">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>M0zo87soQMc4fuact62Zufp1wRxcexRsiOz1tAfVT2A=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Content\Images\Characters\Knight.xnb" size="43520085">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>aHg4J1dE5snwUpzALl02QKJ4G06BPPY34tN7KYBqaSc=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Content\Images\Characters\sit-kneel.xnb" size="884821">
