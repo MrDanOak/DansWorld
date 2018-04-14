@@ -13,7 +13,7 @@ namespace DansWorld.Common.IO
 
         public static void Log(string log, LogLevel level = LogLevel.INFO)
         {
-            DateTime dt = DateTime.Now;
+            /*DateTime dt = DateTime.Now;
             Console.ForegroundColor = (level == LogLevel.ERROR ? ConsoleColor.Red : level == LogLevel.WARN ? ConsoleColor.Yellow : ConsoleColor.Cyan);
             Console.Write("[{0:T}]", dt);
             Console.ForegroundColor = ConsoleColor.White;
@@ -47,7 +47,7 @@ namespace DansWorld.Common.IO
                 {
                     writeLock.ExitWriteLock();
                 }
-            }
+            }*/
         }
 
         public static void Warn(string message)

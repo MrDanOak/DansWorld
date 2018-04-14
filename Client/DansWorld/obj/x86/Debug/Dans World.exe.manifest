@@ -4,7 +4,7 @@
   <description asmv2:iconFile="Icon.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="Dans World" version="0.1.0.6937" language="neutral" processorArchitecture="x86" />
+    <assemblyIdentity name="Dans World" version="0.1.0.41640" language="neutral" processorArchitecture="x86" />
     <commandLine file="Dans World.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -292,25 +292,25 @@
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Dans World.exe" size="199136">
-      <assemblyIdentity name="Dans World" version="0.1.0.6937" language="neutral" processorArchitecture="x86" />
+      <assemblyIdentity name="Dans World" version="0.1.0.41640" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>A2g0cJ1CTmQE5+8JJlpEfmQyQbh/jWmdQakVeYpA6E4=</dsig:DigestValue>
+        <dsig:DigestValue>iqGdt7f4p5zpDuVplqRzUVyUKdywr4CTPYpqYyZLm5g=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DansWorld.Common.dll" size="9216">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DansWorld.Common.dll" size="8704">
       <assemblyIdentity name="DansWorld.Common" version="0.1.0.2" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>vgIUzdMgcYrKSr2AP4BGbXhUtzoBfDGLvxecnl7Wjsg=</dsig:DigestValue>
+        <dsig:DigestValue>tSB5oWtuZiORQn0hEys6SRUeEvtDw1IpkLN6NQm1YG0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
