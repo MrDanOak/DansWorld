@@ -1,5 +1,6 @@
 ﻿using DansWorld.Common.Enums;
 using DansWorld.Common.GameEntities;
+using DansWorld.GameClient.GameComponents;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -14,9 +15,9 @@ namespace DansWorld.GameClient.UI.Game
     {
         public Enemy Enemy;
 
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, Camera2D camera)
         {
-            base.Update(gameTime);
+            base.Update(gameTime, camera);
             _animationTimer += gameTime.ElapsedGameTime.Milliseconds;
             if (_animationTimer > 400)
             {
@@ -24,8 +25,28 @@ namespace DansWorld.GameClient.UI.Game
                 if (_animationID == 3) _animationID = 0;
                 _animationTimer = 0;
             }
+
+            if (_mouseOver)
+            {
+                if (_namePlate.Text == null || _namePlate.Text == "" && Enemy != null)
+                {
+                    _namePlate.Text = Enemy.Name;
+                }
+                Vector2 dimCharName = GameClient.DEFAULT_FONT.MeasureString(Enemy.Name);
+                _namePlate.Size = new Point((int)dimCharName.X, (int)dimCharName.Y);
+                _namePlate.Location = new Point(Enemy.X + (Width / 2) - ((int)dimCharName.X / 2), Enemy.Y - (int)dimCharName.Y);
+                _namePlate.Update(gameTime);
+            }
         }
 
+        public EnemySprite()
+        {
+            _namePlate = new Label()
+            {
+                FrontColor = Color.Black,
+                Font = GameClient.DEFAULT_FONT
+            };
+        }
 
         private int _facingModifier
         {
@@ -55,6 +76,11 @@ namespace DansWorld.GameClient.UI.Game
                 Vector2.Zero,
                 SpriteEffects.None,
                 depth);
+
+            if(_mouseOver)
+            {
+                _namePlate.Draw(gameTime, spriteBatch);
+            }
         }
     }
 }

@@ -7,13 +7,13 @@ namespace DansWorld.Common.IO
 {
     public class Logger
     {
-        public static bool WriteToFile = true;
+        public static bool WriteToFile = false;
         public static string Path = Directory.GetCurrentDirectory() + "\\Logs\\DW.log";
         static ReaderWriterLockSlim writeLock = new ReaderWriterLockSlim();
 
         public static void Log(string log, LogLevel level = LogLevel.INFO)
         {
-            /*DateTime dt = DateTime.Now;
+            DateTime dt = DateTime.Now;
             Console.ForegroundColor = (level == LogLevel.ERROR ? ConsoleColor.Red : level == LogLevel.WARN ? ConsoleColor.Yellow : ConsoleColor.Cyan);
             Console.Write("[{0:T}]", dt);
             Console.ForegroundColor = ConsoleColor.White;
@@ -47,7 +47,7 @@ namespace DansWorld.Common.IO
                 {
                     writeLock.ExitWriteLock();
                 }
-            }*/
+            }
 
         }
 

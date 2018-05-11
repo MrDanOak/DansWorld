@@ -7,6 +7,9 @@ using DansWorld.Common.GameEntities;
 using DansWorld.Common.Enums;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using DansWorld.GameClient.GameComponents;
+using DansWorld.Common.IO;
+using Microsoft.Xna.Framework.Input;
 
 namespace DansWorld.GameClient.UI.Game
 {
@@ -81,11 +84,10 @@ namespace DansWorld.GameClient.UI.Game
             } 
         }
 
-        public new void Update(GameTime gameTime)
+        public new void Update(GameTime gameTime, Camera2D camera)
         {
-            base.Update(gameTime);
+            base.Update(gameTime, camera);
             if (PlayerCharacter == null) return;
-
             if (InGame)
             {
                 Location = new Point(PlayerCharacter.X, PlayerCharacter.Y);

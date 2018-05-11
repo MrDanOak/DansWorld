@@ -16,6 +16,7 @@ namespace DansWorld.Common.Net
         PING = 8,
         PONG = 9,
         TALK = 10,
-        ATTACK = 11
+        ATTACK = 11,
+        CREATE = 12
     }
 }

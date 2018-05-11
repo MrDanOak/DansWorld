@@ -74,11 +74,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="GameClient.cs" />
+    <Compile Include="GameComponents\Camera.cs" />
     <Compile Include="GameExecution\GameState.cs" />
     <Compile Include="Math\Utils.cs" />
     <Compile Include="UI\CustomEventArgs\TextChangedEventArgs.cs" />
     <Compile Include="UI\Game\EnemySprite.cs" />
     <Compile Include="UI\Game\CharacterSprite.cs" />
+    <Compile Include="UI\HealthBar.cs" />
     <Compile Include="UI\Scenes\CharacterSelectScene.cs" />
     <Compile Include="UI\Scenes\GameScene.cs" />
     <Compile Include="UI\Scenes\MenuScene.cs" />

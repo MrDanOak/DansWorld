@@ -191,7 +191,7 @@ namespace DansWorld.GameClient.UI.Scenes
 
             foreach (PlayerCharacterSprite cSprite in _characterSprites)
             {
-                cSprite.Update(gameTime);
+                cSprite.Update(gameTime, null);
             }
 
             foreach (Control control in Controls)

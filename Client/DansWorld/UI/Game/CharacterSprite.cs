@@ -1,10 +1,12 @@
-﻿using Microsoft.Xna.Framework;
+﻿using DansWorld.Common.IO;
+using DansWorld.GameClient.GameComponents;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace DansWorld.GameClient.UI.Game
 {
-    public class CharacterSprite
+    public class CharacterSprite : IFocusable
     {
         public Texture2D Texture;
         public Point Location;
@@ -13,6 +15,14 @@ namespace DansWorld.GameClient.UI.Game
         public int frameID;
         public int Width;
         public int Height;
+
+        public Vector2 Position
+        {
+            get
+            {
+                return new Vector2(Location.X + Width / 2, Location.Y + Height / 2);
+            }
+        }
 
         protected int _animationTimer = 0;
         protected int _animationID = 1;
@@ -51,11 +61,13 @@ namespace DansWorld.GameClient.UI.Game
             if (!IsVisible) return;
         }
 
-        public virtual void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime, Camera2D camera)
         {
             MouseState mouseState = Mouse.GetState();
-            _mouseOver = (mouseState.X > Destination.Left && mouseState.Y > Destination.Top &&
-                          mouseState.X < Destination.Right && mouseState.Y < Destination.Bottom);
+            float mousex = (camera == null ? mouseState.X : camera.Position.X - camera.ScreenCenter.X + mouseState.X);
+            float mousey = (camera == null ? mouseState.Y : camera.Position.Y - camera.ScreenCenter.Y + mouseState.Y);
+            _mouseOver = (mousex > Destination.Left && mousey > Destination.Top &&
+                          mousex < Destination.Right && mousey < Destination.Bottom);
         }
 
         public Rectangle GetRectangleForFrameID(int id)

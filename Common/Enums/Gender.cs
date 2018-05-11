@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DansWorld.Common.Enums
 {
-    public enum Gender
+    public enum Gender : byte
     {
         MALE = 0, 
         FEMALE = 1

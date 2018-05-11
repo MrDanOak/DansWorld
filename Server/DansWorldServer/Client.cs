@@ -5,11 +5,9 @@ using System.Threading;
 using System.Linq;
 using DansWorld.Common.Net;
 using DansWorld.Common.IO;
-using System.Collections.Generic;
 using DansWorld.Server.GameEntities;
 using DansWorld.Common.Enums;
 using DansWorld.Server.Data;
-using System.Security.Cryptography;
 
 namespace DansWorld.Server
 {
@@ -26,6 +24,7 @@ namespace DansWorld.Server
         #endregion
 
         #region private accessors
+        private const bool PACKET_DEBUG = false;
         private static bool _isSending = false;
         private Server _server;
         private Database _database;
@@ -41,6 +40,230 @@ namespace DansWorld.Server
             ShouldReceive = true;
             ID = id;
             _database = database;
+        }
+
+        private void HandlePacket(Packet pkt)
+        {
+            try
+            {
+                PacketBuilder pb;
+                if (pkt.Family == PacketFamily.LOGIN)
+                {
+                    if (pkt.Action == PacketAction.REQUEST)
+                    {
+                        string user = pkt.ReadString(pkt.ReadByte());
+                        string pass = pkt.ReadString(pkt.ReadByte());
+                        pass = Utils.Security.GetHashString(pass + "PROCO304" + user);
+                        CheckLogin(user, pass);
+                    }
+                }
+                else if (pkt.Family == PacketFamily.CHARACTER_CREATE)
+                {
+                    if (pkt.Action == PacketAction.REQUEST)
+                    {
+                        string characterName = pkt.ReadString(pkt.ReadByte());
+                        byte gender = pkt.ReadByte();
+                        bool isAvailable = true;
+
+                        foreach (Account account in _server.Accounts)
+                        {
+                            foreach (Character c in account.Characters)
+                            {
+                                if (c.Name == characterName)
+                                {
+                                    isAvailable = false;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (!isAvailable)
+                        {
+                            pb = new PacketBuilder(PacketFamily.CHARACTER_CREATE, PacketAction.REJECT);
+                            string errMsg = "Character already exists";
+                            pb.AddByte((byte)errMsg.Length).AddString(errMsg);
+                            Send(pb.Build());
+                        }
+                        else
+                        {
+                            pb = new PacketBuilder(PacketFamily.CHARACTER_CREATE, PacketAction.ACCEPT);
+                            pb = pb.AddByte((byte)characterName.Length).AddString(characterName);
+                            Send(pb.Build());
+                            PlayerCharacter character = new PlayerCharacter()
+                            {
+                                Name = characterName,
+                                Dexterity = 0,
+                                Strength = 0,
+                                Vitality = 0,
+                                Intelligence = 0,
+                                Gender = (Gender)gender,
+                                Facing = 0, 
+                                EXP = 0, 
+                                Health = 50, 
+                                Level = 0, 
+                                X = 0, 
+                                Y = 0
+                            };
+                            Account.Characters.Add(character);
+                            character.Save(_database);
+                            Logger.Log("Account Created. Username: " + username);
+                        }
+                    }
+                }
+                else if (pkt.Family == PacketFamily.REGISTER)
+                {
+                    if (pkt.Action == PacketAction.REQUEST)
+                    {
+                        string username = pkt.ReadString(pkt.ReadByte());
+                        string password = pkt.ReadString(pkt.ReadByte());
+                        password = Utils.Security.GetHashString(password + "PROCO304" + username);
+                        string email = pkt.ReadString(pkt.ReadByte());
+                        string fullname = pkt.ReadString(pkt.ReadByte());
+                        Logger.Log(String.Format("Requested username {0} password {1} email {2}", username, password, email));
+                        bool userExists = false;
+                        foreach (Account account in _server.Accounts)
+                        {
+                            if (account.Username == username)
+                            {
+                                pb = new PacketBuilder(PacketFamily.REGISTER, PacketAction.REJECT);
+                                string errMsg = "User already exists";
+                                pb = pb.AddByte((byte)errMsg.Length).AddString(errMsg);
+                                Send(pb.Build());
+                                userExists = true;
+                                break;
+                            }
+                        }
+
+                        if (!userExists)
+                        {
+                            pb = new PacketBuilder(PacketFamily.REGISTER, PacketAction.ACCEPT);
+                            pb = pb.AddByte((byte)username.Length).AddString(username);
+                            Send(pb.Build());
+                            Account account = new Account(username, password, email, fullname);
+                            _server.Accounts.Add(account);
+                            account.CreateDatabaseEntry(_database, Socket.Client.RemoteEndPoint.ToString().Split(":")[0]);
+                            Logger.Log("Account Created. Username: " + username);
+                        }
+                    }
+                }
+                else if (pkt.Family == PacketFamily.PLAY)
+                {
+                    if (pkt.Action == PacketAction.REQUEST)
+                    {
+                        int userid = pkt.ReadByte();
+                        if (Account.Characters.Count >= userid)
+                        {
+                            pb = new PacketBuilder(PacketFamily.PLAY, PacketAction.ACCEPT);
+                            PlayerCharacter c = Account.GetCharacter(userid);
+                            _characterHandling = c;
+                            c.ServerID = ID;
+                            pb = pb.AddByte((byte)c.Name.Length).AddString(c.Name)
+                                   .AddByte((byte)c.Level)
+                                   .AddByte((byte)c.Gender)
+                                   .AddInt(c.X)
+                                   .AddInt(c.Y)
+                                   .AddByte((byte)c.Facing)
+                                   .AddInt(c.ServerID).AddInt(_server.LoggedInPlayers.Count);
+
+                            foreach (PlayerCharacter character in _server.LoggedInPlayers)
+                            {
+                                pb = pb.AddByte((byte)character.Name.Length).AddString(character.Name)
+                                   .AddByte((byte)character.Level)
+                                   .AddByte((byte)character.Gender)
+                                   .AddInt(character.X)
+                                   .AddInt(character.Y)
+                                   .AddByte((byte)character.Facing)
+                                   .AddInt(character.ServerID);
+                            }
+                            Send(pb.Build());
+
+                            _server.LoggedInPlayers.Add(c);
+
+                            foreach (Client client in _server.Clients)
+                            {
+                                if (client != this)
+                                {
+                                    pb = new PacketBuilder(PacketFamily.PLAYER, PacketAction.WELCOME);
+                                    pb = pb.AddByte((byte)c.Name.Length).AddString(c.Name)
+                                           .AddByte((byte)c.Level)
+                                           .AddByte((byte)c.Gender)
+                                           .AddInt(c.X)
+                                           .AddInt(c.Y)
+                                           .AddByte((byte)c.Facing)
+                                           .AddInt(c.ServerID);
+                                    client.Send(pb.Build());
+                                }
+                            }
+                            int servID = 0;
+                            foreach (Enemy enemy in _server.Enemies)
+                            {
+                                pb = new PacketBuilder(PacketFamily.ENEMY, PacketAction.WELCOME);
+                                pb = pb.AddInt(enemy.ID)
+                                    .AddByte((byte)enemy.Name.Length)
+                                    .AddString(enemy.Name)
+                                    .AddByte((byte)enemy.Facing)
+                                    .AddInt(enemy.X)
+                                    .AddInt(enemy.Y)
+                                    .AddInt(enemy.Vitality)
+                                    .AddByte((byte)enemy.Level)
+                                    .AddInt(enemy.Health)
+                                    .AddInt(enemy.SpriteID)
+                                    .AddByte((byte)servID++);
+                                Send(pb.Build());
+                            }
+                            Account.State = AccountState.Playing;
+                        }
+                    }
+                }
+                else if (pkt.Family == PacketFamily.PLAYER)
+                {
+                    if (pkt.Action == PacketAction.MOVE || pkt.Action == PacketAction.STOP)
+                    {
+                        int x = pkt.ReadInt();
+                        int y = pkt.ReadInt();
+                        Direction facing = (Direction)pkt.ReadByte();
+                        int id = pkt.ReadInt();
+                        if (_characterHandling.ServerID == id && (_characterHandling.X != x || _characterHandling.Y != y))
+                        {
+                            _characterHandling.X = x;
+                            _characterHandling.Y = y;
+                            _characterHandling.Facing = facing;
+                        }
+
+                        foreach (Client client in _server.Clients)
+                        {
+                            client.Send(pkt);
+                        }
+                    }
+                    else if (pkt.Action == PacketAction.LOGOUT && pkt.PeekInt() == _characterHandling.ServerID)
+                    {
+                        LogOut(_characterHandling);
+                    }
+                    else if (pkt.Action == PacketAction.TALK)
+                    {
+                        foreach (Client client in _server.Clients)
+                        {
+                            client.Send(pkt);
+                        }
+                    }
+                    else if (pkt.Action == PacketAction.ATTACK)
+                    {
+
+                    }
+                }
+                else if (pkt.Family == PacketFamily.CONNECTION)
+                {
+                    if (pkt.Action == PacketAction.PONG)
+                    {
+                        NeedPong = false;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Warn("Packet handling error. Remote endpoint: "
+                    + Socket.Client.RemoteEndPoint + "\n\r StackTrace:" + e.StackTrace + "\n\r Message:" + e.Message);
+            }
         }
 
         public void Main() 
@@ -78,177 +301,13 @@ namespace DansWorld.Server
 
                     StringBuilder sb = new StringBuilder();
                     for (int i = 0; i < data.Length; i++) { sb.Append("{" + data[i] + "} "); }
-                    Logger.Log("Packet length: " + length + " Packet data: " + sb.ToString());
+                    if (PACKET_DEBUG)
+                        Logger.Log("Packet length: " + length + " Packet data: " + sb.ToString());
 
                     PacketBuilder pb = new PacketBuilder().AddBytes(data);
                     Packet pkt = pb.Build();
 
-                    try
-                    {
-                        if (pkt.Family == PacketFamily.LOGIN)
-                        {
-                            if (pkt.Action == PacketAction.REQUEST)
-                            {
-                                string user = pkt.ReadString(pkt.ReadByte());
-                                string pass = pkt.ReadString(pkt.ReadByte());
-                                pass = Utils.Security.GetHashString(pass + "PROCO304" + user);
-                                CheckLogin(user, pass);
-                            }
-                        }
-                        else if (pkt.Family == PacketFamily.REGISTER)
-                        {
-                            if (pkt.Action == PacketAction.REQUEST)
-                            {
-                                string username = pkt.ReadString(pkt.ReadByte());
-                                string password = pkt.ReadString(pkt.ReadByte());
-                                password = Utils.Security.GetHashString(password + "PROCO304" + username);
-                                string email = pkt.ReadString(pkt.ReadByte());
-                                string fullname = pkt.ReadString(pkt.ReadByte());
-                                Logger.Log(String.Format("Requested username {0} password {1} email {2}", username, password, email));
-                                bool userExists = false;
-                                foreach (Account account in _server.Accounts)
-                                {
-                                    if (account.Username == username)
-                                    {
-                                        pb = new PacketBuilder(PacketFamily.REGISTER, PacketAction.REJECT);
-                                        string errMsg = "User already exists";
-                                        pb = pb.AddByte((byte)errMsg.Length).AddString(errMsg);
-                                        Send(pb.Build());
-                                        userExists = true;
-                                        break;
-                                    }
-                                }
-
-                                if (!userExists)
-                                {
-                                    pb = new PacketBuilder(PacketFamily.REGISTER, PacketAction.ACCEPT);
-                                    pb = pb.AddByte((byte)username.Length).AddString(username);
-                                    Send(pb.Build());
-                                    Account account = new Account(username, password, email, fullname);
-                                    _server.Accounts.Add(account);
-                                    account.CreateDatabaseEntry(_database, Socket.Client.RemoteEndPoint.ToString().Split(":")[0]);
-                                    Logger.Log("Account Created. Username: " + username);
-                                }
-                            }
-                        }
-                        else if (pkt.Family == PacketFamily.PLAY)
-                        {
-                            if (pkt.Action == PacketAction.REQUEST)
-                            {
-                                int userid = pkt.ReadByte();
-                                if (Account.Characters.Count >= userid) {
-                                    pb = new PacketBuilder(PacketFamily.PLAY, PacketAction.ACCEPT);
-                                    PlayerCharacter c = Account.GetCharacter(userid);
-                                    _characterHandling = c;
-                                    c.ServerID = ID;
-                                    pb = pb.AddByte((byte)c.Name.Length).AddString(c.Name)
-                                           .AddByte((byte)c.Level)
-                                           .AddByte((byte)c.Gender)
-                                           .AddInt(c.X)
-                                           .AddInt(c.Y)
-                                           .AddByte((byte)c.Facing)
-                                           .AddInt(c.ServerID).AddInt(_server.LoggedInPlayers.Count);
-
-                                    foreach (PlayerCharacter character in _server.LoggedInPlayers)
-                                    {
-                                        pb = pb.AddByte((byte)character.Name.Length).AddString(character.Name)
-                                           .AddByte((byte)character.Level)
-                                           .AddByte((byte)character.Gender)
-                                           .AddInt(character.X)
-                                           .AddInt(character.Y)
-                                           .AddByte((byte)character.Facing)
-                                           .AddInt(character.ServerID);
-                                    }
-                                    Send(pb.Build());
-
-                                    _server.LoggedInPlayers.Add(c);
-
-                                    foreach (Client client in _server.Clients)
-                                    {
-                                        if (client != this)
-                                        {
-                                            pb = new PacketBuilder(PacketFamily.PLAYER, PacketAction.WELCOME);
-                                            pb = pb.AddByte((byte)c.Name.Length).AddString(c.Name)
-                                                   .AddByte((byte)c.Level)
-                                                   .AddByte((byte)c.Gender)
-                                                   .AddInt(c.X)
-                                                   .AddInt(c.Y)
-                                                   .AddByte((byte)c.Facing)
-                                                   .AddInt(c.ServerID);
-                                            client.Send(pb.Build());
-                                        }
-                                    }
-                                    int servID = 0;
-                                    foreach (Enemy enemy in _server.Enemies)
-                                    {
-                                        pb = new PacketBuilder(PacketFamily.ENEMY, PacketAction.WELCOME);
-                                        pb = pb.AddInt(enemy.ID)
-                                            .AddByte((byte)enemy.Name.Length)
-                                            .AddString(enemy.Name)
-                                            .AddByte((byte)enemy.Facing)
-                                            .AddInt(enemy.X)
-                                            .AddInt(enemy.Y)
-                                            .AddInt(enemy.Vitality)
-                                            .AddByte((byte)enemy.Level)
-                                            .AddInt(enemy.Health)
-                                            .AddInt(enemy.SpriteID)
-                                            .AddByte((byte)servID++);
-                                            Send(pb.Build());
-                                    }
-                                    Account.State = AccountState.Playing;
-                                }
-                            }
-                        }
-                        else if (pkt.Family == PacketFamily.PLAYER)
-                        {
-                            if (pkt.Action == PacketAction.MOVE || pkt.Action == PacketAction.STOP)
-                            {
-                                int x = pkt.ReadInt();
-                                int y = pkt.ReadInt();
-                                Direction facing = (Direction)pkt.ReadByte();
-                                int id = pkt.ReadInt();
-                                if (_characterHandling.ServerID == id && (_characterHandling.X != x || _characterHandling.Y != y))
-                                {
-                                    _characterHandling.X = x;
-                                    _characterHandling.Y = y;
-                                    _characterHandling.Facing = facing;
-                                }
-
-                                foreach (Client client in _server.Clients)
-                                {
-                                    client.Send(pkt);
-                                }
-                            }
-                            else if (pkt.Action == PacketAction.LOGOUT && pkt.PeekInt() == _characterHandling.ServerID)
-                            {
-                                LogOut(_characterHandling);
-                            }
-                            else if (pkt.Action == PacketAction.TALK)
-                            {
-                                foreach (Client client in _server.Clients)
-                                {
-                                    client.Send(pkt);
-                                }
-                            }
-                            else if (pkt.Action == PacketAction.ATTACK)
-                            {
-
-                            }
-                        }
-                        else if (pkt.Family == PacketFamily.CONNECTION)
-                        {
-                            if (pkt.Action == PacketAction.PONG)
-                            {
-                                NeedPong = false;
-                            }
-                        }
-                    } 
-                    catch (Exception e)
-                    {
-                        Logger.Warn("Packet handling error. Remote endpoint: " 
-                            + Socket.Client.RemoteEndPoint + "\n\r StackTrace:" + e.StackTrace + "\n\r Message:" + e.Message);
-                    }
-
+                    HandlePacket(pkt);
                 }
                 catch (Exception e)
                 {
@@ -338,7 +397,8 @@ namespace DansWorld.Server
                 {
                     sb.Append($"[{b}] ");
                 }
-                Logger.Log($"Length: {length} Data: {sb.ToString()}");
+                if (PACKET_DEBUG)
+                    Logger.Log($"Length: {length} Data: {sb.ToString()}");
             }
             catch (Exception e)
             {

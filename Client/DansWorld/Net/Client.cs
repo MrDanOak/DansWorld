@@ -15,6 +15,7 @@ namespace DansWorld.GameClient.Net
 {
     public class Client
     {
+        private const bool PACKET_DEBUG = false;
         public string Host { get; private set; }
         public int Port { get; private set; }
         public TcpClient Socket { get; private set; }
@@ -65,7 +66,7 @@ namespace DansWorld.GameClient.Net
                         continue;
 
                     byte length = buffer[0];
-                    if (length < 2)
+                    if (length < 2 && PACKET_DEBUG)
                     {
                         Logger.Error("Packet of length less than 2 received");
                         continue;
@@ -76,7 +77,7 @@ namespace DansWorld.GameClient.Net
                     while (readTotal < length)
                     {
                         int read = Stream.Read(data, 0, length);
-                        if (read == 0)
+                        if (read == 0 && PACKET_DEBUG)
                         {
                             Logger.Warn("Packet seems empty..");
                             return;
@@ -87,7 +88,9 @@ namespace DansWorld.GameClient.Net
                     StringBuilder sb = new StringBuilder();
                     sb.Append("Packet Data: ");
                     for (int i = 0; i < data.Length; i++) { sb.Append("{" + data[i] + "} "); }
-                    Logger.Log(sb.ToString());
+
+                    if (PACKET_DEBUG)
+                        Logger.Log(sb.ToString());
 
                     PacketBuilder pb = new PacketBuilder().AddBytes(data);
                     Packet pkt = pb.Build();

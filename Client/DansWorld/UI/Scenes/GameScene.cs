@@ -1,5 +1,6 @@
 ﻿using DansWorld.Common.GameEntities;
 using DansWorld.Common.Net;
+using DansWorld.GameClient.GameComponents;
 using DansWorld.GameClient.UI.Game;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -25,6 +26,7 @@ namespace DansWorld.GameClient.UI.Scenes
         private bool _serverNotifiedOfIdle = false;
         private bool _enterDown = false;
         private int attackTimer = 0;
+        private Camera2D _camera;
 
 
         public List<PlayerCharacter> PlayerCharacters
@@ -78,6 +80,8 @@ namespace DansWorld.GameClient.UI.Scenes
 
         public override void Initialise(ContentManager Content)
         {
+            _camera = new Camera2D(_gameClient);
+            _camera.Initialize();
             _content = Content;
             _pingLabel = new Label()
             {
@@ -168,7 +172,7 @@ namespace DansWorld.GameClient.UI.Scenes
         {
             _pingLabel.Draw(gameTime, spriteBatch);
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.BackToFront);
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, _camera.Transform);
             foreach (PlayerCharacterSprite characterSprite in characterSprites)
             {
                 characterSprite.Draw(gameTime, spriteBatch);
@@ -195,6 +199,10 @@ namespace DansWorld.GameClient.UI.Scenes
         public override void Update(GameTime gameTime)
         {
             _pingLabel.Update(gameTime);
+            _camera.Update(gameTime);
+            if (characterSprites.Count > 0 && _camera.Focus != characterSprites[0]) 
+                _camera.Focus = characterSprites[0];
+
             bool moved = false;
 
             if (!_txtIn.HasFocus)
@@ -272,12 +280,12 @@ namespace DansWorld.GameClient.UI.Scenes
 
             foreach (PlayerCharacterSprite characterSprite in characterSprites)
             {
-                characterSprite.Update(gameTime);
+                characterSprite.Update(gameTime, _camera);
             }
 
             foreach (EnemySprite enemySprite in enemySprites)
             {
-                enemySprite.Update(gameTime);
+                enemySprite.Update(gameTime, _camera);
             }
 
             foreach (Label lbl in _lblMessages)
