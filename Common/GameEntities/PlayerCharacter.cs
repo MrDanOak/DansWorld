@@ -9,6 +9,8 @@ namespace DansWorld.Common.GameEntities
     {
         public Gender Gender;
         public PClass Class;
+        public int MaxHP;
+
         public PlayerCharacter()
         {
             Name = "";
@@ -19,6 +21,8 @@ namespace DansWorld.Common.GameEntities
             Facing = Direction.DOWN;
             X = 0;
             Y = 0;
+            Health = 50;
+            MaxHP = Health;
         }
     }
 }

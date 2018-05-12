@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace DansWorld.GameClient.UI.Scenes
 {
-    class CharacterSelectScene : BaseScene
+    public class CharacterSelectScene : BaseScene
     {
         Rect[] _charBox = new Rect[3];
         Label[] _lblCharNames = new Label[3];
@@ -110,6 +110,7 @@ namespace DansWorld.GameClient.UI.Scenes
                     Size = new Point((int)GameClient.GW2_FONT.MeasureString("Create").X + 10, (int)GameClient.GW2_FONT.MeasureString("Create").Y + 10),
                     Location = new Point(_charBox[i].Destination.Left + (_charBox[i].Size.X / 2) - ((int)GameClient.GW2_FONT.MeasureString("Create").X / 2), _charBox[i].Destination.Bottom + 10)
                 };
+                _btnCreateChar[i].OnClick += CharacterSelectScene_OnClick;
                 Controls.Add(_btnCreateChar[i]);
 
                 _characterSprites[i] = new PlayerCharacterSprite()
@@ -124,12 +125,23 @@ namespace DansWorld.GameClient.UI.Scenes
             }
         }
 
+        private void CharacterSelectScene_OnClick(object sender, CustomEventArgs.ClickedEventArgs e)
+        {
+            if (((Control)sender).IsVisible)
+            {
+                _gameClient.SetState(GameExecution.GameState.CreateCharacter);
+            }
+        }
+
         private void btnPlayChar_OnClick(object sender, CustomEventArgs.ClickedEventArgs e)
         {
-            int id = Convert.ToInt32(((Control)sender).Name[((Control)sender).Name.Length - 1]) - 48;
-            PacketBuilder pb = new PacketBuilder(PacketFamily.PLAY, PacketAction.REQUEST);
-            pb = pb.AddByte((byte)id);
-            GameClient.NetClient.Send(pb.Build());
+            if (((Control)sender).IsVisible)
+            {
+                int id = Convert.ToInt32(((Control)sender).Name[((Control)sender).Name.Length - 1]) - 48;
+                PacketBuilder pb = new PacketBuilder(PacketFamily.PLAY, PacketAction.REQUEST);
+                pb = pb.AddByte((byte)id);
+                GameClient.NetClient.Send(pb.Build());
+            }
         }
 
         internal void ClearCharacters()

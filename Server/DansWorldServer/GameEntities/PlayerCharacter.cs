@@ -21,8 +21,8 @@ namespace DansWorld.Server.GameEntities
         public void CreateDatabaseEntry(Database database, string owner)
         {
             Logger.Log($"Character creation requested name {Name} account {owner}");
-            string query = $"INSERT INTO Characters (CharacterName, AccountUsername, EXP, Facing, HP, Level, Map, Standing, X, Y, Strength, Dexterity, Vitality, Intelliegence," +
-                $" Class, Gender ) VALUES ('{Name}', '{owner}', {EXP}, {Facing}, {Health}, {Level}, 1, 1, {X}, {Y}, {Strength}, {Dexterity}, {Vitality}, {Intelligence}, 0, {Gender}); ";
+            string query = $"INSERT INTO Characters (CharacterName, AccountUsername, EXP, Facing, HP, Level, Map, Standing, X, Y, Strength, Dexterity, Vitality, Intelligence," +
+                $" Class, Gender) VALUES ('{Name}', '{owner}', {EXP}, {(byte)Facing}, {Health}, {Level}, 1, 1, {X}, {Y}, {Strength}, {Dexterity}, {Vitality}, {Intelligence}, 0, {(byte)Gender}); ";
             database.Insert(query);
         }
 

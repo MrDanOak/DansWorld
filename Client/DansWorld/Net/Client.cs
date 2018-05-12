@@ -133,6 +133,19 @@ namespace DansWorld.GameClient.Net
                             _gameClient.DisplayMessage(pkt.ReadString(pkt.ReadByte()));
                         }
                     }
+                    else if (pkt.Family == PacketFamily.CHARACTER_CREATE)
+                    {
+                        if (pkt.Action == PacketAction.ACCEPT)
+                        {
+                            PlayerCharacter player = new PlayerCharacter()
+                            {
+                                Name = pkt.ReadString(pkt.ReadByte()),
+                                Gender = (Gender)pkt.ReadByte()
+                            };
+                            _gameClient.CharacterSelect.AddCharacter(player);
+                            _gameClient.SetState(GameExecution.GameState.LoggedIn);
+                        }
+                    }
                     else if (pkt.Family == PacketFamily.PLAY)
                     {
                         if (pkt.Action == PacketAction.ACCEPT)
@@ -243,7 +256,7 @@ namespace DansWorld.GameClient.Net
                                     p = player;
                                 }
                             }
-                            _gameClient.ShowMessage(message, (p == null ? "" : p.Name));
+                            _gameClient.DisplayMessage(message, (p == null ? "" : p.Name));
                         }
                     }
                     else if (pkt.Family == PacketFamily.CONNECTION)

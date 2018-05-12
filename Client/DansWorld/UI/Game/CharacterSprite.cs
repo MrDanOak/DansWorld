@@ -11,6 +11,7 @@ namespace DansWorld.GameClient.UI.Game
         public Texture2D Texture;
         public Point Location;
         public Point Size;
+        public HealthBar HealthBar;
         public bool IsVisible;
         public int frameID;
         public int Width;
@@ -53,6 +54,7 @@ namespace DansWorld.GameClient.UI.Game
 
         public CharacterSprite()
         {
+            HealthBar = new HealthBar();
         }
 
 

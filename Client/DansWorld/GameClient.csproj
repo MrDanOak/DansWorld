@@ -81,6 +81,7 @@
     <Compile Include="UI\Game\EnemySprite.cs" />
     <Compile Include="UI\Game\CharacterSprite.cs" />
     <Compile Include="UI\HealthBar.cs" />
+    <Compile Include="UI\Scenes\CharacterCreateScene.cs" />
     <Compile Include="UI\Scenes\CharacterSelectScene.cs" />
     <Compile Include="UI\Scenes\GameScene.cs" />
     <Compile Include="UI\Scenes\MenuScene.cs" />

@@ -34,10 +34,11 @@ namespace DansWorld.GameClient
             GetName().Version.ToString();
 
 
-        CharacterSelectScene characterSelect;
-        MenuScene menu;
-        RegisterAccountScene registerAccount;
-        GameScene gameScene;
+        public CharacterSelectScene CharacterSelect;
+        public MenuScene Menu;
+        public RegisterAccountScene RegisterAccount;
+        public GameScene GameScence;
+        public CharacterCreateScene CharacterCreate;
 
         string version = System.Reflection.Assembly.GetExecutingAssembly().
             GetName().Version.ToString();
@@ -69,10 +70,11 @@ namespace DansWorld.GameClient
 
         protected override void Initialize()
         {
-            menu = new MenuScene(this);
-            characterSelect = new CharacterSelectScene(this);
-            registerAccount = new RegisterAccountScene(this);
-            gameScene = new GameScene(this);
+            Menu = new MenuScene(this);
+            CharacterSelect = new CharacterSelectScene(this);
+            RegisterAccount = new RegisterAccountScene(this);
+            CharacterCreate = new CharacterCreateScene(this);
+            GameScence = new GameScene(this);
             this.Exiting += GameClient_Exiting;
             base.Initialize();
         }
@@ -94,18 +96,19 @@ namespace DansWorld.GameClient
             DEFAULT_TEXTURE = new Texture2D(GraphicsDevice, 1, 1);
             DEFAULT_TEXTURE.SetData(new Color[] { Color.White });
 
-            menu.Initialise(Content);
-            characterSelect.Initialise(Content);
-            registerAccount.Initialise(Content);
-            gameScene.Initialise(Content);
+            Menu.Initialise(Content);
+            CharacterSelect.Initialise(Content);
+            RegisterAccount.Initialise(Content);
+            CharacterCreate.Initialise(Content);
+            GameScence.Initialise(Content);
         }
 
         public void ClearCharacters()
         {
             if (_gameState == GameState.LoggedIn)
-                characterSelect.ClearCharacters();
+                CharacterSelect.ClearCharacters();
             else if (_gameState == GameState.Playing)
-                gameScene.ClearCharacters();
+                GameScence.ClearCharacters();
         }
 
         public void AddPlayerCharacters(List<PlayerCharacter> playerCharacters)
@@ -118,36 +121,40 @@ namespace DansWorld.GameClient
         {
             if (_gameState == GameState.Playing)
             {
-                gameScene.AddEnemy(enemy);
+                GameScence.AddEnemy(enemy);
             }
         }
 
         public void AddPlayerCharacter(PlayerCharacter character)
         {
             if (_gameState == GameState.LoggedIn)
-                characterSelect.AddCharacter(character);
+                CharacterSelect.AddCharacter(character);
             else if (_gameState == GameState.Playing)
-                gameScene.AddCharacter(character);
+                GameScence.AddCharacter(character);
         }
 
         public List<PlayerCharacter> GetPlayers()
         {
-            if (_gameState == GameState.LoggedIn) return characterSelect.PlayerCharacters;
-            else if (_gameState == GameState.Playing) return gameScene.PlayerCharacters;
+            if (_gameState == GameState.LoggedIn) return CharacterSelect.PlayerCharacters;
+            else if (_gameState == GameState.Playing) return GameScence.PlayerCharacters;
             else return null;
         }
 
         public List<Enemy> GetEnemies()
         {
-            return gameScene.Enemies;
+            return GameScence.Enemies;
         }
 
-        public void DisplayMessage(string message)
+        public void DisplayMessage(string message, string from = "")
         {
             if (_gameState == GameState.MainMenu)
-                menu.DisplayMessage(message);
+                Menu.DisplayMessage(message);
             else if (_gameState == GameState.RegisterAccount)
-                registerAccount.DisplayMessage(message);
+                RegisterAccount.DisplayMessage(message);
+            else if (_gameState == GameState.CreateCharacter)
+                CharacterCreate.DisplayMessage(message);
+            else if (_gameState == GameState.Playing)
+                GameScence.ShowMessage(message, from);
         }
 
         public void Focus(Control toFocus, List<Control> controlSet)
@@ -177,16 +184,19 @@ namespace DansWorld.GameClient
             switch(_gameState)
             {
                 case GameState.MainMenu:
-                    menu.Update(gameTime);
+                    Menu.Update(gameTime);
                     break;
                 case GameState.LoggedIn:
-                    characterSelect.Update(gameTime);
+                    CharacterSelect.Update(gameTime);
                     break;
                 case GameState.RegisterAccount:
-                    registerAccount.Update(gameTime);
+                    RegisterAccount.Update(gameTime);
+                    break;
+                case GameState.CreateCharacter:
+                    CharacterCreate.Update(gameTime);
                     break;
                 case GameState.Playing:
-                    gameScene.Update(gameTime);
+                    GameScence.Update(gameTime);
                     break;
             }
 
@@ -199,16 +209,19 @@ namespace DansWorld.GameClient
             switch (_gameState)
             {
                 case GameState.MainMenu:
-                    menu.Draw(gameTime, _spriteBatch);
+                    Menu.Draw(gameTime, _spriteBatch);
                     break;
                 case GameState.LoggedIn:
-                    characterSelect.Draw(gameTime, _spriteBatch);
+                    CharacterSelect.Draw(gameTime, _spriteBatch);
                     break;
                 case GameState.RegisterAccount:
-                    registerAccount.Draw(gameTime, _spriteBatch);
+                    RegisterAccount.Draw(gameTime, _spriteBatch);
+                    break;
+                case GameState.CreateCharacter:
+                    CharacterCreate.Draw(gameTime, _spriteBatch);
                     break;
                 case GameState.Playing:
-                    gameScene.Draw(gameTime, _spriteBatch);
+                    GameScence.Draw(gameTime, _spriteBatch);
                     break;
             }
             _spriteBatch.End();
@@ -226,7 +239,7 @@ namespace DansWorld.GameClient
             switch (_gameState)
             {
                 case GameState.Playing:
-                    gameScene.ShowPing(ms);
+                    GameScence.ShowPing(ms);
                     break;
             }
         }
@@ -234,13 +247,7 @@ namespace DansWorld.GameClient
         internal void RemoveCharacter(PlayerCharacter toRemove)
         {
             if (_gameState == GameState.Playing)
-                gameScene.RemoveCharacter(toRemove);
-        }
-
-        internal void ShowMessage(string message, string from)
-        {
-            if (_gameState == GameState.Playing)
-                gameScene.ShowMessage(message, from);
+                GameScence.RemoveCharacter(toRemove);
         }
     }
 }

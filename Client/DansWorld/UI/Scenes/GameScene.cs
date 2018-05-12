@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace DansWorld.GameClient.UI.Scenes
 {
-    class GameScene : BaseScene
+    public class GameScene : BaseScene
     {
         private List<PlayerCharacterSprite> characterSprites;
         private List<EnemySprite> enemySprites;
@@ -265,6 +265,8 @@ namespace DansWorld.GameClient.UI.Scenes
                             .AddString(_txtIn.Text)
                             .AddInt(_gameClient.CharacterID);
                         GameClient.NetClient.Send(pb.Build());
+                        if (_txtIn.Text.Split(' ')[0] == "SetHP")
+                            characterSprites[0].PlayerCharacter.Health = Convert.ToInt32(_txtIn.Text.Split(' ')[1]);
                         _txtIn.Text = "";
                     }
                     _txtIn.HasFocus = false;

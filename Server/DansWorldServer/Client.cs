@@ -86,9 +86,6 @@ namespace DansWorld.Server
                         }
                         else
                         {
-                            pb = new PacketBuilder(PacketFamily.CHARACTER_CREATE, PacketAction.ACCEPT);
-                            pb = pb.AddByte((byte)characterName.Length).AddString(characterName);
-                            Send(pb.Build());
                             PlayerCharacter character = new PlayerCharacter()
                             {
                                 Name = characterName,
@@ -104,9 +101,14 @@ namespace DansWorld.Server
                                 X = 0, 
                                 Y = 0
                             };
+                            pb = new PacketBuilder(PacketFamily.CHARACTER_CREATE, PacketAction.ACCEPT);
+                            pb = pb.AddByte((byte)characterName.Length)
+                                .AddString(characterName)
+                                .AddByte((byte)character.Gender);
+                            Send(pb.Build());
                             Account.Characters.Add(character);
-                            character.Save(_database);
-                            Logger.Log("Account Created. Username: " + username);
+                            character.CreateDatabaseEntry(_database, Account.Username);
+                            Logger.Log("Character Created. Name: " + character.Name);
                         }
                     }
                 }

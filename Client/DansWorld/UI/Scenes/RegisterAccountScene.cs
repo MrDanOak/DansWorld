@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace DansWorld.GameClient.UI.Scenes
 {
-    class RegisterAccountScene : BaseScene
+    public class RegisterAccountScene : BaseScene
     {
         TextBox txtUsername;
         TextBox txtPassword;

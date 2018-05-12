@@ -7,14 +7,14 @@
     <framework targetVersion="4.6.1" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="Dans World.exe.manifest" size="36152">
+    <dependentAssembly dependencyType="install" codebase="Dans World.exe.manifest" size="36146">
       <assemblyIdentity name="Dans World.exe" version="1.0.0.2" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="x86" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>zwMfL9z2LRrKwh0j0bOhBg34NMeirvGaHxepQJ9ogWk=</dsig:DigestValue>
+        <dsig:DigestValue>Emo/qrUYMY6J4wtO8VLBJc5VENbqO2VAruQOnOl6VEw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

@@ -62,6 +62,7 @@ namespace DansWorld.GameClient.UI.Game
                     {
                         _namePlate.Draw(gameTime, spriteBatch);
                     }
+                    HealthBar.Draw(gameTime, spriteBatch);
                     float depth = 1 - ((float)Location.Y / GameClient.HEIGHT);
 
 
@@ -91,6 +92,9 @@ namespace DansWorld.GameClient.UI.Game
             if (InGame)
             {
                 Location = new Point(PlayerCharacter.X, PlayerCharacter.Y);
+
+                HealthBar.Location = new Point(Location.X - 1, Location.Y - 20);
+                HealthBar.SetHP(PlayerCharacter.Health, PlayerCharacter.MaxHP);
 
                 if (PlayerCharacter.IsWalking)
                 {
