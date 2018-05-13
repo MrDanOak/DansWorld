@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DansWorld.Common.Enums;
 using DansWorld.Common.GameEntities;
 using DansWorld.Common.Net;
 using DansWorld.GameClient.UI.Game;
@@ -30,9 +26,9 @@ namespace DansWorld.GameClient.UI.Scenes
             _gameClient = gameClient;
         }
 
-        public override void Initialise(ContentManager Content)
+        public override void Initialise(ContentManager content)
         {
-            Texture2D baseCharacterTexture = Content.Load<Texture2D>("Images/Characters/base");
+            Texture2D baseCharacterTexture = content.Load<Texture2D>("Images/Characters/base");
             Controls = new List<Control>();
 
             for (int i = 0; i < 3; i++)
@@ -113,7 +109,7 @@ namespace DansWorld.GameClient.UI.Scenes
                 _btnCreateChar[i].OnClick += CharacterSelectScene_OnClick;
                 Controls.Add(_btnCreateChar[i]);
 
-                _characterSprites[i] = new PlayerCharacterSprite()
+                _characterSprites[i] = new PlayerCharacterSprite(content, null)
                 {
                     IsVisible = true,
                     Width = 48,

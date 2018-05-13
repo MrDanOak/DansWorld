@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DansWorld.Common.GameEntities;
+﻿using DansWorld.Common.GameEntities;
 using DansWorld.Common.Enums;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using DansWorld.GameClient.GameComponents;
-using DansWorld.Common.IO;
-using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Content;
 
 namespace DansWorld.GameClient.UI.Game
 {
@@ -43,13 +37,16 @@ namespace DansWorld.GameClient.UI.Game
                 return i;
             }
         }
-        public PlayerCharacterSprite()
+        public PlayerCharacterSprite(ContentManager content, PlayerCharacter playerCharacter)
         {
             _namePlate = new Label()
             {
                 FrontColor = Color.Black,
                 Font = GameClient.DEFAULT_FONT
             };
+            PlayerCharacter = playerCharacter;
+            WeaponSprite = new WeaponSprite(playerCharacter);
+            WeaponSprite.Texture = content.Load<Texture2D>("Images/Weapons/sword");
         }
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
@@ -75,6 +72,8 @@ namespace DansWorld.GameClient.UI.Game
                         Vector2.Zero,
                         SpriteEffects.None,
                         depth);
+
+                    WeaponSprite.Draw(gameTime, spriteBatch);
                 }
                 else
                 {
@@ -96,6 +95,8 @@ namespace DansWorld.GameClient.UI.Game
 
                 HealthBar.Location = new Point(Location.X - 1, Location.Y - 10);
                 HealthBar.SetHP(PlayerCharacter.Health, PlayerCharacter.MaxHP);
+                HealthBar.Update(gameTime, camera);
+                WeaponSprite.Update(gameTime, camera);
 
                 if (PlayerCharacter.IsWalking)
                 {

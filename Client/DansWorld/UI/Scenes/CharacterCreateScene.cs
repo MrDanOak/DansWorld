@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DansWorld.Common.Enums;
 using DansWorld.Common.GameEntities;
 using DansWorld.Common.Net;
@@ -21,15 +18,16 @@ namespace DansWorld.GameClient.UI.Scenes
         Button _btnCancel = new Button();
         Button _btnMale = new Button();
         Button _btnFemale = new Button();
-        PlayerCharacterSprite _characterSprite = new PlayerCharacterSprite();
+        PlayerCharacterSprite _characterSprite;
         private Label _lblCharacter;
         TextBox _txtCharacterName;
         PlayerCharacter playerCharacter = new PlayerCharacter();
         GameClient _gameClient;
         int _elapsedms = 0;
-        public override void Initialise(ContentManager Content)
+        public override void Initialise(ContentManager content)
         {
-            Texture2D baseCharacterTexture = Content.Load<Texture2D>("Images/Characters/base");
+            _characterSprite = new PlayerCharacterSprite(content, null);
+            Texture2D baseCharacterTexture = content.Load<Texture2D>("Images/Characters/base");
             Controls = new List<Control>();
             
             _charBox = new Rect()
@@ -85,7 +83,7 @@ namespace DansWorld.GameClient.UI.Scenes
             _btnFemale.OnClick += _btnFemale_OnClick;
             Controls.Add(_btnFemale);
 
-            _characterSprite = new PlayerCharacterSprite()
+            _characterSprite = new PlayerCharacterSprite(content, null)
             {
                 IsVisible = true,
                 Width = 48,

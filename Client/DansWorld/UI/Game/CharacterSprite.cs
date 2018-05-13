@@ -1,8 +1,6 @@
-﻿using DansWorld.Common.IO;
-using DansWorld.GameClient.GameComponents;
+﻿using DansWorld.GameClient.GameComponents;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace DansWorld.GameClient.UI.Game
 {

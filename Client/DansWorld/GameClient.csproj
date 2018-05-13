@@ -75,6 +75,7 @@
   <ItemGroup>
     <Compile Include="GameClient.cs" />
     <Compile Include="GameComponents\Camera.cs" />
+    <Compile Include="GameComponents\ICameraFocusable.cs" />
     <Compile Include="GameExecution\GameState.cs" />
     <Compile Include="Math\Utils.cs" />
     <Compile Include="UI\CustomEventArgs\TextChangedEventArgs.cs" />

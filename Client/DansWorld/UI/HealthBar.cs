@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DansWorld.GameClient.GameComponents;
 using DansWorld.GameClient.UI.CustomEventArgs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace DansWorld.GameClient.UI
 {
-    public class HealthBar : IControl
+    public class HealthBar : Game.IDrawable
     {
         Rect _maxHealth = new Rect()
         {
@@ -70,7 +66,7 @@ namespace DansWorld.GameClient.UI
             _currentHealth.Draw(gameTime, spriteBatch);
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, Camera2D camera)
         {
             _maxHealth.Update(gameTime);
             _currentHealth.Update(gameTime);

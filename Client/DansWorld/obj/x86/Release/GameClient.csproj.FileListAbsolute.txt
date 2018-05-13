@@ -147,3 +147,4 @@ C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Release\Dans Worl
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Release\Dans World.application
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Release\Dans World.exe
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Release\Dans World.pdb
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\Content\Images\Weapons\sword.xnb

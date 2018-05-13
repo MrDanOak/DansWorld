@@ -8,9 +8,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DansWorld.GameClient.UI.Scenes
 {
@@ -121,7 +118,7 @@ namespace DansWorld.GameClient.UI.Scenes
 
         public void AddCharacter(PlayerCharacter player)
         {
-            PlayerCharacterSprite sprite = new PlayerCharacterSprite()
+            PlayerCharacterSprite sprite = new PlayerCharacterSprite(_content, player)
             {
                 IsVisible = true,
                 Texture = _content.Load<Texture2D>("Images/Characters/base"),
@@ -132,17 +129,12 @@ namespace DansWorld.GameClient.UI.Scenes
                 PlayerCharacter = player,
                 InGame = true
             };
-
-            sprite.WeaponSprite = new WeaponSprite()
-            {
-
-            };
             characterSprites.Add(sprite);
         }
 
         public void RemoveCharacter(PlayerCharacter player)
         {
-            PlayerCharacterSprite toRemove = new PlayerCharacterSprite();
+            PlayerCharacterSprite toRemove = new PlayerCharacterSprite(_content, player);
             foreach (PlayerCharacterSprite sprite in characterSprites)
             {
                 if (player == sprite.PlayerCharacter)
