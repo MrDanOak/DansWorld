@@ -6,3 +6,4 @@ C:\Users\dansc\source\repos\DansWorld\Common\obj\Release\netstandard2.0\Common.A
 C:\Users\dansc\source\repos\DansWorld\Common\obj\Release\netstandard2.0\Common.AssemblyInfo.cs
 C:\Users\dansc\source\repos\DansWorld\Common\obj\Release\netstandard2.0\DansWorld.Common.dll
 C:\Users\dansc\source\repos\DansWorld\Common\obj\Release\netstandard2.0\DansWorld.Common.pdb
+C:\Users\dansc\source\repos\DansWorld\Common\obj\Release\netstandard2.0\Common.csprojResolveAssemblyReference.cache

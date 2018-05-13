@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
@@ -83,6 +80,7 @@ namespace DansWorld.GameClient.UI
         private bool _quoteDown = false;
         private bool _periodDown = false;
         private bool _minusDown = false;
+        private bool _semiColonDown = false;
 
         private bool _capitalModifier
         {
@@ -157,6 +155,7 @@ namespace DansWorld.GameClient.UI
                         else if (kbState.IsKeyDown(Keys.D8) && (!_8KeyDown)) { Text += (_shiftDown ? SpecialCharactersAllowed ? "*" : "" : NumbersAllowed ? "8" : ""); }
                         else if (kbState.IsKeyDown(Keys.D9) && (!_9KeyDown)) { Text += (_shiftDown ? SpecialCharactersAllowed ? "(" : "" : NumbersAllowed ? "9" : ""); }
                         else if (kbState.IsKeyDown(Keys.D0) && (!_0KeyDown)) { Text += (_shiftDown ? SpecialCharactersAllowed ? ")" : "" : NumbersAllowed ? "0" : ""); }
+                        else if (kbState.IsKeyDown(Keys.OemSemicolon) && (!_semiColonDown)) { Text += (SpecialCharactersAllowed ? _shiftDown ? ":" : ";" : ""); }
                         else if (kbState.IsKeyDown(Keys.OemTilde) && (!_quoteDown)) Text += (_shiftDown ? SpecialCharactersAllowed ? "@" : "" : SpecialCharactersAllowed ? "'" : "");
                         else if (kbState.IsKeyDown(Keys.OemMinus) && (!_minusDown)) Text += (_shiftDown ? SpecialCharactersAllowed ? "_" : "" : SpecialCharactersAllowed ? "-" : "");
                         //else if (kbState.IsKeyDown(Keys.Subtract)) { Text += (SpecialCharactersAllowed ? "-" : ""); Space }
@@ -230,6 +229,7 @@ namespace DansWorld.GameClient.UI
             _quoteDown = kbState.IsKeyDown(Keys.OemTilde);
             _periodDown = kbState.IsKeyDown(Keys.OemPeriod);
             _minusDown = kbState.IsKeyDown(Keys.OemMinus);
+            _semiColonDown = kbState.IsKeyDown(Keys.OemSemicolon);
 
         }
 

@@ -26,6 +26,15 @@ namespace DansWorld.GameClient.UI
             BackColor = Color.Red, 
             Size = new Point(50, 10)
         };
+
+        internal Point Size
+        {
+            get
+            {
+                return _maxHealth.Size;
+            }
+        }
+
         public Point Location
         {
             get

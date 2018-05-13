@@ -13,11 +13,12 @@ using Microsoft.Xna.Framework.Input;
 
 namespace DansWorld.GameClient.UI.Game
 {
-    public class PlayerCharacterSprite : CharacterSprite
+    public class PlayerCharacterSprite : CharacterSprite, IDrawable
     {
         public Rectangle SourceRectangle;
         public PlayerCharacter PlayerCharacter;
         public bool InGame = false;
+        internal WeaponSprite WeaponSprite;
 
         private Rectangle Dest
         {
@@ -93,7 +94,7 @@ namespace DansWorld.GameClient.UI.Game
             {
                 Location = new Point(PlayerCharacter.X, PlayerCharacter.Y);
 
-                HealthBar.Location = new Point(Location.X - 1, Location.Y - 20);
+                HealthBar.Location = new Point(Location.X - 1, Location.Y - 10);
                 HealthBar.SetHP(PlayerCharacter.Health, PlayerCharacter.MaxHP);
 
                 if (PlayerCharacter.IsWalking)
@@ -120,7 +121,7 @@ namespace DansWorld.GameClient.UI.Game
                     }
                     Vector2 dimCharName = GameClient.DEFAULT_FONT.MeasureString(PlayerCharacter.Name);
                     _namePlate.Size = new Point((int)dimCharName.X, (int)dimCharName.Y);
-                    _namePlate.Location = new Point(PlayerCharacter.X + (Width / 2) - ((int)dimCharName.X / 2), PlayerCharacter.Y - (int)dimCharName.Y);
+                    _namePlate.Location = new Point(PlayerCharacter.X + (Width / 2) - ((int)dimCharName.X / 2), PlayerCharacter.Y - (int)dimCharName.Y - HealthBar.Size.Y);
                     _namePlate.Update(gameTime);
                 }
             }

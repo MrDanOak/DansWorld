@@ -78,8 +78,12 @@
     <Compile Include="GameExecution\GameState.cs" />
     <Compile Include="Math\Utils.cs" />
     <Compile Include="UI\CustomEventArgs\TextChangedEventArgs.cs" />
+    <Compile Include="UI\DialogWindow.cs" />
     <Compile Include="UI\Game\EnemySprite.cs" />
     <Compile Include="UI\Game\CharacterSprite.cs" />
+    <Compile Include="UI\Game\BaseGameSprite.cs" />
+    <Compile Include="UI\Game\IDrawable.cs" />
+    <Compile Include="UI\Game\WeaponSprite.cs" />
     <Compile Include="UI\HealthBar.cs" />
     <Compile Include="UI\Scenes\CharacterCreateScene.cs" />
     <Compile Include="UI\Scenes\CharacterSelectScene.cs" />

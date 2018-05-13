@@ -132,6 +132,11 @@ namespace DansWorld.GameClient.UI.Scenes
                 PlayerCharacter = player,
                 InGame = true
             };
+
+            sprite.WeaponSprite = new WeaponSprite()
+            {
+
+            };
             characterSprites.Add(sprite);
         }
 
@@ -172,7 +177,7 @@ namespace DansWorld.GameClient.UI.Scenes
         {
             _pingLabel.Draw(gameTime, spriteBatch);
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, _camera.Transform);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, _camera.Transform);
             foreach (PlayerCharacterSprite characterSprite in characterSprites)
             {
                 characterSprite.Draw(gameTime, spriteBatch);

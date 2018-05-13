@@ -1,17 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DansWorld.GameClient.GameComponents
 {
-    public interface IFocusable
-    {
-        Vector2 Position { get; }
-    }
 
     public interface ICamera2D
     {
@@ -63,9 +54,9 @@ namespace DansWorld.GameClient.GameComponents
         /// <summary>
         /// Gets or sets the focus of the Camera.
         /// </summary>
-        /// <seealso cref="IFocusable"/>
+        /// <seealso cref="ICameraFocusbale"/>
         /// <value>The focus.</value>
-        IFocusable Focus { get; set; }
+        ICameraFocusbale Focus { get; set; }
 
         /// <summary>
         /// Determines whether the target is in view given the specified position.
@@ -102,7 +93,7 @@ namespace DansWorld.GameClient.GameComponents
         public float Scale { get; set; }
         public Vector2 ScreenCenter { get; protected set; }
         public Matrix Transform { get; set; }
-        public IFocusable Focus { get; set; }
+        public ICameraFocusbale Focus { get; set; }
         public float MoveSpeed { get; set; }
 
         #endregion

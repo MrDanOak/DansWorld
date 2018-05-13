@@ -57,6 +57,13 @@ namespace DansWorld.Server
                         CheckLogin(user, pass);
                     }
                 }
+                else if (pkt.Family == PacketFamily.CHARACTER_DELETE)
+                {
+                    if (pkt.Action == PacketAction.REQUEST)
+                    {
+
+                    }
+                }
                 else if (pkt.Family == PacketFamily.CHARACTER_CREATE)
                 {
                     if (pkt.Action == PacketAction.REQUEST)

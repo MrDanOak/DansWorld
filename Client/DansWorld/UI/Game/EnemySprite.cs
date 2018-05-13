@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DansWorld.GameClient.UI.Game
 {
-    class EnemySprite : CharacterSprite
+    class EnemySprite : CharacterSprite, IDrawable
     {
         public Enemy Enemy;
 
@@ -19,6 +19,7 @@ namespace DansWorld.GameClient.UI.Game
         {
             base.Update(gameTime, camera);
             _animationTimer += gameTime.ElapsedGameTime.Milliseconds;
+            Location = new Point(Enemy.X, Enemy.Y);
             if (_animationTimer > 400)
             {
                 _animationID += 1;

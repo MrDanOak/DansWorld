@@ -10,11 +10,6 @@ C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\C
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\Content\Fonts\arialBold.xnb
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\Content\Fonts\GW2Font.xnb
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\Content\Fonts\GW2FontLarge.xnb
-C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\DansWorld.GameClient.exe.config
-C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\DansWorld.GameClient.exe.manifest
-C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\DansWorld.GameClient.application
-C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\DansWorld.GameClient.exe
-C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\DansWorld.GameClient.pdb
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\Microsoft.Win32.Primitives.dll
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\netstandard.dll
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\System.AppContext.dll
@@ -133,7 +128,22 @@ C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\S
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\SharpDX.Direct3D9.xml
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Release\GameClient.csprojResolveAssemblyReference.cache
 C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Release\GameClient.csproj.CoreCompileInputs.cache
-C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Release\DansWorld.GameClient.exe.manifest
-C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Release\DansWorld.GameClient.application
-C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Release\DansWorld.GameClient.exe
-C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Release\DansWorld.GameClient.pdb
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\Content\Images\Enemies\cactite.xnb
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\Content\Images\Enemies\dragon.xnb
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\Content\Images\Enemies\float_eye.xnb
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\Content\Images\Enemies\ghost.xnb
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\Content\Images\Enemies\mushroom.xnb
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\Content\Images\Enemies\slime.xnb
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\Content\Images\Characters\Archer.xnb
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\Content\Images\Characters\enemies.xnb
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\Content\Images\Characters\IceWizard.xnb
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\Content\Images\Characters\Knight.xnb
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\Dans World.exe.config
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\Dans World.exe.manifest
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\Dans World.application
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\Dans World.exe
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\bin\Windows\x86\Release\Dans World.pdb
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Release\Dans World.exe.manifest
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Release\Dans World.application
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Release\Dans World.exe
+C:\Users\dansc\source\repos\DansWorld\Client\DansWorld\obj\x86\Release\Dans World.pdb

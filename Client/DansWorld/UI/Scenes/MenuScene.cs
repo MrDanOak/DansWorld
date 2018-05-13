@@ -70,7 +70,7 @@ namespace DansWorld.GameClient.UI.Scenes
                 Size = new Point(300, (int)GameClient.DEFAULT_FONT.MeasureString(" ").Y + 10),
                 Location = new Point(GameClient.WIDTH / 2 - 150, _txtUser.Destination.Bottom + 10),
                 NumbersAllowed = true,
-                SpecialCharactersAllowed = false,
+                SpecialCharactersAllowed = true,
                 SpacesAllowed = false,
                 IsPasswordField = true
             };

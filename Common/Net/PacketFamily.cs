@@ -12,6 +12,7 @@ namespace DansWorld.Common.Net
         PLAYER = 4,
         CONNECTION = 5,
         ENEMY = 6,
-        CHARACTER_CREATE = 7
+        CHARACTER_CREATE = 7,
+        CHARACTER_DELETE = 8
     }
 }
