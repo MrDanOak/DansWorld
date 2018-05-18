@@ -4,7 +4,7 @@
   <description asmv2:iconFile="Icon.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="Dans World" version="0.1.0.5495" language="neutral" processorArchitecture="x86" />
+    <assemblyIdentity name="Dans World" version="0.1.0.32314" language="neutral" processorArchitecture="x86" />
     <commandLine file="Dans World.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -292,13 +292,13 @@
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Dans World.exe" size="209888">
-      <assemblyIdentity name="Dans World" version="0.1.0.5495" language="neutral" processorArchitecture="x86" />
+      <assemblyIdentity name="Dans World" version="0.1.0.32314" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>ZnXe3sjXpmspZbB5xdBX8DfzS0Uht87Nw+Zymq2J0ho=</dsig:DigestValue>
+        <dsig:DigestValue>JMjMe8ocOQsoMbvBbwAR94gekFeJU364uPRuKD75SJ0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

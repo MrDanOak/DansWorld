@@ -64,7 +64,7 @@ namespace DansWorld.Server
         /// <summary>
         /// Flag to define whether packet data should be output to the console. Should NOT be used in production.
         /// </summary>
-        private const bool PACKET_DEBUG = false;
+        private const bool PACKET_DEBUG = true;
         /// <summary>
         /// Locks the network stream so that only one packet may be sent at once ensuring that packets do not get scrambled.
         /// </summary>

@@ -67,7 +67,7 @@ namespace DansWorld.GameClient.UI.Game
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Camera2D camera)
         {
-            float depth = 1 - ((float)Location.Y / GameClient.HEIGHT);
+            float depth = 1 - ((float)Location.Y / 10000);
 
             spriteBatch.Draw(Texture,
                 new Rectangle(Enemy.X, Enemy.Y, Width, Height),

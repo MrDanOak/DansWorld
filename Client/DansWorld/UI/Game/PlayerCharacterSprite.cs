@@ -68,7 +68,7 @@ namespace DansWorld.GameClient.UI.Game
                     HealthBar.Draw(gameTime, spriteBatch);
                     spriteBatch.End();
                     spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, _camera.Transform);
-                    float depth = 1 - ((float)Location.Y / GameClient.HEIGHT);
+                    float depth = 1 - ((float)Location.Y / 10000);
 
 
                     spriteBatch.Draw(Texture,
