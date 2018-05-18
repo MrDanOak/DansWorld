@@ -64,7 +64,7 @@ namespace DansWorld.Server
         /// <summary>
         /// Flag to define whether packet data should be output to the console. Should NOT be used in production.
         /// </summary>
-        private const bool PACKET_DEBUG = true;
+        private const bool PACKET_DEBUG = false;
         /// <summary>
         /// Locks the network stream so that only one packet may be sent at once ensuring that packets do not get scrambled.
         /// </summary>
@@ -264,6 +264,27 @@ namespace DansWorld.Server
                             //and then put it out to the server console
                             Logger.Log("Character Created. Name: " + character.Name);
                         }
+                    }
+                    else if (pkt.Action == PacketAction.DELETE)
+                    {
+                        int userid = pkt.ReadByte();
+                        PlayerCharacter player = Account.GetCharacter(userid);
+                        foreach (Account account in _server.Accounts)
+                        {
+                            PlayerCharacter toRemove = null;
+                            foreach (PlayerCharacter character in account.Characters)
+                            {
+                                if (character.Name == player.Name)
+                                {
+                                    toRemove = character;
+                                }
+                            }
+                            if (toRemove != null) account.Characters.Remove(toRemove);
+                        }
+
+                        player.Delete(_database);
+                        Account.Characters.Remove(player);
+                        Send(pkt);
                     }
                 }
                 else if (pkt.Family == PacketFamily.REGISTER)

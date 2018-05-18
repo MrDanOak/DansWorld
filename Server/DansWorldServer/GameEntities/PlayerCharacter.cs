@@ -48,5 +48,12 @@ namespace DansWorld.Server.GameEntities
                            + (int)Facing + " WHERE CharacterName = '" + Name + "'";
             database.Update(query);
         }
+
+        public void Delete(Database database)
+        {
+            Logger.Log($"Deleting Character: {Name}");
+            string query = "DELETE FROM Characters WHERE CharacterName='" + Name + "'";
+            database.Delete(query);
+        }
     }
 }

@@ -148,6 +148,11 @@ namespace DansWorld.GameClient.Net
                             string message = pkt.ReadString(pkt.ReadByte());
                             _gameClient.DisplayMessage(message);
                         }
+                        else if (pkt.Action == PacketAction.DELETE)
+                        {
+                            _gameClient.SetState(GameExecution.GameState.LoggedIn);
+                            _gameClient.CharacterSelect.RemoveCharacter(pkt.ReadByte());
+                        }
                     }
                     else if (pkt.Family == PacketFamily.PLAY)
                     {

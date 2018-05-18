@@ -93,6 +93,7 @@ namespace DansWorld.GameClient.UI.Scenes
                     Size = new Point((int)GameClient.GW2_FONT.MeasureString("Create").X + 10, (int)GameClient.GW2_FONT.MeasureString("Create").Y + 10),
                     Location = new Point(_charBox[i].Destination.Left + (_charBox[i].Size.X / 2) - ((int)GameClient.GW2_FONT.MeasureString("Create").X / 2), _btnPlayChar[i].Destination.Bottom + 10)
                 };
+                _btnDeleteChar[i].OnClick += btnDeleteChar_OnClick;
                 Controls.Add(_btnDeleteChar[i]);
 
                 _btnCreateChar[i] = new Button()
@@ -106,7 +107,7 @@ namespace DansWorld.GameClient.UI.Scenes
                     Size = new Point((int)GameClient.GW2_FONT.MeasureString("Create").X + 10, (int)GameClient.GW2_FONT.MeasureString("Create").Y + 10),
                     Location = new Point(_charBox[i].Destination.Left + (_charBox[i].Size.X / 2) - ((int)GameClient.GW2_FONT.MeasureString("Create").X / 2), _charBox[i].Destination.Bottom + 10)
                 };
-                _btnCreateChar[i].OnClick += CharacterSelectScene_OnClick;
+                _btnCreateChar[i].OnClick += btnCreateChar_OnClick;
                 Controls.Add(_btnCreateChar[i]);
 
                 _characterSprites[i] = new PlayerCharacterSprite(content, null, null)
@@ -121,7 +122,40 @@ namespace DansWorld.GameClient.UI.Scenes
             }
         }
 
-        private void CharacterSelectScene_OnClick(object sender, CustomEventArgs.ClickedEventArgs e)
+        private void btnDeleteChar_OnClick(object sender, CustomEventArgs.ClickedEventArgs e)
+        {
+            if (((Control)sender).IsVisible)
+            {
+                if (sender is Button)
+                {
+                    Button deleteButton = (Button)sender;
+                    int id = Convert.ToInt32(deleteButton.Name[deleteButton.Name.Length - 1]) - 48;
+                    PacketBuilder pb = new PacketBuilder(PacketFamily.CHARACTER, PacketAction.DELETE);
+                    pb = pb.AddByte((byte)id);
+                    GameClient.NetClient.Send(pb.Build());
+                }
+            }
+        }
+
+        internal void RemoveCharacter(byte id)
+        {
+            if (PlayerCharacters.Count > id)
+            {
+                PlayerCharacters.RemoveAt(id);
+            }
+
+            _characterSprites[id].PlayerCharacter = null;
+            _characterSprites[id].IsVisible = false;
+
+            _btnPlayChar[id].IsVisible = false;
+            _btnDeleteChar[id].IsVisible = false;
+            _btnCreateChar[id].IsVisible = true;
+
+            _lblCharNames[id].Text = "";
+            _lblCharLvls[id].Text = "";
+        }
+
+        private void btnCreateChar_OnClick(object sender, CustomEventArgs.ClickedEventArgs e)
         {
             if (((Control)sender).IsVisible)
             {
@@ -162,8 +196,8 @@ namespace DansWorld.GameClient.UI.Scenes
             Vector2 charNameDims = _lblCharNames[PlayerCharacters.Count - 1].Font.MeasureString(playerCharacter.Name);
             Vector2 charLvlDims = _lblCharLvls[PlayerCharacters.Count - 1].Font.MeasureString("Lvl " + playerCharacter.Level);
             _lblCharNames[PlayerCharacters.Count - 1].Size = new Point((int)charNameDims.X, (int)charNameDims.Y);
-            _lblCharNames[PlayerCharacters.Count - 1].Location.X -= (int)(charNameDims.X / 2);
-            _lblCharLvls[PlayerCharacters.Count - 1].Location.X -= (int)(charLvlDims.X);
+            _lblCharNames[PlayerCharacters.Count - 1].Location.X = _charBox[PlayerCharacters.Count - 1].Location.X + (_charBox[PlayerCharacters.Count - 1].Size.X / 2) - (int)(charNameDims.X / 2);
+            _lblCharLvls[PlayerCharacters.Count - 1].Location.X = _charBox[PlayerCharacters.Count - 1].Destination.Right - (int)(charLvlDims.X);
             _lblCharLvls[PlayerCharacters.Count - 1].Size = new Point((int)charLvlDims.X, (int)charLvlDims.Y);
         }
 
