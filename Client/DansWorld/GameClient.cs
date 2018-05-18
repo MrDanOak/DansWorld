@@ -154,7 +154,7 @@ namespace DansWorld.GameClient
             else if (_gameState == GameState.CreateCharacter)
                 CharacterCreate.DisplayMessage(message);
             else if (_gameState == GameState.Playing)
-                GameScence.ShowMessage(message, from);
+                GameScence.DisplayMessage(message, from);
         }
 
         public void Focus(Control toFocus, List<Control> controlSet)

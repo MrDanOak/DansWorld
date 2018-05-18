@@ -11,6 +11,9 @@ namespace DansWorld.Server.GameEntities
         public int SpriteID { get; set; }
         private bool _isMoving = false;
         private int _moveCount = 0;
+        public List<PlayerCharacter> Contributors = new List<PlayerCharacter>();
+        public int SpawnX;
+        public int SpawnY;
         public int EXPReward
         {
             get
@@ -22,35 +25,22 @@ namespace DansWorld.Server.GameEntities
                 EXP = EXPReward;
             }
         }
-        public Enemy(string name, int x, int y, int level, int strength, int vitality, int exp, int spriteID)
-        {
-            Name = name;
-            X = x;
-            Y = y;
-            Level = level;
-            Strength = strength;
-            EXPReward = exp;
-            Facing = Direction.DOWN;
-            SpriteID = spriteID;
-        }
 
-        public Enemy(string name, int level, int vitality, int strength, int exp, int id)
-        {
-            Name = name;
-            Level = level;
-            Vitality = vitality;
-            Strength = strength;
-            EXP = exp;
-            Facing = Direction.DOWN;
-            ID = id;
-        }
-
+        /// <summary>
+        /// default enemy constructor
+        /// </summary>
         public Enemy()
         {
         }
 
+
+        /// <summary>
+        /// Used to move the enemy randomly
+        /// </summary>
+        /// <returns>true if the enemy moved, false if not</returns>
         public bool IdleMove()
         {
+            //we want to move 10 times in the given direction
             if (_moveCount < 10)
             {
                 switch (Facing)
@@ -61,6 +51,7 @@ namespace DansWorld.Server.GameEntities
                     case Direction.UP: Y -= 1; break;
                 }
 
+                //keeping the enemies on grid
                 if (X < 0) X = 0;
                 if (Y < 0) Y = 0;
                 _moveCount += 1;
@@ -68,11 +59,13 @@ namespace DansWorld.Server.GameEntities
             else
             {
                 int rnd = RNG.Next(0, 100);
+                //1% chance to start moving if its not moving 99% chance to change direction if it is moving
                 if (rnd <= 1 && !_isMoving || rnd < 99 && _isMoving)
                 {
                     rnd = RNG.Next(0, 100);
                     if (rnd < 99)
                     {
+                        //99% chance to change direction
                         rnd = RNG.Next(0, 4);
                         Facing = (Direction)rnd;
                     }

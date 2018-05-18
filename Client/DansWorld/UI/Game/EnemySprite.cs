@@ -15,6 +15,11 @@ namespace DansWorld.GameClient.UI.Game
             base.Update(gameTime, camera);
             _animationTimer += gameTime.ElapsedGameTime.Milliseconds;
             Location = new Point(Enemy.X, Enemy.Y);
+
+            HealthBar.Location = new Point(Location.X - 1, Location.Y - 10);
+            HealthBar.SetHP(Enemy.Health, Enemy.MaxHealth);
+            HealthBar.Update(gameTime, camera);
+
             if (_animationTimer > 400)
             {
                 _animationID += 1;
@@ -60,7 +65,7 @@ namespace DansWorld.GameClient.UI.Game
             }
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Camera2D camera)
         {
             float depth = 1 - ((float)Location.Y / GameClient.HEIGHT);
 
@@ -73,7 +78,14 @@ namespace DansWorld.GameClient.UI.Game
                 SpriteEffects.None,
                 depth);
 
-            if(_mouseOver)
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.Transform);
+            HealthBar.Draw(gameTime, spriteBatch);
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, camera.Transform);
+
+            if (_mouseOver)
             {
                 _namePlate.Draw(gameTime, spriteBatch);
             }

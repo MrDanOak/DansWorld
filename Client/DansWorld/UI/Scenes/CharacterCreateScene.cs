@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DansWorld.Common.Enums;
 using DansWorld.Common.GameEntities;
+using DansWorld.Common.IO;
 using DansWorld.Common.Net;
 using DansWorld.GameClient.UI.CustomEventArgs;
 using DansWorld.GameClient.UI.Game;
@@ -18,6 +19,8 @@ namespace DansWorld.GameClient.UI.Scenes
         Button _btnCancel = new Button();
         Button _btnMale = new Button();
         Button _btnFemale = new Button();
+        Button _btnBack = new Button();
+        Label _lblError = new Label();
         PlayerCharacterSprite _characterSprite;
         private Label _lblCharacter;
         TextBox _txtCharacterName;
@@ -26,7 +29,7 @@ namespace DansWorld.GameClient.UI.Scenes
         int _elapsedms = 0;
         public override void Initialise(ContentManager content)
         {
-            _characterSprite = new PlayerCharacterSprite(content, null);
+            _characterSprite = new PlayerCharacterSprite(content, null, null);
             Texture2D baseCharacterTexture = content.Load<Texture2D>("Images/Characters/base");
             Controls = new List<Control>();
             
@@ -50,10 +53,24 @@ namespace DansWorld.GameClient.UI.Scenes
                 Font = GameClient.GW2_FONT,
                 Text = "Create",
                 Size = new Point((int)GameClient.GW2_FONT.MeasureString("Create").X + 10, (int)GameClient.GW2_FONT.MeasureString("Create").Y + 10),
-                Location = new Point(_charBox.Destination.Left + (_charBox.Size.X / 2) - ((int)GameClient.GW2_FONT.MeasureString("Create").X / 2), _charBox.Destination.Bottom + 10)
+                Location = new Point(_charBox.Destination.Left + (_charBox.Size.X / 2) - ((int)GameClient.GW2_FONT.MeasureString("Create").X) - 10, _charBox.Destination.Bottom + 10)
             };
             _btnCreateChar.OnClick += _btnCreateChar_OnClick;
             Controls.Add(_btnCreateChar);
+
+            _btnBack = new Button()
+            {
+                IsVisible = true,
+                Name = "btnBack",
+                BackColor = Color.Red,
+                FrontColor = Color.White,
+                Font = GameClient.GW2_FONT,
+                Text = "Back",
+                Size = new Point((int)GameClient.GW2_FONT.MeasureString("Back").X + 10, (int)GameClient.GW2_FONT.MeasureString("Back").Y + 10),
+                Location = new Point(_charBox.Destination.Left + (_charBox.Size.X / 2) + 10, _charBox.Destination.Bottom + 10)
+            };
+            _btnBack.OnClick += _btnBack_OnClick;
+            Controls.Add(_btnBack);
 
             _btnMale = new Button()
             {
@@ -83,7 +100,7 @@ namespace DansWorld.GameClient.UI.Scenes
             _btnFemale.OnClick += _btnFemale_OnClick;
             Controls.Add(_btnFemale);
 
-            _characterSprite = new PlayerCharacterSprite(content, null)
+            _characterSprite = new PlayerCharacterSprite(content, null, null)
             {
                 IsVisible = true,
                 Width = 48,
@@ -126,6 +143,19 @@ namespace DansWorld.GameClient.UI.Scenes
             };
             Controls.Add(_lblCharacter);
 
+            _lblError = new Label()
+            {
+                Name = "lblError",
+                BackColor = Color.White,
+                FrontColor = Color.Red,
+                Font = GameClient.DEFAULT_FONT_BOLD,
+                Text = "",
+                Location = new Point(GameClient.WIDTH / 2, _btnBack.Destination.Bottom + (int)GameClient.DEFAULT_FONT.MeasureString("Name").Y),
+                Size = new Point((int)GameClient.DEFAULT_FONT.MeasureString("").X, (int)GameClient.DEFAULT_FONT.MeasureString("").Y),
+                IsVisible = false
+            };
+            Controls.Add(_lblError);
+
             playerCharacter = new PlayerCharacter()
             {
                 Gender = Gender.MALE
@@ -134,13 +164,19 @@ namespace DansWorld.GameClient.UI.Scenes
             _characterSprite.PlayerCharacter = playerCharacter;
         }
 
+        private void _btnBack_OnClick(object sender, ClickedEventArgs e)
+        {
+            _gameClient.SetState(GameExecution.GameState.LoggedIn);
+        }
+
         private void _btnCreateChar_OnClick(object sender, ClickedEventArgs e)
         {
-            PacketBuilder pb = new PacketBuilder(PacketFamily.CHARACTER_CREATE, PacketAction.REQUEST);
+            PacketBuilder pb = new PacketBuilder(PacketFamily.CHARACTER, PacketAction.CREATE);
             pb = pb.AddByte((byte)_txtCharacterName.Text.Length)
                 .AddString(_txtCharacterName.Text)
                 .AddByte((byte)playerCharacter.Gender);
             GameClient.NetClient.Send(pb.Build());
+            Logger.Log("Character create requested");
         }
 
         private void _btnFemale_OnClick(object sender, ClickedEventArgs e)
@@ -211,7 +247,10 @@ namespace DansWorld.GameClient.UI.Scenes
 
         internal void DisplayMessage(string message)
         {
-            throw new NotImplementedException();
+            _lblError.Text = message;
+            _lblError.IsVisible = true;
+            _lblError.Location = new Point(GameClient.WIDTH / 2 - ((int)GameClient.DEFAULT_FONT.MeasureString(message).X / 2), _lblError.Location.Y);
+            _lblError.Size = new Point((int)GameClient.DEFAULT_FONT.MeasureString(message).X, (int)GameClient.DEFAULT_FONT.MeasureString(message).Y);
         }
     }
 }

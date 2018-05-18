@@ -14,6 +14,8 @@ namespace DansWorld.GameClient.UI.Game
         public bool InGame = false;
         internal WeaponSprite WeaponSprite;
 
+        private Camera2D _camera;
+
         private Rectangle Dest
         {
             get
@@ -37,8 +39,9 @@ namespace DansWorld.GameClient.UI.Game
                 return i;
             }
         }
-        public PlayerCharacterSprite(ContentManager content, PlayerCharacter playerCharacter)
+        public PlayerCharacterSprite(ContentManager content, PlayerCharacter playerCharacter, Camera2D camera)
         {
+            _camera = camera;
             _namePlate = new Label()
             {
                 FrontColor = Color.Black,
@@ -60,7 +63,11 @@ namespace DansWorld.GameClient.UI.Game
                     {
                         _namePlate.Draw(gameTime, spriteBatch);
                     }
+                    spriteBatch.End();
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, _camera.Transform);
                     HealthBar.Draw(gameTime, spriteBatch);
+                    spriteBatch.End();
+                    spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, _camera.Transform);
                     float depth = 1 - ((float)Location.Y / GameClient.HEIGHT);
 
 
@@ -94,7 +101,7 @@ namespace DansWorld.GameClient.UI.Game
                 Location = new Point(PlayerCharacter.X, PlayerCharacter.Y);
 
                 HealthBar.Location = new Point(Location.X - 1, Location.Y - 10);
-                HealthBar.SetHP(PlayerCharacter.Health, PlayerCharacter.MaxHP);
+                HealthBar.SetHP(PlayerCharacter.Health, PlayerCharacter.MaxHealth);
                 HealthBar.Update(gameTime, camera);
                 WeaponSprite.Update(gameTime, camera);
 

@@ -9,7 +9,6 @@ namespace DansWorld.Common.GameEntities
     {
         public Gender Gender;
         public PClass Class;
-        public int MaxHP;
 
         public PlayerCharacter()
         {
@@ -22,7 +21,9 @@ namespace DansWorld.Common.GameEntities
             X = 0;
             Y = 0;
             Health = 50;
-            MaxHP = Health;
+            MaxHealth = Health;
         }
+
+        public bool IsAttacking { get; set; }
     }
 }

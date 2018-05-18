@@ -7,6 +7,8 @@ namespace DansWorld.GameClient.UI
 {
     public class HealthBar : Game.IDrawable
     {
+        int visibleTimer = 0;
+        int currentValue;
         Rect _maxHealth = new Rect()
         {
             BorderThickness = 1,
@@ -46,7 +48,7 @@ namespace DansWorld.GameClient.UI
 
         public HealthBar()
         {
-            
+            visibleTimer = 1000;
         }
 
         public void Clicked(ClickedEventArgs e)
@@ -57,17 +59,29 @@ namespace DansWorld.GameClient.UI
         public void SetHP(int hp, int max)
         {
             int percentage = (int)((float)100 * ((float)hp / (float)max));
-            _currentHealth.Size = new Point(50 * percentage / 100, 10); 
+            _currentHealth.Size = new Point(50 * percentage / 100, 10);
+            if (hp != currentValue)
+            {
+                currentValue = hp;
+                visibleTimer = 500;
+            }
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            _maxHealth.Draw(gameTime, spriteBatch);
-            _currentHealth.Draw(gameTime, spriteBatch);
+            if (visibleTimer > 0)
+            {
+                _maxHealth.Draw(gameTime, spriteBatch);
+                _currentHealth.Draw(gameTime, spriteBatch);
+            }
         }
 
         public void Update(GameTime gameTime, Camera2D camera)
         {
+            if (visibleTimer > 0)
+            {
+                visibleTimer -= 1;
+            }
             _maxHealth.Update(gameTime);
             _currentHealth.Update(gameTime);
         }

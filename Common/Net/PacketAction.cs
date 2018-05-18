@@ -17,6 +17,10 @@ namespace DansWorld.Common.Net
         PONG = 9,
         TALK = 10,
         ATTACK = 11,
-        CREATE = 12
+        CREATE = 12, 
+        DELETE = 13,
+        CREATED = 14,
+        ALREADY_EXISTS = 15,
+        TAKE_DAMAGE = 16
     }
 }

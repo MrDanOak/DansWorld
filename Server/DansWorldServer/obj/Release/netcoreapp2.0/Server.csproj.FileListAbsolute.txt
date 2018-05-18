@@ -1,0 +1,13 @@
+C:\Users\dansc\source\repos\DansWorld\Server\DansWorldServer\bin\Release\netcoreapp2.0\DansWorld.Server.deps.json
+C:\Users\dansc\source\repos\DansWorld\Server\DansWorldServer\bin\Release\netcoreapp2.0\DansWorld.Server.runtimeconfig.json
+C:\Users\dansc\source\repos\DansWorld\Server\DansWorldServer\bin\Release\netcoreapp2.0\DansWorld.Server.runtimeconfig.dev.json
+C:\Users\dansc\source\repos\DansWorld\Server\DansWorldServer\bin\Release\netcoreapp2.0\DansWorld.Server.dll
+C:\Users\dansc\source\repos\DansWorld\Server\DansWorldServer\bin\Release\netcoreapp2.0\DansWorld.Server.pdb
+C:\Users\dansc\source\repos\DansWorld\Server\DansWorldServer\bin\Release\netcoreapp2.0\DansWorld.Common.dll
+C:\Users\dansc\source\repos\DansWorld\Server\DansWorldServer\bin\Release\netcoreapp2.0\DansWorld.Common.pdb
+C:\Users\dansc\source\repos\DansWorld\Server\DansWorldServer\obj\Release\netcoreapp2.0\Server.csprojResolveAssemblyReference.cache
+C:\Users\dansc\source\repos\DansWorld\Server\DansWorldServer\obj\Release\netcoreapp2.0\Server.csproj.CoreCompileInputs.cache
+C:\Users\dansc\source\repos\DansWorld\Server\DansWorldServer\obj\Release\netcoreapp2.0\Server.AssemblyInfoInputs.cache
+C:\Users\dansc\source\repos\DansWorld\Server\DansWorldServer\obj\Release\netcoreapp2.0\Server.AssemblyInfo.cs
+C:\Users\dansc\source\repos\DansWorld\Server\DansWorldServer\obj\Release\netcoreapp2.0\DansWorld.Server.dll
+C:\Users\dansc\source\repos\DansWorld\Server\DansWorldServer\obj\Release\netcoreapp2.0\DansWorld.Server.pdb

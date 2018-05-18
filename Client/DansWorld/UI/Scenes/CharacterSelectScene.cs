@@ -109,7 +109,7 @@ namespace DansWorld.GameClient.UI.Scenes
                 _btnCreateChar[i].OnClick += CharacterSelectScene_OnClick;
                 Controls.Add(_btnCreateChar[i]);
 
-                _characterSprites[i] = new PlayerCharacterSprite(content, null)
+                _characterSprites[i] = new PlayerCharacterSprite(content, null, null)
                 {
                     IsVisible = true,
                     Width = 48,

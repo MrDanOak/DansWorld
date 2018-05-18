@@ -20,6 +20,7 @@ namespace DansWorld.Common.GameEntities
         public int Dexterity;
         public int Vitality;
         public int Health;
+        public int MaxHealth;
         public Direction Facing;
     }
 }

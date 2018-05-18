@@ -48,7 +48,7 @@ namespace DansWorld.GameClient.UI.Game
 
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            if (_playerCharacter != null)
+            if (_playerCharacter != null && _playerCharacter.IsAttacking)
             {
                 spriteBatch.Draw(Texture,
                         new Rectangle(Location.X, Location.Y, Width, Height),

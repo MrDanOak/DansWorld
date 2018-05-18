@@ -9,7 +9,13 @@ namespace DansWorld.Server.GameEntities
 {
     public class PlayerCharacter : Character
     {
+        /// <summary>
+        /// Gender of the character
+        /// </summary>
         public Gender Gender;
+        /// <summary>
+        /// ID given to the character by the server
+        /// </summary>
         public int ServerID;
         public PlayerCharacter()
         {
@@ -18,6 +24,11 @@ namespace DansWorld.Server.GameEntities
             Gender = Gender.MALE;
         }
 
+        /// <summary>
+        /// Creates a character entry into the database
+        /// </summary>
+        /// <param name="database">database object to use</param>
+        /// <param name="owner">the owner of the account</param>
         public void CreateDatabaseEntry(Database database, string owner)
         {
             Logger.Log($"Character creation requested name {Name} account {owner}");
@@ -26,6 +37,10 @@ namespace DansWorld.Server.GameEntities
             database.Insert(query);
         }
 
+        /// <summary>
+        /// Saves the state of a character
+        /// </summary>
+        /// <param name="database">database object</param>
         public void Save(Database database)
         {
             Logger.Log("Saving Character: " + Name + " information");

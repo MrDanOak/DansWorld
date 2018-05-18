@@ -13,8 +13,8 @@ namespace DansWorld.GameClient.UI.Scenes
 {
     public class GameScene : BaseScene
     {
-        private List<PlayerCharacterSprite> characterSprites;
-        private List<EnemySprite> enemySprites;
+        private List<PlayerCharacterSprite> _characterSprites;
+        private List<EnemySprite> _enemySprites;
         private ContentManager _content;
         private GameClient _gameClient;
         private Label _pingLabel;
@@ -25,13 +25,21 @@ namespace DansWorld.GameClient.UI.Scenes
         private int attackTimer = 0;
         private Camera2D _camera;
 
+        private PlayerCharacterSprite _thisPlayer
+        {
+            get
+            {
+                return (_characterSprites != null && _characterSprites.Count > 0 ? _characterSprites[0] : null);
+            }
+        }
+
 
         public List<PlayerCharacter> PlayerCharacters
         {
             get
             {
                 List<PlayerCharacter> ret = new List<PlayerCharacter>();
-                foreach (PlayerCharacterSprite sprite in characterSprites)
+                foreach (PlayerCharacterSprite sprite in _characterSprites)
                 {
                     ret.Add(sprite.PlayerCharacter);
                 }
@@ -44,7 +52,7 @@ namespace DansWorld.GameClient.UI.Scenes
             get
             {
                 List<Enemy> ret = new List<Enemy>();
-                foreach (EnemySprite sprite in enemySprites)
+                foreach (EnemySprite sprite in _enemySprites)
                 {
                     ret.Add(sprite.Enemy);
                 }
@@ -56,8 +64,8 @@ namespace DansWorld.GameClient.UI.Scenes
         {
             Controls = new List<Control>();
             _lblMessages = new List<Label>();
-            characterSprites = new List<PlayerCharacterSprite>();
-            enemySprites = new List<EnemySprite>();
+            _characterSprites = new List<PlayerCharacterSprite>();
+            _enemySprites = new List<EnemySprite>();
             _gameClient = gameClient;
             _gameClient.Window.ClientSizeChanged += Window_ClientSizeChanged;
         }
@@ -118,7 +126,7 @@ namespace DansWorld.GameClient.UI.Scenes
 
         public void AddCharacter(PlayerCharacter player)
         {
-            PlayerCharacterSprite sprite = new PlayerCharacterSprite(_content, player)
+            PlayerCharacterSprite sprite = new PlayerCharacterSprite(_content, player, _camera)
             {
                 IsVisible = true,
                 Texture = _content.Load<Texture2D>("Images/Characters/base"),
@@ -127,22 +135,23 @@ namespace DansWorld.GameClient.UI.Scenes
                 Size = new Point(48, 48),
                 Location = new Point(player.X, player.Y),
                 PlayerCharacter = player,
-                InGame = true
+                InGame = true,
             };
-            characterSprites.Add(sprite);
+            sprite.HealthBar.SetHP(player.Health, player.MaxHealth);
+            _characterSprites.Add(sprite);
         }
 
         public void RemoveCharacter(PlayerCharacter player)
         {
-            PlayerCharacterSprite toRemove = new PlayerCharacterSprite(_content, player);
-            foreach (PlayerCharacterSprite sprite in characterSprites)
+            PlayerCharacterSprite toRemove = new PlayerCharacterSprite(_content, player, _camera);
+            foreach (PlayerCharacterSprite sprite in _characterSprites)
             {
                 if (player == sprite.PlayerCharacter)
                 {
                     toRemove = sprite;
                 }
             }
-            characterSprites.Remove(toRemove);
+            _characterSprites.Remove(toRemove);
         }
 
         internal void AddEnemy(Enemy enemy)
@@ -157,27 +166,26 @@ namespace DansWorld.GameClient.UI.Scenes
                 Location = new Point(enemy.X, enemy.Y), 
                 Enemy = enemy
             };
-            enemySprites.Add(enemySprite);
+            _enemySprites.Add(enemySprite);
         }
 
         public void ClearCharacters()
         {
-            characterSprites = new List<PlayerCharacterSprite>();
+            _characterSprites = new List<PlayerCharacterSprite>();
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             _pingLabel.Draw(gameTime, spriteBatch);
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, _camera.Transform);
-            foreach (PlayerCharacterSprite characterSprite in characterSprites)
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, _camera.Transform);
+            foreach (PlayerCharacterSprite characterSprite in _characterSprites)
             {
                 characterSprite.Draw(gameTime, spriteBatch);
             }
-
-            foreach (EnemySprite enemySprite in enemySprites)
+            foreach (EnemySprite enemySprite in _enemySprites)
             {
-                enemySprite.Draw(gameTime, spriteBatch);
+                enemySprite.Draw(gameTime, spriteBatch, _camera);
             }
             spriteBatch.End();
 
@@ -197,18 +205,21 @@ namespace DansWorld.GameClient.UI.Scenes
         {
             _pingLabel.Update(gameTime);
             _camera.Update(gameTime);
-            if (characterSprites.Count > 0 && _camera.Focus != characterSprites[0]) 
-                _camera.Focus = characterSprites[0];
+            if (_characterSprites.Count > 0 && _camera.Focus != _characterSprites[0]) 
+                _camera.Focus = _characterSprites[0];
+
+            _thisPlayer.PlayerCharacter.IsAttacking = false;
 
             bool moved = false;
 
             if (!_txtIn.HasFocus)
             {
-                if (Keyboard.GetState().IsKeyDown(Keys.A)) { characterSprites[0].PlayerCharacter.X -= 1; characterSprites[0].PlayerCharacter.Facing = Common.Enums.Direction.LEFT; moved = true; }
-                else if (Keyboard.GetState().IsKeyDown(Keys.S)) { characterSprites[0].PlayerCharacter.Y += 1; characterSprites[0].PlayerCharacter.Facing = Common.Enums.Direction.DOWN; moved = true; }
-                else if (Keyboard.GetState().IsKeyDown(Keys.D)) { characterSprites[0].PlayerCharacter.X += 1; characterSprites[0].PlayerCharacter.Facing = Common.Enums.Direction.RIGHT; moved = true; }
-                else if (Keyboard.GetState().IsKeyDown(Keys.W)) { characterSprites[0].PlayerCharacter.Y -= 1; characterSprites[0].PlayerCharacter.Facing = Common.Enums.Direction.UP; moved = true; }
+                if (Keyboard.GetState().IsKeyDown(Keys.A)) { _characterSprites[0].PlayerCharacter.X -= 1; _characterSprites[0].PlayerCharacter.Facing = Common.Enums.Direction.LEFT; moved = true; }
+                else if (Keyboard.GetState().IsKeyDown(Keys.S)) { _characterSprites[0].PlayerCharacter.Y += 1; _characterSprites[0].PlayerCharacter.Facing = Common.Enums.Direction.DOWN; moved = true; }
+                else if (Keyboard.GetState().IsKeyDown(Keys.D)) { _characterSprites[0].PlayerCharacter.X += 1; _characterSprites[0].PlayerCharacter.Facing = Common.Enums.Direction.RIGHT; moved = true; }
+                else if (Keyboard.GetState().IsKeyDown(Keys.W)) { _characterSprites[0].PlayerCharacter.Y -= 1; _characterSprites[0].PlayerCharacter.Facing = Common.Enums.Direction.UP; moved = true; }
                 else if (Keyboard.GetState().IsKeyUp(Keys.Enter) && _enterDown) { _txtIn.HasFocus = true; }
+
 
                 if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                 {
@@ -219,6 +230,7 @@ namespace DansWorld.GameClient.UI.Scenes
                         pb.AddInt(_gameClient.CharacterID);
                         GameClient.NetClient.Send(pb.Build());
                         attackTimer = 0;
+                        _thisPlayer.PlayerCharacter.IsAttacking = true;
                     }
                 }
                 else
@@ -232,9 +244,9 @@ namespace DansWorld.GameClient.UI.Scenes
                 {
                     PacketBuilder pb = new PacketBuilder(PacketFamily.PLAYER, PacketAction.MOVE);
                     pb = new PacketBuilder(PacketFamily.PLAYER, PacketAction.MOVE)
-                        .AddInt(characterSprites[0].PlayerCharacter.X)
-                        .AddInt(characterSprites[0].PlayerCharacter.Y)
-                        .AddByte((byte)characterSprites[0].PlayerCharacter.Facing)
+                        .AddInt(_characterSprites[0].PlayerCharacter.X)
+                        .AddInt(_characterSprites[0].PlayerCharacter.Y)
+                        .AddByte((byte)_characterSprites[0].PlayerCharacter.Facing)
                         .AddInt(_gameClient.CharacterID);
                     GameClient.NetClient.Send(pb.Build());
 
@@ -243,9 +255,9 @@ namespace DansWorld.GameClient.UI.Scenes
                 else if (!_serverNotifiedOfIdle)
                 {
                     PacketBuilder pb = new PacketBuilder(PacketFamily.PLAYER, PacketAction.STOP)
-                        .AddInt(characterSprites[0].PlayerCharacter.X)
-                        .AddInt(characterSprites[0].PlayerCharacter.Y)
-                        .AddByte((byte)characterSprites[0].PlayerCharacter.Facing)
+                        .AddInt(_characterSprites[0].PlayerCharacter.X)
+                        .AddInt(_characterSprites[0].PlayerCharacter.Y)
+                        .AddByte((byte)_characterSprites[0].PlayerCharacter.Facing)
                         .AddInt(_gameClient.CharacterID);
                     GameClient.NetClient.Send(pb.Build());
                     _serverNotifiedOfIdle = true;
@@ -263,7 +275,7 @@ namespace DansWorld.GameClient.UI.Scenes
                             .AddInt(_gameClient.CharacterID);
                         GameClient.NetClient.Send(pb.Build());
                         if (_txtIn.Text.Split(' ')[0] == "SetHP")
-                            characterSprites[0].PlayerCharacter.Health = Convert.ToInt32(_txtIn.Text.Split(' ')[1]);
+                            _characterSprites[0].PlayerCharacter.Health = Convert.ToInt32(_txtIn.Text.Split(' ')[1]);
                         _txtIn.Text = "";
                     }
                     _txtIn.HasFocus = false;
@@ -274,15 +286,15 @@ namespace DansWorld.GameClient.UI.Scenes
                 }
             }
 
-            characterSprites[0].PlayerCharacter.IsIdle = !moved;
-            characterSprites[0].PlayerCharacter.IsWalking = moved;
+            _characterSprites[0].PlayerCharacter.IsIdle = !moved;
+            _characterSprites[0].PlayerCharacter.IsWalking = moved;
 
-            foreach (PlayerCharacterSprite characterSprite in characterSprites)
+            foreach (PlayerCharacterSprite characterSprite in _characterSprites)
             {
                 characterSprite.Update(gameTime, _camera);
             }
 
-            foreach (EnemySprite enemySprite in enemySprites)
+            foreach (EnemySprite enemySprite in _enemySprites)
             {
                 enemySprite.Update(gameTime, _camera);
             }
@@ -305,7 +317,7 @@ namespace DansWorld.GameClient.UI.Scenes
 
         }
 
-        internal void ShowMessage(string message, string from)
+        internal void DisplayMessage(string message, string from)
         {
             for (int i = _lblMessages.Count - 1; i > 0; i--)
             {

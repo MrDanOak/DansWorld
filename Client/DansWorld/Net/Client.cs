@@ -131,9 +131,9 @@ namespace DansWorld.GameClient.Net
                             _gameClient.DisplayMessage(pkt.ReadString(pkt.ReadByte()));
                         }
                     }
-                    else if (pkt.Family == PacketFamily.CHARACTER_CREATE)
+                    else if (pkt.Family == PacketFamily.CHARACTER)
                     {
-                        if (pkt.Action == PacketAction.ACCEPT)
+                        if (pkt.Action == PacketAction.CREATED)
                         {
                             PlayerCharacter player = new PlayerCharacter()
                             {
@@ -142,6 +142,11 @@ namespace DansWorld.GameClient.Net
                             };
                             _gameClient.CharacterSelect.AddCharacter(player);
                             _gameClient.SetState(GameExecution.GameState.LoggedIn);
+                        }
+                        else if (pkt.Action == PacketAction.ALREADY_EXISTS)
+                        {
+                            string message = pkt.ReadString(pkt.ReadByte());
+                            _gameClient.DisplayMessage(message);
                         }
                     }
                     else if (pkt.Family == PacketFamily.PLAY)
@@ -257,6 +262,14 @@ namespace DansWorld.GameClient.Net
                             _gameClient.DisplayMessage(message, (p == null ? "" : p.Name));
                         }
                     }
+                    else if (pkt.Family == PacketFamily.SERVER)
+                    {
+                        if (pkt.Action == PacketAction.TALK)
+                        {
+                            string message = pkt.ReadString(pkt.ReadInt());
+                            _gameClient.DisplayMessage(message, "SERVER");
+                        }
+                    }
                     else if (pkt.Family == PacketFamily.CONNECTION)
                     {
                         if (pkt.Action == PacketAction.PING)
@@ -283,7 +296,8 @@ namespace DansWorld.GameClient.Net
                             enemy.Y = pkt.ReadInt();
                             enemy.Vitality = pkt.ReadInt();
                             enemy.Level = pkt.ReadByte();
-                            enemy.Health = pkt.ReadInt();
+                            enemy.MaxHealth = pkt.ReadInt();
+                            enemy.Health = enemy.MaxHealth;
                             enemy.SpriteID = pkt.ReadInt();
                             enemy.ServerID = pkt.ReadByte();
                             _gameClient.AddEnemy(enemy);
@@ -301,6 +315,20 @@ namespace DansWorld.GameClient.Net
                                     enemy.X = x;
                                     enemy.Y = y;
                                     enemy.Facing = (Direction)facing;
+                                }
+                            }
+                        }
+                        else if (pkt.Action == PacketAction.TAKE_DAMAGE)
+                        {
+                            int id = pkt.ReadInt();
+                            int hp = pkt.ReadInt();
+
+                            foreach (Enemy enemy in _gameClient.GetEnemies())
+                            {
+                                if (enemy.ID == id)
+                                {
+                                    enemy.Health = hp;
+                                    break;
                                 }
                             }
                         }
