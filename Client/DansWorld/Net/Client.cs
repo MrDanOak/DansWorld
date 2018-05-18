@@ -297,7 +297,7 @@ namespace DansWorld.GameClient.Net
                             enemy.Vitality = pkt.ReadInt();
                             enemy.Level = pkt.ReadByte();
                             enemy.MaxHealth = pkt.ReadInt();
-                            enemy.Health = enemy.MaxHealth;
+                            enemy.Health = pkt.ReadInt();
                             enemy.SpriteID = pkt.ReadInt();
                             enemy.ServerID = pkt.ReadByte();
                             _gameClient.AddEnemy(enemy);

@@ -9,6 +9,7 @@ using DansWorld.Server.GameEntities;
 using DansWorld.Common.Enums;
 using DansWorld.Server.Data;
 using System.Collections.Generic;
+using DansWorld.Server.Utils;
 
 namespace DansWorld.Server
 {
@@ -385,6 +386,7 @@ namespace DansWorld.Server
                                     .AddInt(enemy.Y)
                                     .AddInt(enemy.Vitality)
                                     .AddByte((byte)enemy.Level)
+                                    .AddInt(enemy.MaxHealth)
                                     .AddInt(enemy.Health)
                                     .AddInt(enemy.SpriteID)
                                     .AddByte((byte)servID++);
@@ -417,6 +419,7 @@ namespace DansWorld.Server
                             client.Send(pkt);
                         }
                     }
+                    //only peeking the int here because we do not want to move the read pointer
                     else if (pkt.Action == PacketAction.LOGOUT && pkt.PeekInt() == _characterHandling.ServerID)
                     {
                         //handles character logging out
@@ -442,25 +445,41 @@ namespace DansWorld.Server
                                     if (enemy.X > _characterHandling.X - (48 * 2) && 
                                         enemy.X < _characterHandling.X + 24 && 
                                         enemy.Y > _characterHandling.Y - 48 && 
-                                        enemy.Y < _characterHandling.Y + 48)
+                                        enemy.Y < _characterHandling.Y + (48 * 2))
                                     {
                                         enemyhit = true;
                                         enemy.Health -= 5;
                                     }
                                     break;
                                 case Direction.DOWN:
+                                    if (enemy.X < _characterHandling.X + (48 * 2) &&
+                                        enemy.X > _characterHandling.X - 48 &&
+                                        enemy.Y > _characterHandling.Y + 48 &&
+                                        enemy.Y < _characterHandling.Y + (48 * 2))
+                                    {
+                                        enemyhit = true;
+                                        enemy.Health -= 5;
+                                    }
                                     break;
                                 case Direction.RIGHT:
-                                    if (enemy.X < _characterHandling.X + (48) &&
-                                        enemy.X > _characterHandling.X - 24 &&
+                                    if (enemy.X < _characterHandling.X + (48 * 2) &&
+                                        enemy.X > _characterHandling.X + 24 &&
                                         enemy.Y > _characterHandling.Y - 48 &&
-                                        enemy.Y < _characterHandling.Y + 48)
+                                        enemy.Y < _characterHandling.Y + (48 * 2))
                                     {
                                         enemyhit = true;
                                         enemy.Health -= 5;
                                     }
                                     break;
                                 case Direction.UP:
+                                    if (enemy.X < _characterHandling.X + (48 * 2) &&
+                                       enemy.X > _characterHandling.X - 48 &&
+                                       enemy.Y > _characterHandling.Y - (48 * 2) &&
+                                       enemy.Y < _characterHandling.Y)
+                                    {
+                                        enemyhit = true;
+                                        enemy.Health -= 5;
+                                    }
                                     break;
                             }
                             if (enemyhit)
@@ -484,8 +503,8 @@ namespace DansWorld.Server
                                     enemy.Contributors = new List<PlayerCharacter>();
 
                                     //reset position
-                                    enemy.X = enemy.SpawnX;
-                                    enemy.Y = enemy.SpawnY;
+                                    enemy.X = enemy.SpawnX + RNG.Next(-300, 300);
+                                    enemy.Y = enemy.SpawnY + RNG.Next(-300, 300);
                                     enemy.Health = enemy.MaxHealth;
                                     //let all clients know of new poisition
                                     pb = new PacketBuilder(PacketFamily.ENEMY, PacketAction.MOVE);
