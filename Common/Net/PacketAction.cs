@@ -4,6 +4,9 @@ using System.Text;
 
 namespace DansWorld.Common.Net
 {
+    /// <summary>
+    /// actions that can be done by the network packet
+    /// </summary>
     public enum PacketAction : byte
     {
         REQUEST = 1, 

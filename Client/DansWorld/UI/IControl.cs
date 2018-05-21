@@ -4,6 +4,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace DansWorld.GameClient.UI
 {
+    /// <summary>
+    /// Interface to enforce behaviour on controls
+    /// </summary>
     public interface IControl
     {
         void Draw(GameTime gameTime, SpriteBatch spriteBatch);

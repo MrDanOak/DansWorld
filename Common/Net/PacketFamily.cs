@@ -4,6 +4,9 @@ using System.Text;
 
 namespace DansWorld.Common.Net
 {
+    /// <summary>
+    /// Family groups of packet headers
+    /// </summary>
     public enum PacketFamily : byte
     {
         LOGIN = 1, 

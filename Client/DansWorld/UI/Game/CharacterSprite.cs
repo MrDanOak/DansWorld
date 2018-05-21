@@ -4,6 +4,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace DansWorld.GameClient.UI.Game
 {
+    /// <summary>
+    /// base character sprite class that both enemysprite and playercharactersprite inherit from
+    /// </summary>
     public class CharacterSprite : BaseGameSprite, ICameraFocusbale, IDrawable
     {
         public HealthBar HealthBar;

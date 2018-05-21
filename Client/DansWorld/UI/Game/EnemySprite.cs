@@ -35,7 +35,7 @@ namespace DansWorld.GameClient.UI.Game
                 }
                 Vector2 dimCharName = GameClient.DEFAULT_FONT.MeasureString(Enemy.Name);
                 _namePlate.Size = new Point((int)dimCharName.X, (int)dimCharName.Y);
-                _namePlate.Location = new Point(Enemy.X + (Width / 2) - ((int)dimCharName.X / 2), Enemy.Y - (int)dimCharName.Y);
+                _namePlate.Location = new Point(Enemy.X + (Width / 2) - ((int)dimCharName.X / 2), Enemy.Y - (int)dimCharName.Y - HealthBar.Size.Y);
                 _namePlate.Update(gameTime);
             }
         }

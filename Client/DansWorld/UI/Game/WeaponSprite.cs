@@ -6,6 +6,9 @@ using DansWorld.GameClient.GameComponents;
 
 namespace DansWorld.GameClient.UI.Game
 {
+    /// <summary>
+    /// standard weapon sprite only one was ever produced
+    /// </summary>
     class WeaponSprite : BaseGameSprite, IDrawable
     {
         PlayerCharacter _playerCharacter;
@@ -18,10 +21,16 @@ namespace DansWorld.GameClient.UI.Game
             Width = 48;
             Height = 48;
         }
+        /// <summary>
+        /// updates the position of the weapon based on the player position
+        /// </summary>
+        /// <param name="gameTime"></param>
+        /// <param name="camera"></param>
         public virtual void Update(GameTime gameTime, Camera2D camera)
         {
             base.Update(gameTime, camera);
 
+            //calculates position of the weapon. values were guestimated. Looking at them now one rotation seems like PI
             if (_playerCharacter != null)
             {
                 switch (_playerCharacter.Facing)
@@ -48,6 +57,7 @@ namespace DansWorld.GameClient.UI.Game
 
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            //draws weapon if the player is attacking, could maybe be lengthened out a tad
             if (_playerCharacter != null && _playerCharacter.IsAttacking)
             {
                 spriteBatch.Draw(Texture,

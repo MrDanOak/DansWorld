@@ -466,14 +466,14 @@ namespace DansWorld.Server
                                     if (enemy.X > _characterHandling.X - (48 * 2) && 
                                         enemy.X < _characterHandling.X + 24 && 
                                         enemy.Y > _characterHandling.Y - 48 && 
-                                        enemy.Y < _characterHandling.Y + (48 * 2))
+                                        enemy.Y < _characterHandling.Y + 48)
                                     {
                                         enemyhit = true;
                                         enemy.Health -= 5;
                                     }
                                     break;
                                 case Direction.DOWN:
-                                    if (enemy.X < _characterHandling.X + (48 * 2) &&
+                                    if (enemy.X < _characterHandling.X + 48 &&
                                         enemy.X > _characterHandling.X - 48 &&
                                         enemy.Y > _characterHandling.Y + 48 &&
                                         enemy.Y < _characterHandling.Y + (48 * 2))
@@ -486,14 +486,14 @@ namespace DansWorld.Server
                                     if (enemy.X < _characterHandling.X + (48 * 2) &&
                                         enemy.X > _characterHandling.X + 24 &&
                                         enemy.Y > _characterHandling.Y - 48 &&
-                                        enemy.Y < _characterHandling.Y + (48 * 2))
+                                        enemy.Y < _characterHandling.Y + 48)
                                     {
                                         enemyhit = true;
                                         enemy.Health -= 5;
                                     }
                                     break;
                                 case Direction.UP:
-                                    if (enemy.X < _characterHandling.X + (48 * 2) &&
+                                    if (enemy.X < _characterHandling.X + 48  &&
                                        enemy.X > _characterHandling.X - 48 &&
                                        enemy.Y > _characterHandling.Y - (48 * 2) &&
                                        enemy.Y < _characterHandling.Y)

@@ -25,6 +25,9 @@ namespace DansWorld.GameClient.UI.Scenes
         private int attackTimer = 0;
         private Camera2D _camera;
 
+        /// <summary>
+        /// Gets the player of the game using the client trying to reference this object
+        /// </summary>
         private PlayerCharacterSprite _thisPlayer
         {
             get
@@ -33,7 +36,9 @@ namespace DansWorld.GameClient.UI.Scenes
             }
         }
 
-
+        /// <summary>
+        /// All logged in players
+        /// </summary>
         public List<PlayerCharacter> PlayerCharacters
         {
             get
@@ -47,6 +52,9 @@ namespace DansWorld.GameClient.UI.Scenes
             }
         }
 
+        /// <summary>
+        /// All enemies in the game client
+        /// </summary>
         public List<Enemy> Enemies
         {
             get
@@ -60,6 +68,10 @@ namespace DansWorld.GameClient.UI.Scenes
             }
         }
 
+        /// <summary>
+        /// default constructor of the game scene
+        /// </summary>
+        /// <param name="gameClient">access to the game client so that the game scene can make use of the scene switching and network client</param>
         public GameScene(GameClient gameClient)
         {
             Controls = new List<Control>();
@@ -70,6 +82,11 @@ namespace DansWorld.GameClient.UI.Scenes
             _gameClient.Window.ClientSizeChanged += Window_ClientSizeChanged;
         }
 
+        /// <summary>
+        /// Used to move the text input field
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Window_ClientSizeChanged(object sender, EventArgs e)
         {
             if(_txtIn != null) _txtIn.Location = new Point(10, GameClient.HEIGHT - (int)GameClient.DEFAULT_FONT.MeasureString(" ").Y - 5);
@@ -124,6 +141,10 @@ namespace DansWorld.GameClient.UI.Scenes
             }
         }
 
+        /// <summary>
+        /// adds a character into the game scene. Expected when a player logs in to the game
+        /// </summary>
+        /// <param name="player">player to be added</param>
         public void AddCharacter(PlayerCharacter player)
         {
             PlayerCharacterSprite sprite = new PlayerCharacterSprite(_content, player, _camera)
@@ -141,6 +162,10 @@ namespace DansWorld.GameClient.UI.Scenes
             _characterSprites.Add(sprite);
         }
 
+        /// <summary>
+        /// Removes a character from the game scene, usually when logging out
+        /// </summary>
+        /// <param name="player"></param>
         public void RemoveCharacter(PlayerCharacter player)
         {
             PlayerCharacterSprite toRemove = new PlayerCharacterSprite(_content, player, _camera);
@@ -154,6 +179,10 @@ namespace DansWorld.GameClient.UI.Scenes
             _characterSprites.Remove(toRemove);
         }
 
+        /// <summary>
+        /// Adds an enemy to the game scene
+        /// </summary>
+        /// <param name="enemy"></param>
         internal void AddEnemy(Enemy enemy)
         {
             EnemySprite enemySprite = new EnemySprite()
@@ -178,6 +207,7 @@ namespace DansWorld.GameClient.UI.Scenes
         {
             _pingLabel.Draw(gameTime, spriteBatch);
             spriteBatch.End();
+            //beginning character sprite drawing using the camera transform matrix
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, _camera.Transform);
             foreach (PlayerCharacterSprite characterSprite in _characterSprites)
             {
@@ -188,7 +218,9 @@ namespace DansWorld.GameClient.UI.Scenes
                 enemySprite.Draw(gameTime, spriteBatch, _camera);
             }
             spriteBatch.End();
+            //ending character sprite drawing using camera transform matrix
 
+            //however we dont want the ui to move so we start a new spritebatch for that.
             spriteBatch.Begin(SpriteSortMode.Deferred,
             BlendState.AlphaBlend,
             SamplerState.PointClamp,
@@ -214,6 +246,7 @@ namespace DansWorld.GameClient.UI.Scenes
 
             if (!_txtIn.HasFocus)
             {
+                //handling directional input
                 if (Keyboard.GetState().IsKeyDown(Keys.A)) { _characterSprites[0].PlayerCharacter.X -= 1; _characterSprites[0].PlayerCharacter.Facing = Common.Enums.Direction.LEFT; moved = true; }
                 else if (Keyboard.GetState().IsKeyDown(Keys.S)) { _characterSprites[0].PlayerCharacter.Y += 1; _characterSprites[0].PlayerCharacter.Facing = Common.Enums.Direction.DOWN; moved = true; }
                 else if (Keyboard.GetState().IsKeyDown(Keys.D)) { _characterSprites[0].PlayerCharacter.X += 1; _characterSprites[0].PlayerCharacter.Facing = Common.Enums.Direction.RIGHT; moved = true; }
@@ -226,6 +259,7 @@ namespace DansWorld.GameClient.UI.Scenes
                     attackTimer += gameTime.ElapsedGameTime.Milliseconds;
                     if (attackTimer > 500)
                     {
+                        //sending attack command to the server, every 500 ms
                         PacketBuilder pb = new PacketBuilder(PacketFamily.PLAYER, PacketAction.ATTACK);
                         pb.AddInt(_gameClient.CharacterID);
                         GameClient.NetClient.Send(pb.Build());
@@ -252,6 +286,7 @@ namespace DansWorld.GameClient.UI.Scenes
 
                     _serverNotifiedOfIdle = false;
                 }
+                //now we're settled and if the server doesn't know we've stopped we want to tell it that we have
                 else if (!_serverNotifiedOfIdle)
                 {
                     PacketBuilder pb = new PacketBuilder(PacketFamily.PLAYER, PacketAction.STOP)
@@ -269,11 +304,13 @@ namespace DansWorld.GameClient.UI.Scenes
                 {
                     if (_txtIn.Text != "")
                     {
+                        //sending a chat message to the server
                         PacketBuilder pb = new PacketBuilder(PacketFamily.PLAYER, PacketAction.TALK);
                         pb = pb.AddInt(_txtIn.Text.Length)
                             .AddString(_txtIn.Text)
                             .AddInt(_gameClient.CharacterID);
                         GameClient.NetClient.Send(pb.Build());
+                        //debugging command to test health bars, will be removed if game goes live
                         if (_txtIn.Text.Split(' ')[0] == "SetHP")
                             _characterSprites[0].PlayerCharacter.Health = Convert.ToInt32(_txtIn.Text.Split(' ')[1]);
                         _txtIn.Text = "";
@@ -308,6 +345,10 @@ namespace DansWorld.GameClient.UI.Scenes
             base.Update(gameTime);
         }
 
+        /// <summary>
+        /// Shows the latency between server and client shown in ms
+        /// </summary>
+        /// <param name="ms">ping count</param>
         internal void ShowPing(int ms)
         {
             _pingLabel.Text = ms + " ms";
@@ -317,6 +358,11 @@ namespace DansWorld.GameClient.UI.Scenes
 
         }
 
+        /// <summary>
+        /// shows a message in game
+        /// </summary>
+        /// <param name="message">message to show</param>
+        /// <param name="from">whos it from</param>
         internal void DisplayMessage(string message, string from)
         {
             for (int i = _lblMessages.Count - 1; i > 0; i--)

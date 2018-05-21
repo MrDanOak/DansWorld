@@ -2,6 +2,9 @@
 
 namespace DansWorld.GameClient.UI.CustomEventArgs
 {
+    /// <summary>
+    /// Custom event for storing text changed data
+    /// </summary>
     class TextChangedEventArgs : EventArgs
     {
         public string Text;

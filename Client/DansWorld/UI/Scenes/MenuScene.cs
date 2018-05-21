@@ -17,8 +17,9 @@ namespace DansWorld.GameClient.UI.Scenes
         Button _btnRegister;
         Button _btnPlay;
         Label _lblDansWorld;
-        Label _lblVersion;
         Label _lblMessage;
+        Label _lblUsername;
+        Label _lblPassword;
         GameClient _gameClient;
 
         public MenuScene(GameClient gameClient)
@@ -116,10 +117,37 @@ namespace DansWorld.GameClient.UI.Scenes
                 IsVisible = false
             };
             Controls.Add(_lblMessage);
+
+            _lblUsername = new Label()
+            {
+                Name = "lblUsername",
+                BackColor = Color.White,
+                FrontColor = Color.Black,
+                Font = GameClient.DEFAULT_FONT,
+                Text = "Username:",
+                Size = new Point((int)GameClient.DEFAULT_FONT_BOLD.MeasureString("Username:").X, (int)GameClient.DEFAULT_FONT_BOLD.MeasureString("Username:").Y),
+                Location = new Point(_txtUser.Destination.Left - 5 - (int)GameClient.DEFAULT_FONT_BOLD.MeasureString("Username:").X, _txtUser.Destination.Top + (_txtUser.Size.Y / 2) - (int)GameClient.DEFAULT_FONT_BOLD.MeasureString("Username:").Y / 2),
+                IsVisible = true
+            };
+            Controls.Add(_lblUsername);
+            
+            _lblPassword = new Label()
+            {
+                Name = "lblPassword",
+                BackColor = Color.White,
+                FrontColor = Color.Black,
+                Font = GameClient.DEFAULT_FONT,
+                Text = "Password:",
+                Size = new Point((int)GameClient.DEFAULT_FONT_BOLD.MeasureString("Password:").X, (int)GameClient.DEFAULT_FONT_BOLD.MeasureString("Password:").Y),
+                Location = new Point(_txtPassword.Destination.Left - 5 - (int)GameClient.DEFAULT_FONT_BOLD.MeasureString("Password:").X, _txtPassword.Destination.Top + (_txtPassword.Size.Y / 2) - (int)GameClient.DEFAULT_FONT_BOLD.MeasureString("Password:").Y / 2),
+                IsVisible = true
+            };
+            Controls.Add(_lblPassword);
         }
 
         private void TextBox_KeyPressed(object sender, KeyPressedEventArgs e)
         {
+            //tabbing between boxes
             if (e.KeyPressed == Keys.Tab)
             {
                 bool controlFound = false;
@@ -154,6 +182,10 @@ namespace DansWorld.GameClient.UI.Scenes
             }
         }
 
+        /// <summary>
+        /// Dispalys any error messages that need to be told to the client, such as the account already being logged in
+        /// </summary>
+        /// <param name="message">message to display</param>
         public void DisplayMessage(string message)
         {
             _lblMessage.IsVisible = true;
@@ -163,6 +195,7 @@ namespace DansWorld.GameClient.UI.Scenes
 
         private void BtnRegister_OnClick(object sender, ClickedEventArgs e)
         {
+            //change to registration screen
             _gameClient.SetState(GameState.RegisterAccount);
         }
 
@@ -207,24 +240,30 @@ namespace DansWorld.GameClient.UI.Scenes
 
         private void PlayButton_OnClick(object sender, ClickedEventArgs e)
         {
-            Console.WriteLine("Play button clicked");
             Login(_txtUser.Text, _txtPassword.Text);
         }
 
         private void Login(string user, string pass)
         {
+            //try to connect.
+            if (!GameClient.NetClient.Connected) GameClient.NetClient.Connect();
+            //if failed, try 10 times, then error out
             if (!GameClient.NetClient.Connected)
             {
-                GameClient.NetClient.Connect();
+                DisplayMessage("Connection to game server could not be found!");
             }
-            PacketBuilder pb = new PacketBuilder(PacketFamily.LOGIN, PacketAction.REQUEST);
-            pb = pb.AddByte((byte)_txtUser.Text.Length)
-                    .AddString(_txtUser.Text)
-                    .AddByte((byte)_txtPassword.Text.Length)
-                    .AddString(_txtPassword.Text);
-                    
-            GameClient.NetClient.Send(pb.Build());
-            Console.WriteLine("Attempting to login using user: {0} pass: {1}", _txtUser.Text, _txtPassword.Text);
+            else
+            {
+                //sending packet payload to the server
+                PacketBuilder pb = new PacketBuilder(PacketFamily.LOGIN, PacketAction.REQUEST);
+                pb = pb.AddByte((byte)_txtUser.Text.Length)
+                        .AddString(_txtUser.Text)
+                        .AddByte((byte)_txtPassword.Text.Length)
+                        .AddString(_txtPassword.Text);
+
+                GameClient.NetClient.Send(pb.Build());
+                Console.WriteLine("Attempting to login using user: {0} pass: {1}", _txtUser.Text, _txtPassword.Text);
+            }
         }
     }
 }

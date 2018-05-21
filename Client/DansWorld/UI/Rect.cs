@@ -3,6 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace DansWorld.GameClient.UI
 {
+    /// <summary>
+    /// Custom rectangle class to simply draw a rectangle with an optional border
+    /// </summary>
     public class Rect : Control
     {
         public Color BorderColor = Color.Black;

@@ -5,6 +5,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace DansWorld.GameClient.UI.Game
 {
+    /// <summary>
+    /// ingame assets share a lot of these common properties, only makes sense to give them a base class
+    /// </summary>
     public class BaseGameSprite : IDrawable
     {
         public Texture2D Texture;
@@ -25,7 +28,10 @@ namespace DansWorld.GameClient.UI.Game
                 return new Vector2(Location.X + Width / 2, Location.Y + Height / 2);
             }
         }
-
+        
+        /// <summary>
+        /// Gets the number of frames wide the texture is. 
+        /// </summary>
         protected int _framesWide
         {
             get
@@ -48,6 +54,11 @@ namespace DansWorld.GameClient.UI.Game
             }
         }
 
+        /// <summary>
+        /// utility function to obtain a texture based on a proportionate grid system
+        /// </summary>
+        /// <param name="id">id of the sprite</param>
+        /// <returns></returns>
         public Rectangle GetRectangleForFrameID(int id)
         {
             Rectangle rect = new Rectangle();

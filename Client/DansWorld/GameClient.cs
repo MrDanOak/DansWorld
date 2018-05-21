@@ -6,7 +6,6 @@ using DansWorld.GameClient.UI;
 using DansWorld.GameClient.UI.Game;
 using DansWorld.GameClient.UI.CustomEventArgs;
 using DansWorld.GameClient.UI.Scenes;
-using DansWorld.Common.Net;
 using DansWorld.Common.GameEntities;
 using System.Collections.Generic;
 using System;
@@ -21,15 +20,19 @@ namespace DansWorld.GameClient
         GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
         GameState _gameState = GameState.MainMenu;
-        List<Control> _characterSelectControls = new List<Control>();
+        //used to send messages to server
         public static Net.Client NetClient;
+        //resolution of the game client
         public static int HEIGHT = 720;
         public static int WIDTH = 1366;
+        //used to build rectangles and other shapes that require some pixel data.
         public static Texture2D DEFAULT_TEXTURE;
+        //fonts for the game
         public static SpriteFont DEFAULT_FONT;
         public static SpriteFont DEFAULT_FONT_BOLD;
         public static SpriteFont GW2_FONT;
         public static SpriteFont GW2_FONT_LARGE;
+        //build version
         public static string VERSION = System.Reflection.Assembly.GetExecutingAssembly().
             GetName().Version.ToString();
 
@@ -49,7 +52,8 @@ namespace DansWorld.GameClient
         {
             Window.Title = String.Format("DansWorld - Version {0}", version);
             IsMouseVisible = true; 
-            NetClient = new Net.Client("77.101.233.137", 8081, this);
+            //initiating the network address of the game client
+            NetClient = new Net.Client("127.0.0.1", 8081, this);
             _graphics = new GraphicsDeviceManager(this);
             
             Content.RootDirectory = "Content";
@@ -57,6 +61,7 @@ namespace DansWorld.GameClient
             _graphics.PreferredBackBufferWidth = WIDTH;
             Window.AllowAltF4 = true;
             Window.AllowUserResizing = true;
+            //enabling responsive window
             Window.ClientSizeChanged += Window_ClientSizeChanged;
         }
 
@@ -86,6 +91,7 @@ namespace DansWorld.GameClient
 
         protected override void LoadContent()
         {
+            //loading all assets from the MonoGame pipeline tool
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             SpriteFont gw2Font = GW2_FONT = Content.Load<SpriteFont>("Fonts/GW2Font");
             SpriteFont defaultFont = DEFAULT_FONT = Content.Load<SpriteFont>("Fonts/arial");
@@ -103,6 +109,9 @@ namespace DansWorld.GameClient
             GameScence.Initialise(Content);
         }
 
+        /// <summary>
+        /// Removes characters from whichever scene is currently active using state pattern
+        /// </summary>
         public void ClearCharacters()
         {
             if (_gameState == GameState.LoggedIn)
@@ -111,12 +120,20 @@ namespace DansWorld.GameClient
                 GameScence.ClearCharacters();
         }
 
+        /// <summary>
+        /// Adds player characters to the given scene
+        /// </summary>
+        /// <param name="playerCharacters"></param>
         public void AddPlayerCharacters(List<PlayerCharacter> playerCharacters)
         {
             foreach (PlayerCharacter player in playerCharacters) 
                 AddPlayerCharacter(player);
         }
 
+        /// <summary>
+        /// Adds enemies to the game scene
+        /// </summary>
+        /// <param name="enemy"></param>
         public void AddEnemy(Enemy enemy)
         {
             if (_gameState == GameState.Playing)
@@ -125,6 +142,11 @@ namespace DansWorld.GameClient
             }
         }
 
+        /// <summary>
+        /// Used to build character sprites from network packets
+        /// behavious changes depending on the state of the game client
+        /// </summary>
+        /// <param name="character">charater to add</param>
         public void AddPlayerCharacter(PlayerCharacter character)
         {
             if (_gameState == GameState.LoggedIn)
@@ -133,6 +155,10 @@ namespace DansWorld.GameClient
                 GameScence.AddCharacter(character);
         }
 
+        /// <summary>
+        /// Returns a list of the characters that are currently loaded in the game
+        /// </summary>
+        /// <returns>List of player character</returns>
         public List<PlayerCharacter> GetPlayers()
         {
             if (_gameState == GameState.LoggedIn) return CharacterSelect.PlayerCharacters;
@@ -140,11 +166,21 @@ namespace DansWorld.GameClient
             else return null;
         }
 
+        /// <summary>
+        /// Returns a list of the enemies that are currently loaded in the game
+        /// </summary>
+        /// <returns>List of enemy</returns>
         public List<Enemy> GetEnemies()
         {
             return GameScence.Enemies;
         }
 
+        /// <summary>
+        /// Displays a message to the game client, used for communicating between players
+        /// Or for communicating from the server to the player for status upades or error messages
+        /// </summary>
+        /// <param name="message">message to display</param>
+        /// <param name="from">who was it sent from</param>
         public void DisplayMessage(string message, string from = "")
         {
             if (_gameState == GameState.MainMenu)
@@ -157,6 +193,12 @@ namespace DansWorld.GameClient
                 GameScence.DisplayMessage(message, from);
         }
 
+        /// <summary>
+        /// Grants focus to a given control for the given control set.
+        /// Used for user input.
+        /// </summary>
+        /// <param name="toFocus"></param>
+        /// <param name="controlSet"></param>
         public void Focus(Control toFocus, List<Control> controlSet)
         {
             foreach (Control control in controlSet)
@@ -167,18 +209,15 @@ namespace DansWorld.GameClient
             }
         }
 
-        private void Control_OnClick(object sender, ClickedEventArgs e)
-        {
-            switch (_gameState)
-            {
-                case GameState.MainMenu:
-                    break;
-            }
-        }
-
         protected override void UnloadContent()
         {
+            //TODO: Cleanup
         }
+
+        /// <summary>
+        /// Main update loop of the game
+        /// </summary>
+        /// <param name="gameTime"></param>
         protected override void Update(GameTime gameTime)
         {
             switch(_gameState)
@@ -202,6 +241,11 @@ namespace DansWorld.GameClient
 
             base.Update(gameTime);
         }
+
+        /// <summary>
+        /// Main draw loop of the game
+        /// </summary>
+        /// <param name="gameTime"></param>
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.White);
@@ -229,11 +273,19 @@ namespace DansWorld.GameClient
             base.Draw(gameTime);
         }
 
+        /// <summary>
+        /// Updates the game client state
+        /// </summary>
+        /// <param name="state"></param>
         public void SetState(GameState state)
         {
             _gameState = state;
         }
 
+        /// <summary>
+        /// updates the ping counter in game
+        /// </summary>
+        /// <param name="ms"></param>
         public void ShowPing(int ms)
         {
             switch (_gameState)
@@ -244,6 +296,10 @@ namespace DansWorld.GameClient
             }
         }
 
+        /// <summary>
+        /// removes a character from the array of collected characters.
+        /// </summary>
+        /// <param name="toRemove"></param>
         internal void RemoveCharacter(PlayerCharacter toRemove)
         {
             if (_gameState == GameState.Playing)

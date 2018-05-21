@@ -10,6 +10,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace DansWorld.GameClient.UI.Scenes
 {
+    /// <summary>
+    /// Class for the registering of the accounts scene
+    /// </summary>
     public class RegisterAccountScene : BaseScene
     {
         TextBox txtUsername;
@@ -27,6 +30,9 @@ namespace DansWorld.GameClient.UI.Scenes
         Label lblMessage;
         Button btnRegister;
         Button btnCancel;
+        /// <summary>
+        /// Validates email addresses
+        /// </summary>
         EmailValidator eValidator = new EmailValidator();
 
         public RegisterAccountScene(GameClient gameClient)
@@ -322,33 +328,43 @@ namespace DansWorld.GameClient.UI.Scenes
 
         private void BtnCancel_OnClick(object sender, ClickedEventArgs e)
         {
+            //goes back to the main menu to log in
             _gameClient.SetState(GameState.MainMenu);
         }
 
         private void BtnRegister_OnClick(object sender, ClickedEventArgs e)
         {
-            if (txtPassword.Text == txtRepeat.Text && eValidator.Validate(txtEmail.Text)) 
+            //making sure that passwords match and the email has been successfully validated
+            if (txtPassword.Text == txtRepeat.Text && eValidator.Validate(txtEmail.Text))
             {
                 if (!GameClient.NetClient.Connected)
                 {
                     GameClient.NetClient.Connect();
                 }
-
-                PacketBuilder pb = new PacketBuilder(PacketFamily.REGISTER, PacketAction.REQUEST);
-                pb = pb.AddByte((byte)txtUsername.Text.Length)
-                       .AddString(txtUsername.Text)
-                       .AddByte((byte)txtPassword.Text.Length)
-                       .AddString(txtPassword.Text)
-                       .AddByte((byte)txtEmail.Text.Length)
-                       .AddString(txtEmail.Text)
-                       .AddByte((byte)txtFullname.Text.Length)
-                       .AddString(txtFullname.Text);
-                GameClient.NetClient.Send(pb.Build());
+                if (!GameClient.NetClient.Connected)
+                {
+                    DisplayMessage("Connection to game server could not be found!");
+                }
+                else
+                {
+                    //if we have connected to the game server and everything checks out, we're going to register to the server
+                    PacketBuilder pb = new PacketBuilder(PacketFamily.REGISTER, PacketAction.REQUEST);
+                    pb = pb.AddByte((byte)txtUsername.Text.Length)
+                           .AddString(txtUsername.Text)
+                           .AddByte((byte)txtPassword.Text.Length)
+                           .AddString(txtPassword.Text)
+                           .AddByte((byte)txtEmail.Text.Length)
+                           .AddString(txtEmail.Text)
+                           .AddByte((byte)txtFullname.Text.Length)
+                           .AddString(txtFullname.Text);
+                    GameClient.NetClient.Send(pb.Build());
+                }
             }
         }
 
         private void TxtEmail_TextChanged(object sender, TextChangedEventArgs e)
         {
+            //visually showing whether the email is valid or not
             if (!eValidator.Validate(e.Text))
             {
                 txtEmail.BorderColor = Color.Red;

@@ -5,15 +5,22 @@ using DansWorld.Common.Enums;
 
 namespace DansWorld.Common.IO
 {
+    /// <summary>
+    /// debugging output utility class
+    /// </summary>
     public class Logger
     {
+        //write to file or not
         public static bool WriteToFile = false;
+        //builds directory based off the given string
         public static string Path = Directory.GetCurrentDirectory() + "\\Logs\\DW.log";
+        //write lock for cross thread calls
         static ReaderWriterLockSlim writeLock = new ReaderWriterLockSlim();
 
         public static void Log(string log, LogLevel level = LogLevel.INFO)
         {
             DateTime dt = DateTime.Now;
+            //sets the colour of the text based on the level of the log
             Console.ForegroundColor = (level == LogLevel.ERROR ? ConsoleColor.Red : level == LogLevel.WARN ? ConsoleColor.Yellow : ConsoleColor.Cyan);
             Console.Write("[{0:T}]", dt);
             Console.ForegroundColor = ConsoleColor.White;

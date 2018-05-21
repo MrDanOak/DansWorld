@@ -3,6 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace DansWorld.GameClient.UI
 {
+    /// <summary>
+    /// Custom label class to display text in the game client
+    /// </summary>
     public class Label : Control
     {
         public string Text = "";
@@ -24,7 +27,7 @@ namespace DansWorld.GameClient.UI
             if (!IsVisible) return;
             if (BackgroundImage != null)
             {
-
+                //TODO: Add support for background images
             }
             else if (BackColor != null)
             {

@@ -7,9 +7,15 @@ using DansWorld.GameClient.UI.CustomEventArgs;
 
 namespace DansWorld.GameClient.UI
 {
+    /// <summary>
+    /// Custom textbox class to provide text inputs into DansWorld
+    /// </summary>
     class TextBox : Control
     {
         private string _text = "";
+        /// <summary>
+        /// Custom get and set accessors to ensure a text changed event is fired 
+        /// </summary>
         public string Text
         {
             get
@@ -35,9 +41,12 @@ namespace DansWorld.GameClient.UI
         public int CharacterLimit = 0;
 
         private Keys[] _previousKeys = null;
+        //used to mask inputs that are in quick succession
         private int _inputTimer = 0;
+        //used for the input cursor
         private int _blinkTimer = 0;
         private bool _showBlink = false;
+        //an obscene collection of booleans to record all keydown presses and stop duplicate keys from being pressed.
         private bool _aKeyDown = false;
         private bool _bKeyDown = false;
         private bool _cKeyDown = false;
@@ -99,6 +108,9 @@ namespace DansWorld.GameClient.UI
                        Keyboard.GetState().IsKeyDown(Keys.RightShift);
             }
         }
+        /// <summary>
+        /// Default constructor, more often than not, in-line constructors will be used to initialise variables
+        /// </summary>
         public TextBox()
         {
 
@@ -109,6 +121,7 @@ namespace DansWorld.GameClient.UI
         {
             if (HasFocus)
             {
+                //gets the keys that are currently down
                 KeyboardState kbState = Keyboard.GetState();
                 _inputTimer += gameTime.ElapsedGameTime.Milliseconds;
                 if (_inputTimer > 30)
@@ -233,6 +246,11 @@ namespace DansWorld.GameClient.UI
 
         }
 
+        /// <summary>
+        /// Used to hide source text behind asterix's 
+        /// </summary>
+        /// <param name="text">text to mask</param>
+        /// <returns></returns>
         public string HideText(string text)
         {
             string hidden = "";
@@ -250,7 +268,7 @@ namespace DansWorld.GameClient.UI
 
             if (BackgroundImage != null)
             {
-
+                //TODO: Handle background images of a text box
             }
             else if (BackColor != null)
             {
@@ -263,15 +281,18 @@ namespace DansWorld.GameClient.UI
 
             if (!IsPasswordField)
             {
+                //if it's not a password field draw a regular text box
                 spriteBatch.DrawString(Font, Text, new Vector2(Location.X + 5, Location.Y + Size.Y / 2 - Font.MeasureString(Text).Y / 2), FrontColor);
             }
             else
             {
+                //if it is a password field, we want to hide the text
                 spriteBatch.DrawString(Font, HideText(Text), new Vector2(Location.X + 5, Location.Y + Size.Y / 2 - strDim.Y / 4), FrontColor);
             }
 
             if (HasFocus)
             {
+                //blinker sub-method
                 Vector2 vecBlink = new Vector2(Location.X + Font.MeasureString(Text).X + 2, Location.Y);
                 _blinkTimer++;
                 if (_blinkTimer > 50)

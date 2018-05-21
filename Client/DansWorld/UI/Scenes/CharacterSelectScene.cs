@@ -137,6 +137,10 @@ namespace DansWorld.GameClient.UI.Scenes
             }
         }
 
+        /// <summary>
+        /// Removes a character from the character select screen character pool
+        /// </summary>
+        /// <param name="id">id of the character to be removed (0-2 expected)</param>
         internal void RemoveCharacter(byte id)
         {
             if (PlayerCharacters.Count > id)
@@ -155,14 +159,25 @@ namespace DansWorld.GameClient.UI.Scenes
             _lblCharLvls[id].Text = "";
         }
 
+        /// <summary>
+        /// Create button clicked handler
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnCreateChar_OnClick(object sender, CustomEventArgs.ClickedEventArgs e)
         {
+            //only act if the control is visible
             if (((Control)sender).IsVisible)
             {
                 _gameClient.SetState(GameExecution.GameState.CreateCharacter);
             }
         }
 
+        /// <summary>
+        /// Play button clicked handler
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnPlayChar_OnClick(object sender, CustomEventArgs.ClickedEventArgs e)
         {
             if (((Control)sender).IsVisible)

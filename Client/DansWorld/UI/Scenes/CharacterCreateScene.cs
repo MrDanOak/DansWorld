@@ -12,23 +12,31 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace DansWorld.GameClient.UI.Scenes
 {
+    /// <summary>
+    /// Scene that is used to create the characters in
+    /// </summary>
     public class CharacterCreateScene : BaseScene
     {
+        //character box
         Rect _charBox = new Rect();
         Button _btnCreateChar = new Button();
         Button _btnCancel = new Button();
         Button _btnMale = new Button();
         Button _btnFemale = new Button();
         Button _btnBack = new Button();
+        //in case the server replies back with an error, we can use this label to display it
         Label _lblError = new Label();
         PlayerCharacterSprite _characterSprite;
         private Label _lblCharacter;
         TextBox _txtCharacterName;
+        //player character object to create/serialise and post to the server
         PlayerCharacter playerCharacter = new PlayerCharacter();
+        //game client reference to set the state of it 
         GameClient _gameClient;
         int _elapsedms = 0;
         public override void Initialise(ContentManager content)
         {
+            //creating all the controls and adding them to the list to be updated/drawn.
             _characterSprite = new PlayerCharacterSprite(content, null, null);
             Texture2D baseCharacterTexture = content.Load<Texture2D>("Images/Characters/base");
             Controls = new List<Control>();
@@ -126,7 +134,6 @@ namespace DansWorld.GameClient.UI.Scenes
                 NumbersAllowed = true,
                 SpecialCharactersAllowed = false
             };
-            _txtCharacterName.KeyPressed += txt_KeyPressed;
             _txtCharacterName.OnClick += Control_OnClick;
             Controls.Add(_txtCharacterName);
 
@@ -171,6 +178,7 @@ namespace DansWorld.GameClient.UI.Scenes
 
         private void _btnCreateChar_OnClick(object sender, ClickedEventArgs e)
         {
+            //character creation request
             PacketBuilder pb = new PacketBuilder(PacketFamily.CHARACTER, PacketAction.CREATE);
             pb = pb.AddByte((byte)_txtCharacterName.Text.Length)
                 .AddString(_txtCharacterName.Text)
@@ -189,11 +197,6 @@ namespace DansWorld.GameClient.UI.Scenes
             playerCharacter.Gender = Gender.MALE;
         }
 
-        private void txt_KeyPressed(object sender, KeyPressedEventArgs e)
-        {
-
-        }
-
         private void Control_OnClick(object sender, ClickedEventArgs e)
         {
             Focus((Control)sender);
@@ -205,7 +208,7 @@ namespace DansWorld.GameClient.UI.Scenes
             {
                 control.HasFocus = (control == toFocus);
                 if (control.HasFocus)
-                    Console.WriteLine("{0} has focus", control.Name);
+                    Console.WriteLine("{0} has focus", control.Name); // debug output
             }
         }
 
@@ -231,6 +234,7 @@ namespace DansWorld.GameClient.UI.Scenes
             {
                 if (playerCharacter != null)
                 {
+                    //turn the player
                     playerCharacter.Facing = playerCharacter.Facing + 1;
                     if ((byte)playerCharacter.Facing == 4) playerCharacter.Facing = 0;
                 }
